@@ -49,17 +49,12 @@
             width: 210px;
             height: 330px;
             margin: 0 auto 30px auto;
-            background-image: url('images/000_taroura.png');
             background-color: #f8f0e3;
-            background-size: contain;
-            background-position: center;
-            background-repeat: no-repeat;
             border-radius: 14px;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 1.1rem;
-            font-weight: bold;
+            overflow: hidden;
             box-shadow:
                 0 18px 35px var(--shadow),
                 inset 0 0 18px rgba(171, 122, 72, 0.12);
@@ -117,7 +112,9 @@
     <h1>本日の札占い</h1>
 
     <!-- 💡カードを表示する枠 -->
-    <div id="tarot-card" class="card-display"></div>
+    <div id="tarot-card" class="card-display">
+        <img id="card-image" src="images/000_taroura.png" alt="タロットカード" style="width: 100%; height: 100%; object-fit: contain; border-radius: 14px;">
+    </div>
 
     <!-- 結果テキスト -->
     <div id="result-text">カードに尋ねたいことを思い浮かべて引くとよいでしょう</div>
@@ -277,13 +274,11 @@
             // 逆位置は30%、正位置は70%の確率
             const isReversed = Math.random() < 0.3;
 
-            // 💡【重要】CSSのbackground-imageをJavaScriptから書き換える
-            cardElement.style.backgroundImage = `url('${selectedCard.image}')`;
+            // 💡【重要】カード画像を書き換える
+            const cardImage = cardElement.querySelector('img');
+            cardImage.src = selectedCard.image;
             cardElement.classList.toggle("reversed", isReversed);
             cardElement.style.transform = isReversed ? "rotateX(180deg)" : "rotateX(0deg)";
-
-            // カードの中の文字を消す（画像に文字が含まれている前提）
-            cardElement.textContent = "";
 
             // 下部のテキストを書き換える
             const positionText = isReversed ? "逆位置" : "正位置";

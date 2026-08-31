@@ -5,55 +5,113 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>タロット占い</title>
     <style>
+        :root {
+            --bg: #f3eee3;
+            --bg-deep: #e7dcc3;
+            --paper: rgba(255, 250, 239, 0.72);
+            --ink: #3a2b1e;
+            --muted: #6e5645;
+            --frame: #b88e5d;
+            --frame-deep: #8d6b45;
+            --button-top: #f5ebd8;
+            --button-bottom: #dfc28f;
+            --shadow: rgba(91, 60, 29, 0.15);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            background-color: #0b0f19;
-            color: #ecfdff;
-            font-family: sans-serif;
+            margin: 0;
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at top, rgba(255,255,255,0.9), transparent 30%),
+                linear-gradient(180deg, var(--bg) 0%, var(--bg-deep) 100%);
+            color: var(--ink);
+            font-family: "Yu Mincho", "Hiragino Mincho ProN", "Noto Serif JP", serif;
             text-align: center;
-            padding: 50px 20px;
+            padding: 42px 20px;
+            letter-spacing: 0.04em;
+        }
+
+        h1 {
+            margin: 0 0 26px;
+            font-size: clamp(1.8rem, 3vw, 2.6rem);
+            font-weight: 700;
+            letter-spacing: 0.14em;
+            color: #4d3829;
+            text-shadow: 0 1px 0 rgba(255,255,255,0.8);
         }
 
         /* 💡タロットカードの見た目（CSS） */
         .card-display {
-            width: 160px;
-            height: 260px;
+            width: 210px;
+            height: 330px;
             margin: 0 auto 30px auto;
-            /* 初期状態（カードの裏面）のデザイン */
-            background: linear-gradient(135deg, rgba(36, 51, 62, 0.98) 0%, rgba(17, 24, 30, 0.98) 100%);
+            background-image: url('images/000_taroura.png');
+            background-color: #f8f0e3;
             background-size: cover;
             background-position: center;
-            border: 3px solid rgba(154, 231, 255, 0.9);
-            border-radius: 10px;
+            background-repeat: no-repeat;
+            border: 2px solid var(--frame-deep);
+            border-radius: 14px;
             display: flex;
             justify-content: center;
             align-items: center;
             font-size: 1.1rem;
             font-weight: bold;
-            box-shadow: inset 0 0 20px rgba(157, 234, 255, 0.08), 0 4px 15px rgba(0, 0, 0, 0.3);
-            transition: transform 0.6s ease;
+            box-shadow:
+                0 18px 35px var(--shadow),
+                inset 0 0 0 1px rgba(255,255,255,0.35),
+                inset 0 0 18px rgba(171, 122, 72, 0.12);
+            transition: transform 0.6s ease, box-shadow 0.6s ease, filter 0.3s ease;
+            transform-origin: center center;
+        }
+
+        .card-display:hover {
+            transform: translateY(-2px);
+            box-shadow:
+                0 22px 42px rgba(87, 61, 30, 0.18),
+                inset 0 0 0 1px rgba(255,255,255,0.4),
+                inset 0 0 18px rgba(171, 122, 72, 0.12);
+        }
+
+        .card-display.reversed {
+            transform: rotateX(180deg);
+            filter: saturate(0.9) brightness(0.96);
         }
 
         /* 占うボタン */
         .btn {
-            background: #111d2e;
-            color: #9ae7ff;
-            border: 2px solid #9ae7ff;
-            padding: 10px 30px;
+            display: inline-block;
+            background: linear-gradient(180deg, var(--button-top) 0%, var(--button-bottom) 100%);
+            color: #4a3527;
+            border: 1px solid rgba(135, 94, 55, 0.7);
+            padding: 12px 34px;
             font-size: 1rem;
-            border-radius: 5px;
+            border-radius: 999px;
             cursor: pointer;
-            font-weight: bold;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            box-shadow: 0 10px 18px rgba(90, 62, 34, 0.12);
+            transition: all 0.2s ease;
         }
         .btn:hover {
-            background: #9ae7ff;
-            color: #111d2e;
+            background: linear-gradient(180deg, #f9f1e2 0%, #e5c87d 100%);
+            color: #2e2117;
+            transform: translateY(-1px);
+            box-shadow: 0 14px 22px rgba(90, 62, 34, 0.18);
         }
 
         /* 結果のテキスト */
         #result-text {
-            margin-top: 20px;
-            font-size: 1.2rem;
+            margin: 0 0 18px;
+            font-size: 1.08rem;
             min-height: 1.5em;
+            line-height: 1.8;
+            color: var(--muted);
+            letter-spacing: 0.08em;
         }
     </style>
 </head>
@@ -72,30 +130,140 @@
 
     <!-- 💡JavaScriptで画像を切り替える処理 -->
     <script>
-        // 1. タロットカードのデータ（結果の文字と、画像のファイル名）
+        // 1. タロットカードのデータ（カード名、画像、正位置/逆位置のメッセージ）
         const tarotDeck = [
-           { name: "0. 愚者 (The Fool)", image: "images/00_fool.png" },
-            { name: "1. 陰陽師 (The Onmyouji)", image: "images/01_magician.png" },
-            { name: "2. 御巫 (The Mikan-nagi)", image: "images/02_priestess.png" },
-            { name: "3. 女帝 (The Empress)", image: "images/03_empress.png" },
-            { name: "4. 皇帝 (The Emperor)", image: "images/04_emperor.png" },
-            { name: "5. 神主 (The Kannusi)", image: "images/05_hierophant.png" },
-            { name: "6. 恋人 (The Lovers)", image: "images/06_lovers.png" },
-            { name: "7. 戦車 (The Chariot)", image: "images/07_chariot.png" },
-            { name: "8. 力 (Strength)", image: "images/11_strength.png" },
-            { name: "9. 隠者 (The Hermit)", image: "images/09_hermit.png" },
-            { name: "10. 運命の輪 (Wheel of Fortune)", image: "images/10_wheel.png" }, 
-            { name: "11. 正義 (The Justice)", image: "images/08_justice.png" },
-            { name: "12. 吊るされた男 (The Hanged Man)", image: "images/12_hanged_man.png" },
-            { name: "13. 死神 (Death)", image: "images/13_death.png" },
-            { name: "14. 節制 (Temperance)", image: "images/14_temperance.png" },
-            { name: "15. 悪魔 (The Devil)", image: "images/15_devil.png" },
-            { name: "16. 塔 (The Tower)", image: "images/16_tower.png" },
-            { name: "17. 星 (The Star)", image: "images/17_star.png" },
-            { name: "18. 月 (The Moon)", image: "images/18_moon.png" },
-            { name: "19. 太陽 (The Sun)", image: "images/19_sun.png" },
-            { name: "20. 審判 (Judgement)", image: "images/20_judgement.png" },
-            { name: "21. 世界 (The World)", image: "images/21_world.png" }
+            {
+                name: "0. 愚者 (The Fool)",
+                image: "images/00_fool.png",
+                upright: "新しい旅のはじまりです。\n心を軽くして、少しだけ自由に進むとよいでしょう。",
+                reversed: "迷いや不安があるかもしれません。\n一歩ずつ、安心できる方向へ進めばよいでしょう。"
+            },
+            {
+                name: "1. 陰陽師 (The Onmyouji)",
+                image: "images/01_magician.png",
+                upright: "あなたの力が静かに育っています。\n自分のペースで、しっかり使ってみるとよいでしょう。",
+                reversed: "まだ準備が整っていないように感じられるかもしれません。\n焦らず、ひとつずつ整えていくとよいでしょう。"
+            },
+            {
+                name: "2. 御巫 (The Mikannagi)",
+                image: "images/02_priestess.png",
+                upright: "直感がやさしくささやいています。\n小さな気づきにも耳を傾けてみるとよいでしょう。",
+                reversed: "心の声が聞き取りにくいときもあります。\n静かな時間をつくって、安心して向き合うとよいでしょう。"
+            },
+            {
+                name: "3. 女帝 (The Empress)",
+                image: "images/03_empress.png",
+                upright: "豊かさとやすらぎがそっと訪れます。\n自分をいたわる時間を大切にするとよいでしょう。",
+                reversed: "無理をしていないか、ときどき見直すとよいでしょう。\n休むことも、ちゃんとした大事な行動です。"
+            },
+            {
+                name: "4. 皇帝 (The Emperor)",
+                image: "images/04_emperor.png",
+                upright: "安定をつくる時です。\n計画を整えて、着実に進むとよいでしょう。",
+                reversed: "頑固さが少し重く感じられることもあります。\n柔らかさを少し足してみるとよいでしょう。"
+            },
+            {
+                name: "5. 神主 (The Kannusi)",
+                image: "images/05_hirophant.png",
+                upright: "知恵や伝統があなたを支えています。\n信頼できるものを大切にしながら進むとよいでしょう。",
+                reversed: "古い考えにとらわれている気がするかもしれません。\n新しい視点を、やさしく受け入れるとよいでしょう。"
+            },
+            {
+                name: "6. 恋人 (The Lovers)",
+                image: "images/06_lovers.png",
+                upright: "つながりの時間が大切な時です。\n心を開いて、温かい関係を育むとよいでしょう。",
+                reversed: "気持ちのすれ違いを感じているかもしれません。\n本音を、やさしく伝えてみるとよいでしょう。"
+            },
+            {
+                name: "7. 戦車 (The Chariot)",
+                image: "images/07_chariot.png",
+                upright: "意志がしっかりしている時です。\n目標に向かって、落ち着いて前へ進むとよいでしょう。",
+                reversed: "勢いが少し乱れているように見えます。\nペースを整えて、ゆっくり進めばよいでしょう。"
+            },
+            {
+                name: "8. 力 (Strength)",
+                image: "images/08_strength.png",
+                upright: "優しさと強さが同時にある時です。\n静かに乗り越えていけるでしょう。",
+                reversed: "気持ちが強すぎて、心が疲れているかもしれません。\n自分をいたわる時間も大事にするとよいでしょう。"
+            },
+            {
+                name: "9. 隠者 (The Hermit)",
+                image: "images/09_hermit.png",
+                upright: "少し離れて考える時間が必要です。\n静かに内側を見て、答えを見つけるとよいでしょう。",
+                reversed: "孤独を感じていることもあるでしょう。\n一人で抱え込まず、そっと手を伸ばすとよいでしょう。"
+            },
+            {
+                name: "10. 運命の輪 (Wheel of Fortune)",
+                image: "images/10_wheel of fortune.png",
+                upright: "大きな変化がやってくる時です。\n流れに乗って、自然に進むとよいでしょう。",
+                reversed: "変化に少し怖さを感じているかもしれません。\n急がず、少しずつ受け止めていくとよいでしょう。"
+            },
+            {
+                name: "11. 正義 (The Justice)",
+                image: "images/11_justice.png",
+                upright: "公平さと誠実さが大事な時です。\n冷静に見て、整然と進むとよいでしょう。",
+                reversed: "偏りや混乱が少しあるように感じられます。\n本音を見極めて、やさしく整えるとよいでしょう。"
+            },
+            {
+                name: "12. 吊るされた男 (The Hanged Man)",
+                image: "images/12_hanged_man.png",
+                upright: "一度立ち止まる時間が必要です。\n今は、見えなかったものが見えてくるでしょう。",
+                reversed: "動き出したくても少しつまずいているかもしれません。\n立ち止まって、心を整えるとよいでしょう。"
+            },
+            {
+                name: "13. 死神 (Death)",
+                image: "images/13_death.png",
+                upright: "終わりと始まりが重なる時です。\n手放すことで、やわらかな新しい道が開くでしょう。",
+                reversed: "変化への戸惑いがあるかもしれません。\n時間をかけて、少しずつ受け入れていくとよいでしょう。"
+            },
+            {
+                name: "14. 節制 (Temperance)",
+                image: "images/14_temperance.png",
+                upright: "バランスが大切な時です。\n穏やかに進めば、心も整っていくでしょう。",
+                reversed: "偏りが少し気になるときです。\n自分に優しく、ほどよいペースを見つけるとよいでしょう。"
+            },
+            {
+                name: "15. 悪魔 (The Devil)",
+                image: "images/15_devil.png",
+                upright: "執着や不安に気づくときです。\nそれを見つめて、自分を守る選択をするとよいでしょう。",
+                reversed: "束縛から少し抜け出せる時です。\n自由になるために、やさしく手放すとよいでしょう。"
+            },
+            {
+                name: "16. 塔 (The Tower)",
+                image: "images/16_tower.png",
+                upright: "大きな変化がやってくる時です。\n古いものを手放して、新しい流れを受け入れるとよいでしょう。",
+                reversed: "変化に少し怖さを感じているかもしれません。\n慌てず、静かに一歩ずつ進むとよいでしょう。"
+            },
+            {
+                name: "17. 星 (The Star)",
+                image: "images/17_star.png",
+                upright: "希望がちゃんとあります。\n自分を信じて、まっすぐ進むとよいでしょう。",
+                reversed: "落ち込みや不安が一時的に強いときです。\n少し休んで、安心できる場所を探すとよいでしょう。"
+            },
+            {
+                name: "18. 月 (The Moon)",
+                image: "images/18_moon.png",
+                upright: "直感を信じてみるとよいでしょう。\n見えないものが、やがて少しずつ見えてくるでしょう。",
+                reversed: "心が混乱している時もあります。\n思い込みをほどいて、静かな気持ちを取り戻すとよいでしょう。"
+            },
+            {
+                name: "19. 太陽 (The Sun)",
+                image: "images/19_sun.png",
+                upright: "明るさと喜びが広がる時です。\n前向きな気持ちを大切にするとよいでしょう。",
+                reversed: "少し光が薄く感じるときもあります。\n自分の内側に、やさしい気持ちを灯すとよいでしょう。"
+            },
+            {
+                name: "20. 審判 (Judgement)",
+                image: "images/20_judgement.png",
+                upright: "振り返ると、進むべき道が見えてくるでしょう。\n自分の答えを信じて、決めるとよいでしょう。",
+                reversed: "決断を先に延ばしているときです。\n少しずつでも、答えに向かって進むとよいでしょう。"
+            },
+            {
+                name: "21. 世界 (The World)",
+                image: "images/21_world.png",
+                upright: "大きな満足と完成が近いようです。\n今の自分を、ちゃんと認めるとよいでしょう。"
+                reversed: "まだつながりが十分でない気がするかもしれません。\nひとつずつ整えて、やわらかく進むとよいでしょう。"
+            }
         ];
 
         // 2. 画面の要素（パーツ）を取得
@@ -109,14 +277,21 @@
             const randomIndex = Math.floor(Math.random() * tarotDeck.length);
             const selectedCard = tarotDeck[randomIndex];
 
+            // 逆位置は30%、正位置は70%の確率
+            const isReversed = Math.random() < 0.3;
+
             // 💡【重要】CSSのbackground-imageをJavaScriptから書き換える
             cardElement.style.backgroundImage = `url('${selectedCard.image}')`;
-            
+            cardElement.classList.toggle("reversed", isReversed);
+            cardElement.style.transform = isReversed ? "rotateX(180deg)" : "rotateX(0deg)";
+
             // カードの中の文字を消す（画像に文字が含まれている前提）
-            cardElement.textContent = ""; 
-            
+            cardElement.textContent = "";
+
             // 下部のテキストを書き換える
-            resultElement.textContent = `結果：${selectedCard.name}`;
+            const positionText = isReversed ? "逆位置" : "正位置";
+            const message = isReversed ? selectedCard.reversed : selectedCard.upright;
+            resultElement.innerHTML = `結果：${selectedCard.name}（${positionText}）<br>${message.replace(/\n/g, "<br>")}`;
         });
     </script>
 </body>

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>神秘のタロット占い</title>
+    <style>
+        /* 全体のデザイン設定 */
+        body {
+            font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', sans-serif;
+            background-color: #1a1625;
+            color: #e0daf0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .container {
+            background-color: #262135;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            max-width: 450px;
+            width: 100%;
+            border: 1px solid #443b59;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            color: #cca3ff;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+
+        p.intro {
+            font-size: 0.9rem;
+            color: #aaa2be;
+            margin-bottom: 30px;
+        }
+
+        /* タロットカードの見た目 */
+        .card-display {
+            width: 160px;
+            height: 260px;
+            margin: 0 auto 30px auto;
+            background: linear-gradient(135deg, #3d2b5c 0%, #1c1230 100%);
+            border: 3px solid #cca3ff;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #cca3ff;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.6s ease;
+            transform-style: preserve-3d;
+        }
+
+        /* 逆位置のときの上向反転クラス */
+        .reversed-card {
+            transform: rotate(180deg);
+        }
+
+        /* ボタンのデザイン */
+        .btn {
+            background: linear-gradient(135deg, #8a4fff 0%, #6320ee 100%);
+            color: white;
+            border: none;
+            padding: 12px 35px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 25px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(138, 79, 255, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(138, 79, 255, 0.6);
+        }
+
+        .btn:active {
+            transform: translateY(1px);
+        }
+
+        /* 結果表示エリア */
+        .result-area {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px dashed #443b59;
+            display: none; /* 最初は隠しておく */
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .result-title {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #ffb74d;
+            margin-bottom: 5px;
+        }
+
+        .result-pos {
+            display: inline-block;
+            font-size: 0.85rem;
+            padding: 3px 10px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .pos-upright { background-color: #2e7d32; color: #e8f5e9; }
+        .pos-reversed { background-color: #c62828; color: #ffebee; }
+
+        .result-desc {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #e0daf0;
+            text-align: left;
+            background-color: #1c1826;
+            padding: 15px;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🔮 神秘のタロット占い</h1>
+    <p class="intro">あなたの今の運勢や、悩める事柄へのヒントを1枚のカードが授けます。</p>
+    
+    <!-- カード表示部分 -->
+    <div id="card" class="card-display">TAROT</div>
+    
+    <!-- 占うボタン -->
+    <button class="btn" onclick="drawCard()">カードを引く</button>
+    
+    <!-- 結果表示部分 -->
+    <div id="resultArea" class="result-area">
+        <div id="resultTitle" class="result-title">カード名</div>
+        <div id="resultPos" class="result-pos">正位置</div>
+        <div id="resultDesc" class="result-desc">ここに説明文が入ります。</div>
+    </div>
+</div>
+
+<script>
+    // 大アルカナ22枚のデータ（カード名、正位置の意味、逆位置の意味）
+    const tarotDeck = [
+        { name: "0 愚者", upright: "自由、冒険、新しい始まり、無限の可能性。型にハマらず一歩踏み出して。", reversed: "軽率、無計画、お気楽すぎ、現実逃避。一度立ち止まって足元を確かめて。" },
+        { name: "I 魔術師", upright: "才能の発揮、スタート、創造性、自信。あなたには始める準備が整っています。", reversed: "空回り、技術不足、優柔不断、スランプ。小細工をせず基本に戻りましょう。" },
+        { name: "II 女教皇", upright: "直感、知性、静観、心の平穏。自分の内なる声や直感を信じて進んで。", reversed: "批判的、ヒステリック、冷淡、我慢の限界。視野が狭くなっているかもしれません。" },
+        { name: "III 女帝", upright: "豊かさ、愛情、繁栄、実り。周囲からの愛を受け取り、満たされる豊かな時。", reversed: "我が儘、依存、浪費、嫉妬。傲慢にならず、周囲への感謝を忘れないで。" },
+        { name: "IV 皇帝", upright: "リーダーシップ、安定、責任感、支配。強い意志を持って主導権を握る時。", reversed: "独断専行、無責任、孤立、横暴。頑固になりすぎず、柔軟性を取り入れて。" },
+        { name: "V 法王", upright: "優しさ、秩序、信頼、助言者。ルールを守ることや、信頼できる人への相談が吉。", reversed: "不信感、視野の狭さ、お節介、頑固。古い考えに囚われすぎているかも。" },
+        { name: "VI 恋人", upright: "選択、調和、ときめき、良好な関係。心地よい選択ができる時。直感を信じて。", reversed: "誘惑、不調和、優柔不断、空回り。目先の楽しさだけで選ぶと後悔するかも。" },
+        { name: "VII 戦車", upright: "勝利、前進、強い意志、克服。迷わず突き進むことで目標を達成できます。", reversed: "暴走、挫折、空回り、コントロール不能。一度スピードを落として状況整理を。" },
+        { name: "VIII 正義", upright: "公平、バランス、冷静な判断、誠実。感情に流されず、客観的に見極めて。", reversed: "不公平、偏見、優柔不断、アンバランス。自分に都合よく解釈していないか注意。" },
+        { name: "IX 隠者", upright: "内省、探求、孤独、知恵。静かに自分と向き合い、答えを探すのに良い時期。", reversed: "閉鎖的、頑固、現実逃避、寂しさ。殻に閉じこもらず、少し視野を広げて。" },
+        { name: "X 運命の輪", upright: "チャンス、好転、幸運、突然の変化。チャンスの波が来ています。即行動が鍵。", reversed: "暗転、一時的な足止め、時期尚早。今は無理に動かず、嵐が過ぎるのを待って。" },
+        { name: "XI 力", upright: "精神力、忍耐、包容力、克服。困難な状況も、強い信念と優しさで乗り越えられます。", reversed: "弱気、自己不信、スタミナ切れ、衝動的。焦らず、自分のペースを取り戻して。" },
+        { name: "XII 吊られた男", upright: "試練、視点の変化、忍耐、自己犠牲。今は動けなくても、物事を違う角度で見る好機。", reversed: "無駄な努力、我慢の限界、報われない、執着。引き際を見極めることも大切です。" },
+        { name: "XIII 死神", upright: "終わりと始まり、リセット、転換期。古いものを手放すことで、新しい道が開けます。", reversed: "未練、ズルズル長引く、再生への遅れ。執着を捨てて、変化を受け入れる準備を。" },
+        { name: "XIV 節制", upright: "調和、自制、バランス、順調な流れ。異なる要素がうまく混ざり合い、穏やかに進みます。", reversed: "不調和、浪費、心の乱れ、過度。何事もやりすぎや極端な考えには注意して。" },
+        { name: "XV 悪魔", upright: "誘惑、執着、束縛、依存。目先の快楽や悪い習慣から抜け出せなくなっているかも。", reversed: "悪縁が切れる、執着からの解放、覚醒。不健全な状況から抜け出すチャンスです。" },
+        { name: "XVI 塔", upright: "突然の崩壊、ハプニング、価値観の激変。衝撃は大きいですが、古い思い込みを壊す好機。", reversed: "緊迫状態、ジワジワ続く不調、現状維持。大難が小難で済むよう、事前の備えを。" },
+        { name: "XVII 星", upright: "希望、憧れ、ひらめき、願いが叶う。明るい未来の兆し。理想を高く掲げて進んで。", reversed: "幻滅、高すぎる理想、自信喪失。目標を少し現実的なレベルに戻してみましょう。" },
+        { name: "XVIII 月", upright: "不安、迷い、不透明、見えない敵。先が見えず不安な時。今は無理に結論を出さないで。", reversed: "不安の解消、霧が晴れる、秘密の発覚。少しずつ見通しが良くなってきます。" },
+        { name: "XIX 太陽", upright: "祝福、成功、エネルギー、純粋。最高の運気！明るくポジティブに楽しむことで成功へ。", reversed: "エネルギー不足、一時的な不調、傲慢。恵まれている環境に目を向けてみて。" },
+        { name: "XX 審判", upright: "復活、覚醒、結果が出る、過去の報い。諦めていたことへの再挑戦や、努力の結実の時。", reversed: "再起不能、過去のトラウマ、報われない。過去の後悔を引きずらないように注意。" },
+        { name: "XXI 世界", upright: "完成、完璧、成就、最高の結末。これまでの努力が最高の形で実を結び、満たされます。", reversed: "未完成、中途半端、スランプ、現状への不満。あと一歩で完成。諦めずに続けて。" }
+    ];
+
+    function drawCard() {
+        const cardElement = document.getElementById('card');
+        const resultArea = document.getElementById('resultArea');
+        const resultTitle = document.getElementById('resultTitle');
+        const resultPos = document.getElementById('resultPos');
+        const resultDesc = document.getElementById('resultDesc');
+
+        // 1. デッキからランダムに1枚選ぶ
+        const randomIndex = Math.floor(Math.random() * tarotDeck.length);
+        const selectedCard = tarotDeck[randomIndex];
+
+        // 2. 正位置(true)か逆位置(false)かを50%の確率で決定
+        const isUpright = Math.random() >= 0.5;
+
+        // 3. アニメーション（ちょっとカードを回転させて引いた感を出す）
+        cardElement.style.transform = 'scale(0.8) rotate(5deg)';
+        
+        setTimeout(() => {
+            // カードの見た目（裏返しのグラデーションから文字へ）
+            cardElement.textContent = isUpright ? "正" : "逆";
+            cardElement.style.background = "#cca3ff";
+            cardElement.style.color = "#1a1625";
+
+            // 逆位置ならカードの文字自体をひっくり返す
+            if (!isUpright) {
+                cardElement.classList.add('reversed-card');
+                cardElement.style.transform = 'scale(1) rotate(180deg)';
+            } else {
+                cardElement.classList.remove('reversed-card');
+                cardElement.style.transform = 'scale(1) rotate(0deg)';
+            }
+
+            // 4. 結果テキストの書き換え
+            resultTitle.textContent = selectedCard.name;
+            
+            if (isUpright) {
+                resultPos.textContent = "正位置 (Upright)";
+                resultPos.className = "result-pos pos-upright";
+                resultDesc.textContent = selectedCard.upright;
+            } else {
+                resultPos.textContent = "逆位置 (Reversed)";
+                resultPos.className = "result-pos pos-reversed";
+                resultDesc.textContent = selectedCard.reversed;
+            }
+
+            // 結果エリアを表示
+            resultArea.style.display = 'block';
+        }, 300); // 0.3秒後に表示を切り替える
+    }
+</script>
+
+</body>
+</html>

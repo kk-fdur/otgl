@@ -20,27 +20,29 @@
         }
 
         .container {
-            background-color: #262135;
+            background: linear-gradient(180deg, rgba(32, 38, 50, 0.96), rgba(22, 27, 35, 0.96));
             padding: 30px;
             border-radius: 16px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(168, 236, 255, 0.25);
             text-align: center;
             max-width: 450px;
             width: 100%;
-            border: 1px solid #443b59;
+            border: 1px solid rgba(146, 227, 255, 0.8);
         }
 
         h1 {
             font-size: 1.8rem;
-            color: #cca3ff;
+            color: #c7f8ff;
             margin-bottom: 10px;
             letter-spacing: 2px;
+            text-shadow: 0 0 18px rgba(160, 232, 255, 0.35);
         }
 
         p.intro {
             font-size: 0.9rem;
-            color: #aaa2be;
+            color: #dfeaf5;
             margin-bottom: 30px;
+            opacity: 0.9;
         }
 
         /* タロットカードの見た目 */
@@ -48,16 +50,16 @@
             width: 160px;
             height: 260px;
             margin: 0 auto 30px auto;
-            background: linear-gradient(135deg, #3d2b5c 0%, #1c1230 100%);
-            border: 3px solid #cca3ff;
+            background: linear-gradient(135deg, rgba(36, 51, 62, 0.98) 0%, rgba(17, 24, 30, 0.98) 100%);
+            border: 3px solid rgba(154, 231, 255, 0.9);
             border-radius: 10px;
             display: flex;
             justify-content: center;
             align-items: center;
             font-size: 1.1rem;
             font-weight: bold;
-            color: #cca3ff;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            color: #d2f9ff;
+            box-shadow: inset 0 0 20px rgba(157, 234, 255, 0.08), 0 4px 15px rgba(0, 0, 0, 0.3);
             transition: transform 0.6s ease;
             transform-style: preserve-3d;
         }
@@ -69,21 +71,21 @@
 
         /* ボタンのデザイン */
         .btn {
-            background: linear-gradient(135deg, #8a4fff 0%, #6320ee 100%);
-            color: white;
-            border: none;
+            background: linear-gradient(135deg, #a8edf9 0%, #72d7f1 35%, #4bb9dc 100%);
+            color: #0d1f2a;
+            border: 1px solid rgba(255, 255, 255, 0.25);
             padding: 12px 35px;
             font-size: 1rem;
             font-weight: bold;
             border-radius: 25px;
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(138, 79, 255, 0.4);
+            box-shadow: 0 8px 18px rgba(91, 186, 220, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.5);
             transition: all 0.3s ease;
         }
 
         .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(138, 79, 255, 0.6);
+            box-shadow: 0 10px 22px rgba(91, 186, 220, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.6);
         }
 
         .btn:active {
@@ -94,7 +96,7 @@
         .result-area {
             margin-top: 25px;
             padding-top: 20px;
-            border-top: 1px dashed #443b59;
+            border-top: 1px dashed rgba(160, 232, 255, 0.8);
             display: none; /* 最初は隠しておく */
             animation: fadeIn 0.5s ease forwards;
         }
@@ -107,7 +109,7 @@
         .result-title {
             font-size: 1.4rem;
             font-weight: bold;
-            color: #ffb74d;
+            color: #d7fbff;
             margin-bottom: 5px;
         }
 

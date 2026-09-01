@@ -72,10 +72,10 @@ h1 {
 
 .zodiac-buttons {
     display: grid;
-    grid-template-columns: repeat(2, 1fr); /* 横に2列並べる */
-    gap: 12px 16px; /* ボタン同士の間隔（上下12px、左右16px） */
+    grid-template-columns: repeat(3, 1fr); /* 横に2列並べる */
+    gap: 12px 12px; /* ボタン同士の間隔（上下12px、左右16px） */
     width: 100%;
-    max-width: 400px; /* 横に広がりすぎないように制限 */
+    max-width: 550px; /* 横に広がりすぎないように制限 */
     margin: 15px auto 0 auto; /* 全体を中央寄せ */
 }
 

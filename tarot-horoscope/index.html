@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>星札術 - タロット × 星座</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="header-nav">
+        <a href="../index.html" class="back-link">← メニューに戻る</a>
+    </div>
+
+    <main class="page-shell">
+        <h1>星札術</h1>
+        <p class="subtitle">星座とタロットが紡ぐ、今日の導き</p>
+
+        <section class="setup-panel" aria-labelledby="setup-title">
+            <h2 id="setup-title">あなたの星座を選んで、カードを引きます</h2>
+            <label for="zodiac-select" class="selector-label">自分の星座</label>
+            <select id="zodiac-select" aria-label="星座を選択">
+                <option value="0">♈ 牡羊座</option>
+                <option value="1">♉ 牡牛座</option>
+                <option value="2">♊ 双子座</option>
+                <option value="3">♋ 蟹座</option>
+                <option value="4">♌ 獅子座</option>
+                <option value="5">♍ 乙女座</option>
+                <option value="6">♎ 天秤座</option>
+                <option value="7">♏ 蠍座</option>
+                <option value="8">♐ 射手座</option>
+                <option value="9">♑ 山羊座</option>
+                <option value="10">♒ 水瓶座</option>
+                <option value="11">♓ 魚座</option>
+            </select>
+
+            <button id="draw-btn" class="btn draw-btn" type="button">タロットをシャッフルして引く</button>
+        </section>
+
+        <section id="result-panel" class="result-panel hidden" aria-live="polite">
+            <div class="visual-mix">
+                <div class="image-box tarot-box">
+                    <img id="tarot-card-image" src="" alt="引いたタロットカード">
+                </div>
+
+                <div class="mix-mark" aria-hidden="true">✕</div>
+
+                <div class="image-box zodiac-box">
+                    <img id="zodiac-image" src="" alt="選択中の星座画像">
+                </div>
+            </div>
+
+            <div class="result-copy">
+                <p id="result-text" class="result-text"></p>
+            </div>
+
+            <div class="button-row">
+                <button id="reset-btn" class="btn reset-btn" type="button">もう一度占う</button>
+            </div>
+        </section>
+
+        <footer class="site-privacy-note">
+            <p>🔒 入力されたデータや占い結果は、どこにも送信されず安全に守られています。</p>
+        </footer>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>

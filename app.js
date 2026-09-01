@@ -22,6 +22,8 @@ const showResetButton = () => {
     resetButtonElement.classList.remove("hidden");
 };
 
+const isResetButtonVisible = () => !resetButtonElement.classList.contains("hidden");
+
 const resetToInitialState = () => {
     const fadeOutDuration = 180;
     cardImage.style.opacity = "0";

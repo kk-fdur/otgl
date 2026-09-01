@@ -36,8 +36,14 @@ document.addEventListener("DOMContentLoaded", () => {
             zodiacNameDisplay.innerText = `${data.name}（${data.dates}）`;
             loveFortune.innerText = data.fortune.love[loveIdx];
             workFortune.innerText = data.fortune.work[workIdx];
-            moneyFortune.innerText = data.fortune.money[moneyIdx]; // ← ここを「moneyIdx」に修正しました！
-            luckyItem.innerText = data.fortune.lucky[luckyIdx];
+            moneyFortune.innerText = data.fortune.money[moneyIdx];
+
+            // ★ここを修正：luckyが配列ならその番号を、文字列ならそのまま表示する
+            if (Array.isArray(data.fortune.lucky)) {
+                luckyItem.innerText = data.fortune.lucky[luckyIdx];
+            } else {
+                luckyItem.innerText = data.fortune.lucky;
+            }
             // 4. 結果画面を表示
             resultContainer.classList.remove("hidden");
             resultContainer.scrollIntoView({ behavior: 'smooth' });

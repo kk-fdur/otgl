@@ -57,9 +57,10 @@ body {
 
 .menu-cards {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 32px;
-    max-width: 900px;
+    /* ★300pxから240pxに狭め、3列並びやすくします */
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px; /* カード同士の間隔を少し詰める(32px→20px) */
+    max-width: 1000px; /* 3枚並ぶように少し最大幅を広げる(900px→1000px) */
     width: 100%;
     margin: 0 auto 40px;
 }
@@ -69,12 +70,12 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 40px 30px;
+    padding: 24px 20px; /* 上下の余白を大幅にコンパクトに(40px→24px) */
     background:
         linear-gradient(135deg, rgba(255,255,255,0.12), rgba(111, 177, 216, 0.05)),
         linear-gradient(180deg, #183a53 0%, #0f2940 100%);
     border: 2px solid rgba(123, 184, 217, 0.4);
-    border-radius: 20px;
+    border-radius: 16px; /* 少し角丸を控えめに(20px→16px) */
     text-decoration: none;
     color: inherit;
     transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
@@ -118,8 +119,8 @@ body {
 }
 
 .card-icon {
-    font-size: 4rem;
-    margin-bottom: 16px;
+    font-size: 2.8rem; /* 4remから2.8remに縮小 */
+    margin-bottom: 12px;
     display: inline-block;
     animation: float 3s ease-in-out infinite;
 }
@@ -134,17 +135,17 @@ body {
 }
 
 .menu-card h2 {
-    margin: 0 0 12px;
-    font-size: 1.8rem;
+    margin: 0 0 8px;
+    font-size: 1.35rem; /* 1.8remから1.35remに縮小 */
     font-weight: 700;
     letter-spacing: 0.12em;
     color: #edf8ff;
 }
 
 .menu-card p {
-    margin: 0 0 20px;
-    font-size: 0.95rem;
-    line-height: 1.7;
+    margin: 0 0 16px;
+    font-size: 0.85rem; /* 0.95remから0.85remに縮小 */
+    line-height: 1.6;
     color: var(--muted);
     letter-spacing: 0.05em;
 }
@@ -200,8 +201,9 @@ body {
     }
 
     .menu-cards {
+        /* スマホのときは無理に横並びにせず、1列で縦にコンパクトに並べます */
         grid-template-columns: 1fr;
-        gap: 24px;
+        gap: 16px;
         max-width: 100%;
     }
 

@@ -28,7 +28,6 @@ const horoscopeData = [
     },
     // 他の星座も同じようにfortuneの各項目を[]で囲んで複数パターン書きます
     {
-        
         name: "♉ 牡牛座",
         dates: "4月20日～5月20日",
         fortune: {

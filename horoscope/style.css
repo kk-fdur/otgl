@@ -71,11 +71,11 @@ h1 {
 }
 
 .zodiac-buttons {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
-    gap: 12px;
-    max-width: 800px;
-    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px; /* ボタン同士の上下左右の間隔（広めに設定） */
+    justify-content: center; /* ボタンを中央寄せにする */
+    margin-top: 15px;
 }
 
 .zodiac-btn {
@@ -156,18 +156,19 @@ h1 {
 }
 
 .fortune-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-    gap: 16px;
-    margin-bottom: 28px;
+    display: flex;
+    flex-direction: column; /* 横並びから「縦並び」に変更 */
+    gap: 20px; /* 各運勢ボックスの間の余白 */
+    width: 100%;
+    max-width: 600px; /* 画面が大きすぎるときに変に広がらないよう制限 */
+    margin: 0 auto;   /* 中央寄せ */
 }
 
 .fortune-item {
-    background: rgba(17, 52, 77, 0.5);
-    border-radius: 12px;
-    padding: 16px;
-    border: 1px solid rgba(123, 184, 217, 0.2);
-    transition: all 0.3s ease;
+    background-color: #0b1d2d; /* 必要に応じて背景色を（ダークモードなら暗い色に） */
+    border-radius: 8px;
+    padding: 15px 20px;       /* 内側の余白をゆったりとる */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); /* 軽い影をつけて見やすく */
 }
 
 .fortune-item:hover {
@@ -177,17 +178,16 @@ h1 {
 }
 
 .fortune-item h3 {
-    margin: 0 0 10px;
-    font-size: 0.95rem;
-    color: var(--frame);
-    letter-spacing: 0.1em;
+    margin-top: 0;
+    margin-bottom: 8px;
+    font-size: 1.1rem;
+    color: #333333;
 }
 
 .fortune-item p {
     margin: 0;
-    font-size: 0.95rem;
-    line-height: 1.5;
-    color: var(--muted);
+    line-height: 1.6; /* 行間を広げて視認性をアップ */
+    color: #555555;
 }
 
 .reset-area {

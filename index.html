@@ -6,16 +6,16 @@
     <title>タロット占い</title>
     <style>
         :root {
-            --bg: #f3eee3;
-            --bg-deep: #e7dcc3;
-            --paper: rgba(255, 250, 239, 0.72);
-            --ink: #3a2b1e;
-            --muted: #6e5645;
-            --frame: #b88e5d;
-            --frame-deep: #8d6b45;
-            --button-top: #f5ebd8;
-            --button-bottom: #dfc28f;
-            --shadow: rgba(91, 60, 29, 0.15);
+            --bg: #ebf8ff;
+            --bg-deep: #cfeafc;
+            --paper: rgba(240, 249, 255, 0.8);
+            --ink: #163b5d;
+            --muted: #395d82;
+            --frame: #8ad4f7;
+            --frame-deep: #2a6ea5;
+            --button-top: #f1fcff;
+            --button-bottom: #7ec8e8;
+            --shadow: rgba(23, 62, 94, 0.18);
         }
 
         * {
@@ -40,7 +40,7 @@
             font-size: clamp(1.8rem, 3vw, 2.6rem);
             font-weight: 700;
             letter-spacing: 0.14em;
-            color: #4d3829;
+            color: #183d63;
             text-shadow: 0 1px 0 rgba(255,255,255,0.8);
         }
 
@@ -50,8 +50,8 @@
             height: 340px;
             margin: 0 auto 30px auto;
             background:
-                linear-gradient(135deg, rgba(255,255,255,0.18), rgba(143,110,74,0.04)),
-                linear-gradient(180deg, #f7efe0 0%, #e7d3a5 100%);
+                linear-gradient(135deg, rgba(255,255,255,0.18), rgba(81, 160, 214, 0.05)),
+                linear-gradient(180deg, #edfaff 0%, #bfe2f7 100%);
             border-radius: 14px;
             display: flex;
             justify-content: center;
@@ -60,7 +60,7 @@
             isolation: isolate;
             box-shadow:
                 0 18px 35px var(--shadow),
-                inset 0 0 18px rgba(171, 122, 72, 0.12);
+                inset 0 0 18px rgba(73, 128, 177, 0.16);
             transition: transform 0.7s cubic-bezier(.2,.8,.2,1), box-shadow 0.6s ease, filter 0.3s ease, opacity 0.25s ease;
             transform-origin: center center;
             position: relative;
@@ -72,8 +72,8 @@
             inset: 0;
             border-radius: inherit;
             background:
-                radial-gradient(ellipse at 0% 100%, rgba(139, 103, 68, 0.18), transparent 32%),
-                radial-gradient(ellipse at 100% 100%, rgba(139, 103, 68, 0.18), transparent 32%);
+                radial-gradient(ellipse at 0% 100%, rgba(64, 135, 205, 0.18), transparent 32%),
+                radial-gradient(ellipse at 100% 100%, rgba(64, 135, 205, 0.18), transparent 32%);
             pointer-events: none;
             z-index: 2;
             mix-blend-mode: multiply;
@@ -101,8 +101,8 @@
         .card-display:hover {
             transform: translateY(-2px);
             box-shadow:
-                0 22px 42px rgba(87, 61, 30, 0.18),
-                inset 0 0 18px rgba(171, 122, 72, 0.12);
+                0 22px 42px rgba(36, 90, 140, 0.18),
+                inset 0 0 18px rgba(73, 128, 177, 0.16);
         }
 
         .card-display.reversed {
@@ -115,11 +115,11 @@
             display: inline-block;
             background:
                 linear-gradient(180deg, rgba(255,255,255,0.5), rgba(255,255,255,0.1)),
-                linear-gradient(180deg, #f6ecd7 0%, #e7d1a4 100%);
-            color: #4b352c;
-            border: 2px solid rgba(123, 91, 56, 0.7);
-            border-top: 4px solid rgba(120, 88, 52, 0.85);
-            border-bottom: 3px solid rgba(120, 87, 48, 0.8);
+                linear-gradient(180deg, #f0fdff 0%, #7ec8e8 100%);
+            color: #123d62;
+            border: 2px solid rgba(37, 94, 147, 0.7);
+            border-top: 4px solid rgba(35, 92, 143, 0.85);
+            border-bottom: 3px solid rgba(28, 79, 128, 0.8);
             padding: 18px 48px;
             min-width: 240px;
             font-size: 1.08rem;
@@ -129,9 +129,9 @@
             letter-spacing: 0.12em;
             box-shadow:
                 inset 0 2px 0 rgba(255,255,255,0.75),
-                0 0 0 1px rgba(120, 90, 56, 0.15),
-                0 8px 18px rgba(92, 64, 37, 0.18),
-                0 2px 0 rgba(120, 90, 56, 0.6);
+                0 0 0 1px rgba(35, 92, 143, 0.15),
+                0 8px 18px rgba(29, 72, 111, 0.18),
+                0 2px 0 rgba(35, 92, 143, 0.6);
             transition: all 0.2s ease;
             touch-action: manipulation;
             -webkit-tap-highlight-color: transparent;
@@ -146,20 +146,20 @@
             transform: translateY(2px) scale(0.985);
             box-shadow:
                 inset 0 2px 0 rgba(255,255,255,0.5),
-                0 4px 10px rgba(92, 64, 37, 0.12),
-                0 1px 0 rgba(120, 90, 56, 0.5);
+                0 4px 10px rgba(29, 72, 111, 0.12),
+                0 1px 0 rgba(35, 92, 143, 0.5);
         }
 
         .btn:hover {
             background:
                 linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.1)),
-                linear-gradient(180deg, #f8efdf 0%, #e8c98d 100%);
-            color: #2f2019;
+                linear-gradient(180deg, #f5feff 0%, #9adcf6 100%);
+            color: #0f2f4d;
             transform: translateY(-1px) scale(1.015);
             box-shadow:
                 inset 0 2px 0 rgba(255,255,255,0.8),
-                0 12px 22px rgba(92, 64, 37, 0.2),
-                0 2px 0 rgba(120, 90, 56, 0.7);
+                0 12px 22px rgba(29, 72, 111, 0.2),
+                0 2px 0 rgba(35, 92, 143, 0.7);
         }
 
         /* 結果のテキスト */
@@ -168,7 +168,7 @@
             font-size: 1.08rem;
             min-height: 1.5em;
             line-height: 1.8;
-            color: var(--muted);
+            color: var(--ink);
             letter-spacing: 0.08em;
         }
     </style>

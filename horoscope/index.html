@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>星座占い - 今日の運勢</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>✨ 星座占い ✨</h1>
+    
+    <div class="zodiac-selector">
+        <p class="selector-label">あなたの星座を選んでください</p>
+        <div class="zodiac-buttons">
+            <button class="zodiac-btn" data-zodiac="0">♈ 牡羊座</button>
+            <button class="zodiac-btn" data-zodiac="1">♉ 牡牛座</button>
+            <button class="zodiac-btn" data-zodiac="2">♊ 双子座</button>
+            <button class="zodiac-btn" data-zodiac="3">♋ 蟹座</button>
+            <button class="zodiac-btn" data-zodiac="4">♌ 獅子座</button>
+            <button class="zodiac-btn" data-zodiac="5">♍ 乙女座</button>
+            <button class="zodiac-btn" data-zodiac="6">♎ 天秤座</button>
+            <button class="zodiac-btn" data-zodiac="7">♏ 蠍座</button>
+            <button class="zodiac-btn" data-zodiac="8">♐ 射手座</button>
+            <button class="zodiac-btn" data-zodiac="9">♑ 山羊座</button>
+            <button class="zodiac-btn" data-zodiac="10">♒ 水瓶座</button>
+            <button class="zodiac-btn" data-zodiac="11">♓ 魚座</button>
+        </div>
+    </div>
+
+    <div id="result-container" class="result-container hidden">
+        <div class="fortune-card">
+            <h2 id="zodiac-name"></h2>
+            
+            <div class="fortune-grid">
+                <div class="fortune-item">
+                    <h3>💕 恋愛運</h3>
+                    <p id="love-fortune"></p>
+                </div>
+                <div class="fortune-item">
+                    <h3>💼 仕事運</h3>
+                    <p id="work-fortune"></p>
+                </div>
+                <div class="fortune-item">
+                    <h3>💰 金運</h3>
+                    <p id="money-fortune"></p>
+                </div>
+                <div class="fortune-item">
+                    <h3>✨ ラッキーアイテム</h3>
+                    <p id="lucky-item"></p>
+                </div>
+            </div>
+
+            <div class="reset-area">
+                <button id="reset-btn" class="btn btn-reset">別の星座を占う</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="horoscope-data.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

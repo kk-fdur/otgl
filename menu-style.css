@@ -215,3 +215,10 @@ body {
         margin-bottom: 32px;
     }
 }
+
+.combo-card .card-link {
+    color: #bfa3ff; /* リンクの文字を薄紫色に */
+}
+.combo-card:hover {
+    border-color: rgba(191, 163, 255, 0.8); /* ホバー時に紫に光る */
+}

@@ -51,11 +51,10 @@ const updateCardImage = (selectedCard, isReversed = false) => {
             return;
         }
         cardImage.style.opacity = "1";
-        cardImage.style.transform = isReversed ? "scale(1.02) rotate(-3deg)" : "scale(1.02) rotate(0deg)";
+        // JSでのtransform上書きを削除し、CSS側（.reversed）の傾き演出を活かします
     };
 
     cardImage.style.opacity = "0";
-    cardImage.style.transform = isReversed ? "scale(1.12) rotate(4deg)" : "scale(1.12) rotate(0deg)";
     cardImage.src = selectedCard.image;
     cardImage.alt = selectedCard.name;
 
@@ -86,8 +85,9 @@ buttonElement.addEventListener("click", () => {
 
     updateCardImage(selectedCard, isReversed);
 
+    // 一度リセットしてから、逆位置なら「reversed」クラスを付与
     cardElement.classList.remove("reversed");
-    void cardElement.offsetWidth;
+    void cardElement.offsetWidth; // アニメーションを再トリガーするためのハック
     cardElement.classList.toggle("reversed", isReversed);
 
     const positionText = isReversed ? "逆位置" : "正位置";
@@ -95,6 +95,7 @@ buttonElement.addEventListener("click", () => {
     resultElement.innerHTML = `結果：${selectedCard.name}（${positionText}）<br>${message.replace(/\n/g, "<br>")}`;
     showResetButton();
 });
+
 
 const handleResetClick = (event) => {
     if (event) {

@@ -28,6 +28,27 @@ body {
     letter-spacing: 0.04em;
 }
 
+.header-nav {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.back-link {
+    display: inline-block;
+    color: var(--frame);
+    text-decoration: none;
+    font-size: 0.95rem;
+    padding: 8px 12px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    letter-spacing: 0.06em;
+}
+
+.back-link:hover {
+    background: rgba(123, 184, 217, 0.15);
+    color: #edf8ff;
+}
+
 h1 {
     margin: 0 0 32px;
     font-size: clamp(1.8rem, 3vw, 2.6rem);

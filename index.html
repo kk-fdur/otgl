@@ -3,26 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ぷち札占い</title>
-    <link rel="stylesheet" href="style.css">
+    <title>こきょうの 占い屋/title>
+    <link rel="stylesheet" href="menu-style.css">
 </head>
 <body>
+    <div class="container">
+        <h1 class="main-title">🎴 占い屋 🎴</h1>
+        <p class="subtitle">気になる占いを選んでください</p>
+        
+        <div class="menu-cards">
+            <a href="tarot/index.html" class="menu-card tarot-card">
+                <div class="card-icon">🃏</div>
+                <h2>ぷち札占い（タロットカード）</h2>
+                <p>古代の叡智がカードに秘められています。<br>カードを引いて、今の自分に必要なメッセージを受け取りましょう。</p>
+                <span class="card-link">開く →</span>
+            </a>
+            
+            <a href="horoscope/index.html" class="menu-card horoscope-card">
+                <div class="card-icon">✨</div>
+                <h2>星座占い</h2>
+                <p>あなたの星座が示す今日の運勢。<br>恋愛運・仕事運・金運など、さまざまな視点から運勢を読み解きます。</p>
+                <span class="card-link">開く →</span>
+            </a>
+        </div>
 
-    <h1>ぷち札占い</h1>
-
-    <!-- 💡カードを表示する枠 -->
-    <div id="tarot-card" class="card-display" aria-live="polite">
-        <img id="card-image" src="images/000_taroura.png" alt="タロットカード">
+        <footer class="footer">
+            <p>あなたの心に寄り添う占いをお楽しみください</p>
+        </footer>
     </div>
-
-    <!-- 結果テキスト -->
-    <div id="result-text">カードに尋ねたいことを思い浮かべて引くとよいでしょう</div>
-    <!-- 占うボタン -->
-    <div class="button-row">
-        <button class="btn" id="draw-btn" type="button">カードを引く</button>
-        <button class="btn hidden" id="reset-btn" type="button">もう一度引く</button>
-    </div>
-    <script src="tarot-data.js"></script>
-    <script src="app.js"></script>
 </body>
 </html>

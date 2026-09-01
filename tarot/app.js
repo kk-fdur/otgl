@@ -8,7 +8,7 @@ if (!buttonElement || !cardElement || !resultElement || !resetButtonElement) {
 }
 
 const cardImage = cardElement.querySelector("img");
-const initialImagePath = "images/000_taroura.png";
+const initialImagePath = "../images/000_taroura.png";
 const initialMessage = "カードに尋ねたいことを思い浮かべて引くとよいでしょう";
 let imageTransitionToken = 0;
 

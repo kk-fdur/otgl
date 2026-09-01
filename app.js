@@ -96,6 +96,13 @@ buttonElement.addEventListener("click", () => {
     showResetButton();
 });
 
-resetButtonElement.addEventListener("click", () => {
+const handleResetClick = (event) => {
+    if (event) {
+        event.preventDefault();
+    }
     resetToInitialState();
-});
+};
+
+resetButtonElement.addEventListener("click", handleResetClick);
+resetButtonElement.addEventListener("touchend", handleResetClick, { passive: false });
+resetButtonElement.addEventListener("pointerup", handleResetClick, { passive: false });

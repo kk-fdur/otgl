@@ -336,7 +336,7 @@
         const cardImage = cardElement.querySelector("img");
         let imageTransitionToken = 0;
 
-        const updateCardImage = (selectedCard, isReversed) => {
+        const updateCardImage = (selectedCard) => {
             if (!cardImage) {
                 return;
             }
@@ -355,16 +355,12 @@
             cardImage.src = selectedCard.image;
             cardImage.alt = selectedCard.name;
 
-            const onImageLoad = () => {
-                applyVisibleState();
-            };
-
             if (cardImage.complete) {
                 requestAnimationFrame(applyVisibleState);
                 return;
             }
 
-            cardImage.addEventListener("load", onImageLoad, { once: true });
+            cardImage.addEventListener("load", applyVisibleState, { once: true });
             requestAnimationFrame(() => {
                 if (thisToken === imageTransitionToken && cardImage.complete) {
                     applyVisibleState();
@@ -377,7 +373,7 @@
             const selectedCard = tarotDeck[randomIndex];
             const isReversed = Math.random() < 0.3;
 
-            updateCardImage(selectedCard, isReversed);
+            updateCardImage(selectedCard);
 
             cardElement.classList.remove("reversed");
             void cardElement.offsetWidth;
@@ -388,8 +384,5 @@
             resultElement.innerHTML = `結果：${selectedCard.name}（${positionText}）<br>${message.replace(/\n/g, "<br>")}`;
         });
     </script>
-</body>
-</html>
-
 </body>
 </html>

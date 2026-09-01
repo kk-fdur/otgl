@@ -135,19 +135,33 @@ body {
 }
 
 .menu-card h2 {
-    margin: 0 0 8px;
-    font-size: 1.35rem; /* 1.8remから1.35remに縮小 */
+    margin: 0 0 12px;
+    
+    /* ★文字サイズを一回り小さくして、枠内に収まりやすくします（1.35rem → 1.15rem） */
+    font-size: 1.15rem; 
+    
     font-weight: 700;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.08em; /* 文字同士の間隔をほんの少しだけ詰めました */
     color: #edf8ff;
+    
+    /* 👇 画面が狭くなっても、絶対に途中で自動改行させないお守り */
+    white-space: nowrap; 
 }
 
 .menu-card p {
     margin: 0 0 16px;
-    font-size: 0.85rem; /* 0.95remから0.85remに縮小 */
+    
+    /* ★文字サイズをほんの少しだけ調整（0.85rem → 0.82rem） */
+    font-size: 0.82rem; 
+    
     line-height: 1.6;
     color: var(--muted);
-    letter-spacing: 0.05em;
+    letter-spacing: 0.03em; /* 文字の間隔をわずかに詰めて収まりやすく */
+    text-align: center;     /* 中央寄せのまま */
+
+    /* 👇 これが魔法の2行！1文字だけのはみ出しを防ぎ、文節で綺麗に改行します */
+    overflow-wrap: anywhere;
+    word-break: keep-all;
 }
 
 .card-link {

@@ -120,6 +120,8 @@
             border: 2px solid rgba(110, 178, 222, 0.9);
             border-top: 4px solid rgba(70, 136, 187, 0.9);
             border-bottom: 3px solid rgba(35, 85, 124, 0.9);
+            border-left: 3px solid rgba(110, 178, 222, 0.9);
+            border-right: 3px solid rgba(110, 178, 222, 0.9);
             padding: 18px 48px;
             min-width: 240px;
             font-size: 1.08rem;
@@ -139,7 +141,9 @@
             position: relative;
             z-index: 1;
             text-shadow: 0 1px 0 rgba(255,255,255,0.45);
-            overflow: visible;
+            overflow: hidden;
+            -webkit-appearance: none;
+            appearance: none;
         }
 
         .btn:active {

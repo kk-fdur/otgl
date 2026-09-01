@@ -36,9 +36,8 @@ document.addEventListener("DOMContentLoaded", () => {
             zodiacNameDisplay.innerText = `${data.name}（${data.dates}）`;
             loveFortune.innerText = data.fortune.love[loveIdx];
             workFortune.innerText = data.fortune.work[workIdx];
-            moneyFortune.innerText = data.fortune.money[moneyMoneyIdx];
+            moneyFortune.innerText = data.fortune.money[moneyIdx]; // ← ここを「moneyIdx」に修正しました！
             luckyItem.innerText = data.fortune.lucky[luckyIdx];
-
             // 4. 結果画面を表示
             resultContainer.classList.remove("hidden");
             resultContainer.scrollIntoView({ behavior: 'smooth' });

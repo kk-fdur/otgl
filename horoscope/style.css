@@ -244,3 +244,12 @@ h1 {
 .btn-reset {
     min-width: 200px;
 }
+.privacy-note {
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid #e0e0e0; /* 上側に薄いグレーの区切り線 */
+    font-size: 0.85rem;            /* 文字を少し小さくして控えめに */
+    color: #708090;               /* クールなスレートグレーの文字色 */
+    text-align: center;            /* 中央寄せ */
+    line-height: 1.5;
+}

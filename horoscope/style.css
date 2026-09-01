@@ -184,13 +184,13 @@ h1 {
     margin-top: 0;
     margin-bottom: 8px;
     font-size: 1.1rem;
-    color: #708090;
+    color: #000;
 }
 
 .fortune-item p {
     margin: 0;
     line-height: 1.6; /* 行間を広げて視認性をアップ */
-    color: #708090;
+    color: #000;
 }
 
 .reset-area {

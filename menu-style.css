@@ -175,7 +175,24 @@ body {
 .footer p {
     margin: 0;
 }
+.site-privacy-note {
+    margin-top: 50px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.05); /* ほんのり背景を明るくして目立たせる */
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
 
+.site-privacy-note p {
+    font-size: 0.8rem;
+    line-height: 1.6;
+    color: #aaa2cb;
+    margin: 0;
+    text-align: left; /* 長めの文章なので左寄せが読みやすいです */
+}
 /* レスポンシブ対応 */
 @media (max-width: 768px) {
     .container {

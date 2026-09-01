@@ -199,16 +199,18 @@ h1 {
 }
 
 .hidden {
-    visibility: hidden;
-    opacity: 0;
-    pointer-events: none;
-    position: absolute;
-    inset: auto;
-    left: -9999px;
-    width: 0;
-    height: 0;
-    overflow: hidden;
-    margin: 0;
-    padding: 0;
-    border: 0;
+    display: none !important;
+}
+
+#result-privacy-note {
+    font-size: 0.8rem;
+    color: #aaa2cb;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 6px;
+    padding: 8px 12px;
+    display: inline-block;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    border: 1px dashed rgba(255, 255, 255, 0.1);
+    animation: fadeIn 0.5s ease forwards; /* リセットボタンと一緒にフワッと出す */
 }

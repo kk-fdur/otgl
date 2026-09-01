@@ -2,6 +2,7 @@ const cardElement = document.getElementById("tarot-card");
 const resultElement = document.getElementById("result-text");
 const buttonElement = document.getElementById("draw-btn");
 const resetButtonElement = document.getElementById("reset-btn");
+const privacyNoteElement = document.getElementById("result-privacy-note");
 
 if (!buttonElement || !cardElement || !resultElement || !resetButtonElement) {
     throw new Error("必要な要素が見つかりませんでした。HTML の id を確認してください。");
@@ -20,6 +21,9 @@ const showDrawButton = () => {
 const showResetButton = () => {
     buttonElement.classList.add("hidden");
     resetButtonElement.classList.remove("hidden");
+    if (privacyNoteElement) {
+        privacyNoteElement.classList.remove("hidden");
+    }
 };
 
 const isResetButtonVisible = () => !resetButtonElement.classList.contains("hidden");
@@ -29,6 +33,9 @@ const resetToInitialState = () => {
     cardImage.style.opacity = "0";
     cardImage.style.transform = "scale(1.12)";
     cardElement.classList.remove("reversed");
+    if (privacyNoteElement) {
+        privacyNoteElement.classList.add("hidden");
+    }
 
     window.setTimeout(() => {
         cardImage.src = initialImagePath;

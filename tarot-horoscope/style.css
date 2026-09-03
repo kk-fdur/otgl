@@ -172,7 +172,7 @@ h1 {
 
 .image-box {
     width: clamp(120px, 23vw, 210px);
-    aspect-ratio: 3 / 4,3;
+    /*aspect-ratio: 3 / 4,3; */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -191,6 +191,17 @@ h1 {
     /*cover から contain に変更。これで上下左右が絶対に見切れなくなります */
     object-fit: contain; 
 }
+
+.tarot-box {
+    aspect-ratio: 3 / 4.3; /* 例：3 / 4.25 や、お使いのタロットに合わせた比率 */
+}
+
+/*  星座画像の枠（正方形ではなく、元の綺麗な長方形の比率に指定します） */
+.zodiac-box {
+    aspect-ratio: 3 / 4.3; /* もし星座画像もタロットと同じ比率の長方形ならこれでOKです */
+    /* もし星座画像が正方形（1 / 1）など別の形なら、ここの数値をその画像の比率に変えてください */
+}
+
 .mix-mark {
     font-size: clamp(2rem, 5vw, 3.1rem);
     color: var(--warning);

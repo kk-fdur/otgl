@@ -129,7 +129,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const fortuneData = window[targetDataName];
 
         if (fortuneData) {
-            // 今回引いたタロットカードのIDに対応する配列（3パターン収録）を取得
+            // 今回引いたタロットカードのIDに対応する配列を取得
             const fortuneArray = fortuneData[card.id];
             
             if (fortuneArray && fortuneArray.length > 0) {
@@ -145,7 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const loveText = document.getElementById('love-text');
                 const healthText = document.getElementById('health-text');
 
-                // 分解した文章から「【〇〇運】」という見出しの文字を消して、中身だけをすっきり表示
+                // 分解した文章から「【〇〇運】」という文字を消して中身だけを表示
                 if (overallText && lines[0]) overallText.textContent = lines[0].replace('【全体運】', '');
                 if (loveText && lines[1]) loveText.textContent = lines[1].replace('【恋愛・対人】', '');
                 if (healthText && lines[2]) healthText.textContent = lines[2].replace('【健康運】', '');
@@ -154,40 +154,6 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error(`データ '${targetDataName}' が見つかりません。HTMLでの読み込み順を確認してください。`);
         }
 
-        // 結果パネルを表示してスクロール
-        resultPanel.classList.remove('hidden');
-        resultPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-} else {
-                console.error(`データ '${fileName}FortuneData' が見つかりません。`);
-            }
-
-        } catch (error) {
-            console.error('データの読み込みに失敗しました。', error);
-        }
-
-        // 結果パネルを表示してスクロール
-        resultPanel.classList.remove('hidden');
-        resultPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-    
-        } catch (error) {
-            console.error('データの読み込みに失敗しました。', error);
-        }
-
-        // 結果パネルを表示してスクロール
-        resultPanel.classList.remove('hidden');
-        resultPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-
-        } catch (error) {
-            console.error('データの読み込みに失敗しました。', error);
-        }
-
-        } catch (error) {
-            console.error('データの読み込みに失敗しました。', error);
-        }
-        
         // 結果パネルを表示してスクロール
         resultPanel.classList.remove('hidden');
         resultPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });

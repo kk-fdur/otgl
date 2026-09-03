@@ -129,26 +129,31 @@ document.addEventListener('DOMContentLoaded', () => {
             // 今回引いたタロットカードのID（card.id）に対応する配列を取得
             const fortuneArray = fortuneData[card.id];
             
-            // 3パターンの文章からランダムで1つを選択
-            const randomIndex = Math.floor(Math.random() * fortuneArray.length);
-            const fullText = fortuneArray[randomIndex];
+            if (fortuneArray && fortuneArray.length > 0) {
+                // 3パターンの文章からランダムで1つを選択
+                const randomIndex = Math.floor(Math.random() * fortuneArray.length);
+                const fullText = fortuneArray[randomIndex];
 
-            // 改行（\n）で区切られた3つの文章をバラバラに分解する
-            const lines = fullText.split('\n');
+                // 改行（\n）で区切られた3つの文章をバラバラに分解する
+                const lines = fullText.split('\n');
 
-            // 4. それぞれのHTML要素に「【全体運】」などの文字を消してスッキリ表示
-            const overallText = document.getElementById('overall-text');
-            const loveText = document.getElementById('love-text');
-            const healthText = document.getElementById('health-text');
+                // 4. それぞれのHTML要素に「【全体運】」などの文字を消してスッキリ表示
+                const overallText = document.getElementById('overall-text');
+                const loveText = document.getElementById('love-text');
+                const healthText = document.getElementById('health-text');
 
-            if (overallText) overallText.textContent = lines[0] ? lines[0].replace('【全体運】', '') : 'データがありません';
-            if (loveText) loveText.textContent = lines[1] ? lines[1].replace('【恋愛・対人】', '') : 'データがありません';
-            if (healthText) healthText.textContent = lines[2] ? lines[2].replace('【健康運】', '') : 'データがありません';
+                // 【修正箇所】linesの後に, [1], [2] を正しく指定しました
+                if (overallText) overallText.textContent = lines[0] ? lines[0].replace('【全体運】', '') : 'データがありません';
+                if (loveText) loveText.textContent = lines[1] ? lines[1].replace('【恋愛・対人】', '') : 'データがありません';
+                if (healthText) healthText.textContent = lines[2] ? lines[2].replace('【健康運】', '') : 'データがありません';
+            } else {
+                console.error('該当するカードのデータが見つかりません。IDを確認してください:', card.id);
+            }
 
         } catch (error) {
             console.error('データの読み込みに失敗しました。', error);
         }
-
+        
         // 結果パネルを表示してスクロール
         resultPanel.classList.remove('hidden');
         resultPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });

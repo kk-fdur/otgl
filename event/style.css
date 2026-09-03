@@ -1,0 +1,92 @@
+:root {
+    --bg: #071827;
+    --bg-deep: #101f35;
+    --panel: rgba(19, 35, 52, 0.95);
+    --border: rgba(146, 189, 219, 0.4);
+    --text: #edf7ff;
+    --muted: #bcd6ef;
+    --accent: #ffd700;
+}
+
+/* 🎃 ハロウィン専用カラー */
+body.theme-halloween {
+    --bg: #140b24; /* 妖しい深い紫 */
+    --bg-deep: #241133;
+    --panel: rgba(26, 12, 44, 0.95);
+    --border: rgba(24fa, 130, 44, 0.45); /* オレンジ */
+    --accent: #ff841c; /* カボチャオレンジ */
+}
+
+/* 🎄 クリスマス専用カラー */
+body.theme-christmas {
+    --bg: #061f14; /* 深いモミの木の緑 */
+    --bg-deep: #0b3321;
+    --panel: rgba(11, 41, 28, 0.95);
+    --border: rgba(218, 165, 32, 0.45); /* ゴールド */
+    --accent: #ffd700; /* シャイニーゴールド */
+}
+
+/* 🍫 バレンタイン専用カラー */
+body.theme-valentine {
+    --bg: #240b12; /* ビターチョコのようなワインレッド */
+    --bg-deep: #38121d;
+    --panel: rgba(46, 14, 23, 0.95);
+    --border: rgba(255, 182, 193, 0.45); /* ピンク */
+    --accent: #ff94b4; /* スイートピンク */
+}
+
+* { box-sizing: border-box; }
+.hidden { display: none !important; }
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: linear-gradient(180deg, var(--bg) 0%, var(--bg-deep) 100%);
+    color: var(--text);
+    font-family: "Yu Mincho", "Hiragino Mincho ProN", "Noto Serif JP", serif;
+    letter-spacing: 0.04em;
+    transition: background 0.5s ease; /* 色が滑らかに変わる */
+}
+
+.header-nav { width: min(100%, 1100px); margin: 0 auto; padding: 24px 20px 10px; }
+.back-link {
+    display: inline-block; color: var(--muted); text-decoration: none;
+    border: 1px solid rgba(255, 255, 255, 0.12); background: rgba(255, 255, 255, 0.04);
+    border-radius: 999px; padding: 10px 18px; transition: 0.3s ease;
+}
+.back-link:hover { color: var(--text); border-color: var(--border); transform: translateX(-3px); }
+
+.page-shell { width: min(100%, 760px); margin: 0 auto; padding: 10px 20px 60px; text-align: center; }
+h1 { margin: 12px 0 10px; font-size: clamp(1.8rem, 4vw, 2.8rem); letter-spacing: 0.12em; color: var(--text); }
+.subtitle { margin: 0 0 40px; color: var(--muted); font-size: clamp(0.95rem, 2vw, 1.1rem); }
+
+/* 🔒 閉じている時の箱デザイン */
+.closed-box {
+    margin: 40px auto; padding: 50px 30px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px dashed rgba(255, 255, 255, 0.15); border-radius: 24px;
+}
+.lock-icon { font-size: 4rem; margin-bottom: 20px; opacity: 0.7; animation: pulse 2s infinite; }
+.info-note { font-size: 0.95rem; line-height: 1.8; color: var(--muted); margin-top: 30px; }
+.next-hint { margin-top: 20px; color: var(--border); font-weight: bold; }
+
+/* 🔓 開いている時のパネルデザイン */
+.event-result-panel {
+    background: var(--panel); border: 2px solid var(--border); border-radius: 24px;
+    padding: 34px 24px; box-shadow: 0 20px 45px rgba(0,0,0,0.5);
+}
+.event-cards-box {
+    background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border); border-radius: 14px;
+    padding: 16px; margin-bottom: 30px; font-weight: bold; color: var(--accent); font-size: 1.05rem;
+}
+.event-text-block { text-align: left; background: rgba(0,0,0,0.2); padding: 24px; border-radius: 16px; margin-bottom: 24px; }
+.event-text-block h3 { margin: 0 0 14px 0; font-size: 1.15rem; color: var(--accent); border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px; }
+.event-text-block p { margin: 0; line-height: 1.9; font-size: 16px; overflow-wrap: anywhere; word-break: keep-all; }
+.event-used-cards-text { font-size: 0.85rem; color: var(--muted); font-style: italic; margin: 0; text-align: right; }
+
+.site-privacy-note { margin-top: 40px; padding: 12px; background: rgba(255, 255, 255, 0.02); border-radius: 8px; font-size: 0.8rem; color: var(--muted); }
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.6; }
+    50% { transform: scale(1.05); opacity: 0.9; }
+}

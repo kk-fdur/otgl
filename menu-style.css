@@ -56,11 +56,10 @@ body {
 }
 
 .menu-cards {
-    display: grid;
-    /* ★300pxから240pxに狭め、3列並びやすくします */
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 20px; /* カード同士の間隔を少し詰める(32px→20px) */
-    max-width: 1000px; /* 3枚並ぶように少し最大幅を広げる(900px→1000px) */
+    display: flex;
+    flex-direction: column; /* 縦並びに変更 */
+    gap: 20px; /* カード同士の上下の間隔 */
+    max-width: 600px; /* ★縦並びで間延びしないよう、最大幅をスマートに調整（お好みで変更OK） */
     width: 100%;
     margin: 0 auto 40px;
 }
@@ -87,7 +86,6 @@ body {
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
 }
-
 .menu-card::before {
     content: "";
     position: absolute;

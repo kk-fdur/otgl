@@ -122,11 +122,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const fileName = zodiacFiles[zodiacId];
 
         try {
-            // 1. 各星座の.jsファイルを動的に読み込む（import）
+            // 3. データフォルダから該当する星座の.jsファイルを動的に読み込む
             const module = await import(`./data/${fileName}.js`);
-            
-            // 2. 【ここを修正】exportされたデータを確実に引っ張る
-            // 例： module.ariesFortuneData や module.taurusFortuneData を自動で切り替えて取得します
             const fortuneData = module[`${fileName}FortuneData`];
             
             if (fortuneData) {
@@ -141,11 +138,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     // 改行（\n）で区切られた3つの文章をバラバラに分解する
                     const lines = fullText.split('\n');
 
+                    // 各項目のHTML要素を取得
                     const overallText = document.getElementById('overall-text');
                     const loveText = document.getElementById('love-text');
                     const healthText = document.getElementById('health-text');
 
-                    // 3. 分解した文章から「【〇〇運】」を消して画面に表示
+                    // 4. 配列のインデックス（0, 1, 2）を指定して、特定の文字を消して表示
                     if (overallText) overallText.textContent = lines[0] ? lines[0].replace('【全体運】', '') : 'データがありません';
                     if (loveText) loveText.textContent = lines[1] ? lines[1].replace('【恋愛・対人】', '') : 'データがありません';
                     if (healthText) healthText.textContent = lines[2] ? lines[2].replace('【健康運】', '') : 'データがありません';
@@ -153,8 +151,17 @@ document.addEventListener('DOMContentLoaded', () => {
                     console.error('該当するカードのデータが見つかりません。ID:', card.id);
                 }
             } else {
-                console.error(`データ '${fileName}FortuneData' がファイル内に見つかりません。`);
+                console.error(`データ '${fileName}FortuneData' が見つかりません。`);
             }
+
+        } catch (error) {
+            console.error('データの読み込みに失敗しました。', error);
+        }
+
+        // 結果パネルを表示してスクロール
+        resultPanel.classList.remove('hidden');
+        resultPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
 
         } catch (error) {
             console.error('データの読み込みに失敗しました。', error);

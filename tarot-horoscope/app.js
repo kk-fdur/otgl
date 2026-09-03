@@ -106,7 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
         zodiacImage.alt = `${zodiac.name}のイメージ`;
     }
 
-async function drawReading() {
+    function drawReading() {
         const zodiacId = Number(zodiacSelect.value);
         const { zodiac, card, resultTextBody } = resolveCardAndResult(zodiacId);
 
@@ -117,39 +117,47 @@ async function drawReading() {
         // 1. これまでの総合メッセージを表示
         resultText.textContent = `${zodiac.name}のあなたは、${card.name}を引きました。${resultTextBody}`;
 
-        // 2. 12星座のファイル名（小文字の英語）のリスト
-        const zodiacFiles = ['aries', 'taurus', 'gemini', 'cancer', 'leo', 'virgo', 'libra', 'scorpio', 'sagittarius', 'capricorn', 'aquarius', 'pisces'];
-        const fileName = zodiacFiles[zodiacId];
+        // 2. 12星座のオブジェクト名のリスト
+        const fortuneDataNames = [
+            'ariesFortuneData', 'taurusFortuneData', 'geminiFortuneData', 'cancerFortuneData', 
+            'leoFortuneData', 'virgoFortuneData', 'libraFortuneData', 'scorpioFortuneData', 
+            'sagittariusFortuneData', 'capricornFortuneData', 'aquariusFortuneData', 'piscesFortuneData'
+        ];
+        
+        // 選択された星座のデータをwindow（グローバル）から直接引っ張る
+        const targetDataName = fortuneDataNames[zodiacId];
+        const fortuneData = window[targetDataName];
 
-        try {
-            // 3. データフォルダから該当する星座の.jsファイルを動的に読み込む
-            const module = await import(`./data/${fileName}.js`);
-            const fortuneData = module[`${fileName}FortuneData`];
+        if (fortuneData) {
+            // 今回引いたタロットカードのIDに対応する配列を取得
+            const fortuneArray = fortuneData[card.id];
             
-            if (fortuneData) {
-                // 今回引いたタロットカードのID（card.id）に対応する配列を取得
-                const fortuneArray = fortuneData[card.id];
-                
-                if (fortuneArray && fortuneArray.length > 0) {
-                    // 3パターンの文章からランダムで1つを選択
-                    const randomIndex = Math.floor(Math.random() * fortuneArray.length);
-                    const fullText = fortuneArray[randomIndex];
+            if (fortuneArray && fortuneArray.length > 0) {
+                // 3パターンの文章からランダムで1つを選択
+                const randomIndex = Math.floor(Math.random() * fortuneArray.length);
+                const fullText = fortuneArray[randomIndex];
 
-                    // 改行（\n）で区切られた3つの文章をバラバラに分解する
-                    const lines = fullText.split('\n');
+                // 改行（\n）で区切られた3つの文章をバラバラに分解する
+                const lines = fullText.split('\n');
 
-                    // 各項目のHTML要素を取得
-                    const overallText = document.getElementById('overall-text');
-                    const loveText = document.getElementById('love-text');
-                    const healthText = document.getElementById('health-text');
+                // 各項目のHTML要素を取得
+                const overallText = document.getElementById('overall-text');
+                const loveText = document.getElementById('love-text');
+                const healthText = document.getElementById('health-text');
 
-                    // 4. 【完全修正】配列のインデックス[0], [1], [2]を正しく指定
-                    if (overallText) overallText.textContent = (lines && lines[0]) ? lines[0].replace('【全体運】', '') : 'データがありません';
-                    if (loveText) loveText.textContent = (lines && lines[1]) ? lines[1].replace('【恋愛・対人】', '') : 'データがありません';
-                    if (healthText) healthText.textContent = (lines && lines[2]) ? lines[2].replace('【健康運】', '') : 'データがありません';
-                } else {
-                    console.error('該当するカードのデータが見つかりません。ID:', card.id);
-                }
+                // 分解した文章から「【〇〇運】」を消して表示
+                if (overallText) overallText.textContent = (lines && lines[0]) ? lines[0].replace('【全体運】', '') : 'データがありません';
+                if (loveText) loveText.textContent = (lines && lines[1]) ? lines[1].replace('【恋愛・対人】', '') : 'データがありません';
+                if (healthText) healthText.textContent = (lines && lines[2]) ? lines[2].replace('【健康運】', '') : 'データがありません';
+            }
+        } else {
+            console.error(`データ '${targetDataName}' が見つかりません。HTMLでの読み込み順を確認してください。`);
+        }
+
+        // 結果パネルを表示してスクロール
+        resultPanel.classList.remove('hidden');
+        resultPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
             } else {
                 console.error(`データ '${fileName}FortuneData' が見つかりません。`);
             }

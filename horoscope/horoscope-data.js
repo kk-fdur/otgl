@@ -50,7 +50,7 @@ const horoscopeData = [
         }
     },
     {
-        name: " Gemini 双子座",
+        name: " ♊️ 双子座",
         dates: "5月21日～6月21日",
         fortune: {
             love: [

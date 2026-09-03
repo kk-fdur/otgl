@@ -114,22 +114,22 @@ document.addEventListener('DOMContentLoaded', () => {
         tarotCardImage.alt = `${card.name}のカード`;
         updateZodiacPreview(zodiac);
 
-        // 1. これまでの総合メッセージを表示
+        // 1. 総合メッセージを表示
         resultText.textContent = `${zodiac.name}のあなたは、${card.name}を引きました。${resultTextBody}`;
 
-        // 2. 12星座のデータ名（windowに登録した名前）のリスト
+        // 2. 12星座のデータ名（windowオブジェクトに登録されている名前）のリスト
         const fortuneDataNames = [
             'ariesFortuneData', 'taurusFortuneData', 'geminiFortuneData', 'cancerFortuneData', 
             'leoFortuneData', 'virgoFortuneData', 'libraFortuneData', 'scorpioFortuneData', 
             'sagittariusFortuneData', 'capricornFortuneData', 'aquariusFortuneData', 'piscesFortuneData'
         ];
         
-        // windowオブジェクトから直接データを取得
+        // 選択された星座のデータを取得
         const targetDataName = fortuneDataNames[zodiacId];
         const fortuneData = window[targetDataName];
 
         if (fortuneData) {
-            // 今回引いたタロットカードのIDに対応する配列を取得
+            // 今回引いたタロットカードのIDに対応する配列（3パターン収録）を取得
             const fortuneArray = fortuneData[card.id];
             
             if (fortuneArray && fortuneArray.length > 0) {
@@ -145,20 +145,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 const loveText = document.getElementById('love-text');
                 const healthText = document.getElementById('health-text');
 
-                // 分解した文章から「【〇〇運】」を消して表示
-                if (overallText) overallText.textContent = (lines && lines[0]) ? lines[0].replace('【全体運】', '') : 'データがありません';
-                if (loveText) loveText.textContent = (lines && lines[1]) ? lines[1].replace('【恋愛・対人】', '') : 'データがありません';
-                if (healthText) healthText.textContent = (lines && lines[2]) ? lines[2].replace('【健康運】', '') : 'データがありません';
+                // 分解した文章から「【〇〇運】」という見出しの文字を消して、中身だけをすっきり表示
+                if (overallText && lines[0]) overallText.textContent = lines[0].replace('【全体運】', '');
+                if (loveText && lines[1]) loveText.textContent = lines[1].replace('【恋愛・対人】', '');
+                if (healthText && lines[2]) healthText.textContent = lines[2].replace('【健康運】', '');
             }
         } else {
-            console.error(`データ '${targetDataName}' が見つかりません。`);
+            console.error(`データ '${targetDataName}' が見つかりません。HTMLでの読み込み順を確認してください。`);
         }
 
         // 結果パネルを表示してスクロール
         resultPanel.classList.remove('hidden');
         resultPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
-            } else {
+} else {
                 console.error(`データ '${fileName}FortuneData' が見つかりません。`);
             }
 

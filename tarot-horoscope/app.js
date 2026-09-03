@@ -106,7 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
         zodiacImage.alt = `${zodiac.name}のイメージ`;
     }
 
-    async function drawReading() {
+async function drawReading() {
         const zodiacId = Number(zodiacSelect.value);
         const { zodiac, card, resultTextBody } = resolveCardAndResult(zodiacId);
 
@@ -143,10 +143,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     const loveText = document.getElementById('love-text');
                     const healthText = document.getElementById('health-text');
 
-                    // 4. 配列のインデックス（0, 1, 2）を指定して、特定の文字を消して表示
-                    if (overallText) overallText.textContent = lines[0] ? lines[0].replace('【全体運】', '') : 'データがありません';
-                    if (loveText) loveText.textContent = lines[1] ? lines[1].replace('【恋愛・対人】', '') : 'データがありません';
-                    if (healthText) healthText.textContent = lines[2] ? lines[2].replace('【健康運】', '') : 'データがありません';
+                    // 4. 【完全修正】配列のインデックス[0], [1], [2]を正しく指定
+                    if (overallText) overallText.textContent = (lines && lines[0]) ? lines[0].replace('【全体運】', '') : 'データがありません';
+                    if (loveText) loveText.textContent = (lines && lines[1]) ? lines[1].replace('【恋愛・対人】', '') : 'データがありません';
+                    if (healthText) healthText.textContent = (lines && lines[2]) ? lines[2].replace('【健康運】', '') : 'データがありません';
                 } else {
                     console.error('該当するカードのデータが見つかりません。ID:', card.id);
                 }
@@ -154,6 +154,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.error(`データ '${fileName}FortuneData' が見つかりません。`);
             }
 
+        } catch (error) {
+            console.error('データの読み込みに失敗しました。', error);
+        }
+
+        // 結果パネルを表示してスクロール
+        resultPanel.classList.remove('hidden');
+        resultPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    
         } catch (error) {
             console.error('データの読み込みに失敗しました。', error);
         }

@@ -117,14 +117,14 @@ document.addEventListener('DOMContentLoaded', () => {
         // 1. これまでの総合メッセージを表示
         resultText.textContent = `${zodiac.name}のあなたは、${card.name}を引きました。${resultTextBody}`;
 
-        // 2. 12星座のオブジェクト名のリスト
+        // 2. 12星座のデータ名（windowに登録した名前）のリスト
         const fortuneDataNames = [
             'ariesFortuneData', 'taurusFortuneData', 'geminiFortuneData', 'cancerFortuneData', 
             'leoFortuneData', 'virgoFortuneData', 'libraFortuneData', 'scorpioFortuneData', 
             'sagittariusFortuneData', 'capricornFortuneData', 'aquariusFortuneData', 'piscesFortuneData'
         ];
         
-        // 選択された星座のデータをwindow（グローバル）から直接引っ張る
+        // windowオブジェクトから直接データを取得
         const targetDataName = fortuneDataNames[zodiacId];
         const fortuneData = window[targetDataName];
 
@@ -151,7 +151,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (healthText) healthText.textContent = (lines && lines[2]) ? lines[2].replace('【健康運】', '') : 'データがありません';
             }
         } else {
-            console.error(`データ '${targetDataName}' が見つかりません。HTMLでの読み込み順を確認してください。`);
+            console.error(`データ '${targetDataName}' が見つかりません。`);
         }
 
         // 結果パネルを表示してスクロール

@@ -55,6 +55,7 @@ body {
     font-weight: 400;
 }
 
+/* カード全体のコンテナ */
 .menu-cards {
     display: flex;
     flex-direction: column; /* 縦並び */
@@ -64,12 +65,12 @@ body {
     margin: 0 auto 40px;
 }
 
+/* 各メニューカード */
 .menu-card {
     display: flex;
     flex-direction: row; /* 横並び */
     align-items: center; /* 上下中央揃え */
     justify-content: flex-start;
-    /* 上下の余白を少し広げて見やすく */
     padding: 22px 24px 22px 18px; 
     background:
         linear-gradient(135deg, rgba(255,255,255,0.12), rgba(111, 177, 216, 0.05)),
@@ -88,10 +89,10 @@ body {
     -webkit-tap-highlight-color: transparent;
 }
 
-/* アイコンのサイズと右側の余白 */
+/* アイコン */
 .card-icon {
     font-size: 36px; 
-    margin-right: 12px; /* 左寄りの位置はキープ */
+    margin-right: 12px;
     flex-shrink: 0;
 }
 
@@ -103,73 +104,30 @@ body {
 
 .card-body h2 {
     font-size: 20px; 
-    margin: 0 0 6px 0; 
+    margin: 0 0 8px 0; 
     font-weight: bold;
+    letter-spacing: 0.08em;
+    color: #edf8ff;
 }
 
+/* ★ご希望の説明文（pタグ）の設定 */
 .card-body p {
-    font-size: 17px; /* 説明文の文字を大きく */
+    font-size: 17px;        /* 文字を大きく */
     margin: 0;
     line-height: 1.5; 
-    opacity: 0.95; /* 文字をハッキリくっきり表示 */
+    opacity: 0.95;          /* 文字をハッキリくっきり表示 */
+    color: var(--muted);
+    overflow-wrap: anywhere;
+    word-break: keep-all;
 }
 
 /* 右端の矢印リンク */
 .card-link {
     font-size: 22px; 
     margin-left: 16px;
-    opacity: 0.6;
-    flex-shrink: 0;
-}
-
-
-@keyframes float {
-    0%, 100% {
-        transform: translateY(0px);
-    }
-    50% {
-        transform: translateY(-8px);
-    }
-}
-
-.menu-card h2 {
-    margin: 0 0 12px;
-    
-    /* ★文字サイズを一回り小さくして、枠内に収まりやすくします（1.35rem → 1.15rem） */
-    font-size: 1.15rem; 
-    
-    font-weight: 700;
-    letter-spacing: 0.08em; /* 文字同士の間隔をほんの少しだけ詰めました */
-    color: #edf8ff;
-    
-    /* 👇 画面が狭くなっても、絶対に途中で自動改行させないお守り */
-    white-space: nowrap; 
-}
-
-.menu-card p {
-    margin: 0 0 16px;
-    
-    /* ★文字サイズをほんの少しだけ調整（0.85rem → 0.82rem） */
-    font-size: 0.82rem; 
-    
-    line-height: 1.6;
-    color: var(--muted);
-    letter-spacing: 0.03em; /* 文字の間隔をわずかに詰めて収まりやすく */
-    text-align: center;     /* 中央寄せのまま */
-
-    /* 👇 これが魔法の2行！1文字だけのはみ出しを防ぎ、文節で綺麗に改行します */
-    overflow-wrap: anywhere;
-    word-break: keep-all;
-}
-
-.card-link {
-    display: inline-block;
-    margin-top: auto;
-    font-weight: 700;
-    letter-spacing: 0.1em;
     color: var(--frame);
     transition: all 0.3s ease;
-    font-size: 0.95rem;
+    flex-shrink: 0;
 }
 
 .menu-card:hover .card-link {
@@ -177,21 +135,11 @@ body {
     transform: translateX(4px);
 }
 
-.footer {
-    margin-top: 40px;
-    text-align: center;
-    color: var(--muted);
-    font-size: 0.9rem;
-    letter-spacing: 0.08em;
-}
-
-.footer p {
-    margin: 0;
-}
+/* プライバシーノート */
 .site-privacy-note {
     margin-top: 50px;
     padding: 15px;
-    background: rgba(255, 255, 255, 0.05); /* ほんのり背景を明るくして目立たせる */
+    background: rgba(255, 255, 255, 0.05);
     border-radius: 8px;
     border: 1px solid rgba(255, 255, 255, 0.1);
     max-width: 600px;
@@ -204,18 +152,24 @@ body {
     line-height: 1.6;
     color: #aaa2cb;
     margin: 0;
-    text-align: left; /* 長めの文章なので左寄せが読みやすいです */
+    text-align: left;
 }
-/* レスポンシブ対応 */
+
+/* 特定のカード専用スタイル */
+.combo-card .card-link {
+    color: #bfa3ff; 
+}
+.combo-card:hover {
+    border-color: rgba(191, 163, 255, 0.8); 
+}
+
+/* レスポンシブ対応（スマホ画面） */
 @media (max-width: 768px) {
     .container {
         padding: 40px 16px;
     }
 
     .menu-cards {
-        /* スマホのときは無理に横並びにせず、1列で縦にコンパクトに並べます */
-        grid-template-columns: 1fr;
-        gap: 16px;
         max-width: 100%;
     }
 
@@ -226,11 +180,9 @@ body {
     .subtitle {
         margin-bottom: 32px;
     }
-}
 
-.combo-card .card-link {
-    color: #bfa3ff; /* リンクの文字を薄紫色に */
-}
-.combo-card:hover {
-    border-color: rgba(191, 163, 255, 0.8); /* ホバー時に紫に光る */
+    /* スマホでは文字が大きすぎるとはみ出すため、少しだけ自動調整 */
+    .card-body p {
+        font-size: 15px;
+    }
 }

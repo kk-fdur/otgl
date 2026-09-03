@@ -19,7 +19,6 @@
         <section class="setup-panel">
             <h2>あなたの星座を選択してください</h2>
             <div class="zodiac-grid">
-                <!-- クリックするとその星座の運勢にパッと切り替わるボタン -->
                 <button onclick="showFortune('aries')">♈ 牡羊座</button>
                 <button onclick="showFortune('taurus')">♉ 牡牛座</button>
                 <button onclick="showFortune('gemini')">♊ 双子座</button>
@@ -35,11 +34,11 @@
             </div>
         </section>
 
-        <!-- 結果表示エリア（最初は非表示、選択するとスッと出ます） -->
+        <!-- 結果表示エリア -->
         <section id="result-panel" class="result-panel hidden">
             <h2 id="zodiac-name" class="result-zodiac-title">星座名</h2>
             
-            <!-- 👇 追加：引いたカードの名前を表示するリッチな枠 -->
+            <!-- 引いたカードの名前を表示する枠 -->
             <div class="drawn-cards-box">
                 <span class="box-label">🔮 今月の導きの手札</span>
                 <p id="fortune-cards" class="drawn-cards-text"></p>
@@ -64,33 +63,40 @@
                 </div>
             </div>
         </section>
+
         <footer class="site-privacy-note">
             <p>🔒 閲覧履歴や選択した星座データが外部サーバーへ送信されることはありません。</p>
         </footer>
     </main>
 
-    <!-- データを読み込むスクリプト -->
+    <!-- データを読み込んで処理するスクリプト -->
     <script src="data.js"></script>
     <script>
-        document.getElementById('page-title').innerText = monthlyFortuneData.meta.title;
-        document.getElementById('page-subtitle').innerText = monthlyFortuneData.meta.subtitle;
+        // ページ読み込み時に今月のタイトルを自動セット
+        if (typeof monthlyFortuneData !== 'undefined') {
+            document.getElementById('page-title').innerText = monthlyFortuneData.meta.title;
+            document.getElementById('page-subtitle').innerText = monthlyFortuneData.meta.subtitle;
+        }
 
+        // 星座の運勢を表示する関数
         function showFortune(zodiacKey) {
+            if (typeof monthlyFortuneData === 'undefined') return;
             const data = monthlyFortuneData[zodiacKey];
             if (!data) return;
 
+            // 各項目にテキストを流し込む
             document.getElementById('zodiac-name').innerText = data.name;
-            
-            // 👇 追加：カードの名前を画面に流し込む
             document.getElementById('fortune-cards').innerText = data.cards || "なし";
-            
             document.getElementById('fortune-total').innerText = data.total;
             document.getElementById('fortune-love').innerText = data.love;
             document.getElementById('fortune-health').innerText = data.health;
             document.getElementById('fortune-lucky').innerText = data.lucky;
 
+            // 結果パネルを表示する
             const panel = document.getElementById('result-panel');
             panel.classList.remove('hidden');
+
+            // 画面を結果位置までスムーズにスクロール
             panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
     </script>

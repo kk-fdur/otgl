@@ -1,0 +1,176 @@
+:root {
+    --bg: #071827;
+    --bg-deep: #101f35;
+    --panel: rgba(19, 35, 52, 0.95);
+    --border: rgba(146, 189, 219, 0.45);
+    --highlight: #dfeeff;
+    --muted: #bcd6ef;
+    --text: #edf7ff;
+    --accent: #d9b3ff; /* 神秘的な薄紫色 */
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background:
+        radial-gradient(circle at top, rgba(126, 183, 220, 0.2), transparent 26%),
+        linear-gradient(180deg, var(--bg) 0%, var(--bg-deep) 100%);
+    color: var(--text);
+    font-family: "Yu Mincho", "Hiragino Mincho ProN", "Noto Serif JP", serif;
+    letter-spacing: 0.04em;
+}
+
+.header-nav {
+    width: min(100%, 1100px);
+    margin: 0 auto;
+    padding: 24px 20px 10px;
+}
+
+.back-link {
+    display: inline-block;
+    color: var(--muted);
+    text-decoration: none;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 999px;
+    padding: 10px 18px;
+    transition: 0.3s ease;
+}
+
+.back-link:hover {
+    color: var(--text);
+    border-color: rgba(146, 189, 219, 0.7);
+    transform: translateX(-3px);
+}
+
+.page-shell {
+    width: min(100%, 820px);
+    margin: 0 auto;
+    padding: 10px 20px 60px;
+    text-align: center;
+}
+
+h1 {
+    margin: 12px 0 10px;
+    font-size: clamp(2rem, 4vw, 3rem);
+    letter-spacing: 0.15em;
+}
+
+.subtitle {
+    margin: 0 0 40px;
+    color: var(--muted);
+    font-size: clamp(1rem, 2vw, 1.1rem);
+}
+
+/* 星座選択パネル */
+.setup-panel, .result-panel {
+    width: 100%;
+    background: linear-gradient(180deg, rgba(19, 35, 52, 0.95), rgba(12, 24, 36, 0.95));
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 30px 24px;
+    margin-bottom: 30px;
+}
+
+.setup-panel h2 {
+    font-size: 1.2rem;
+    color: var(--highlight);
+    margin-top: 0;
+    margin-bottom: 24px;
+}
+
+/* 星座ボタンを綺麗に並べるグリッド */
+.zodiac-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+}
+
+.zodiac-grid button {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(155, 196, 255, 0.4);
+    color: var(--text);
+    padding: 14px 8px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+}
+
+.zodiac-grid button:hover {
+    background: linear-gradient(135deg, rgba(160, 208, 255, 0.2), rgba(180, 150, 255, 0.2));
+    border-color: var(--accent);
+    transform: translateY(-2px);
+}
+
+/* 結果表示エリア */
+.hidden { display: none !important; }
+
+.result-zodiac-title {
+    font-size: 1.8rem;
+    color: var(--accent);
+    margin-top: 0;
+    margin-bottom: 30px;
+    border-bottom: 1px dashed rgba(217, 179, 255, 0.4);
+    padding-bottom: 10px;
+}
+
+.fortune-sections {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    text-align: left;
+}
+
+.fortune-block {
+    background: rgba(9, 17, 30, 0.6);
+    border-left: 4px solid var(--border);
+    padding: 16px 20px;
+    border-radius: 0 14px 14px 0;
+}
+
+.fortune-block h3 {
+    margin: 0 0 10px 0;
+    font-size: 1.1rem;
+    color: var(--highlight);
+}
+
+.fortune-block p {
+    margin: 0;
+    line-height: 1.8;
+    font-size: 16px;
+    color: var(--text);
+    /* 1文字だけのはみ出しを防ぐ綺麗改行 */
+    overflow-wrap: anywhere;
+    word-break: keep-all;
+}
+
+/* ラッキーアイテム用の特別枠 */
+.fortune-block.lucky-block {
+    border-left-color: var(--accent);
+    background: rgba(180, 150, 255, 0.04);
+}
+
+.site-privacy-note {
+    margin-top: 50px;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 8px;
+    font-size: 0.8rem;
+    color: #a8bcd6;
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 600px) {
+    .zodiac-grid {
+        grid-template-columns: repeat(3, 1fr); /* スマホでは3列にする */
+    }
+}
+@media (max-width: 400px) {
+    .zodiac-grid {
+        grid-template-columns: repeat(2, 1fr); /* 激狭画面では2列 */
+    }
+}

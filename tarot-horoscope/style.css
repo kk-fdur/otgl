@@ -172,7 +172,7 @@ h1 {
 
 .image-box {
     width: clamp(120px, 23vw, 210px);
-    aspect-ratio: 3 / 4.25;
+    aspect-ratio: 3 / 5;
     display: flex;
     align-items: center;
     justify-content: center;

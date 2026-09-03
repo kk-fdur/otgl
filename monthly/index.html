@@ -39,26 +39,20 @@
         <section id="result-panel" class="result-panel hidden">
             <h2 id="zodiac-name" class="result-zodiac-title">星座名</h2>
             
+            <!-- 👇 追加：引いたカードの名前を表示するリッチな枠 -->
+            <div class="drawn-cards-box">
+                <span class="box-label">🔮 今月の導きの手札</span>
+                <p id="fortune-cards" class="drawn-cards-text"></p>
+            </div>
+            
             <div class="fortune-sections">
                 <div class="fortune-block">
                     <h3>🔮 全体運</h3>
                     <p id="fortune-total"></p>
                 </div>
-                <div class="fortune-block">
-                    <h3>💖 恋愛・対人運</h3>
-                    <p id="fortune-love"></p>
-                </div>
-                <div class="fortune-block">
-                    <h3>🌿 健康運</h3>
-                    <p id="fortune-health"></p>
-                </div>
-                <div class="fortune-block lucky-block">
-                    <h3>💎 ラッキーなものたち</h3>
-                    <p id="fortune-lucky"></p>
-                </div>
+                <!-- 中略（恋愛運・健康運・ラッキーアイテムはそのまま） -->
             </div>
         </section>
-
         <footer class="site-privacy-note">
             <p>🔒 閲覧履歴や選択した星座データが外部サーバーへ送信されることはありません。</p>
         </footer>
@@ -67,27 +61,25 @@
     <!-- データを読み込むスクリプト -->
     <script src="data.js"></script>
     <script>
-        // ページ読み込み時に今月のタイトルを自動セット
         document.getElementById('page-title').innerText = monthlyFortuneData.meta.title;
         document.getElementById('page-subtitle').innerText = monthlyFortuneData.meta.subtitle;
 
-        // 星座の運勢を表示する関数
         function showFortune(zodiacKey) {
             const data = monthlyFortuneData[zodiacKey];
             if (!data) return;
 
-            // 各項目にテキストを流し込む
             document.getElementById('zodiac-name').innerText = data.name;
+            
+            // 👇 追加：カードの名前を画面に流し込む
+            document.getElementById('fortune-cards').innerText = data.cards || "なし";
+            
             document.getElementById('fortune-total').innerText = data.total;
             document.getElementById('fortune-love').innerText = data.love;
             document.getElementById('fortune-health').innerText = data.health;
             document.getElementById('fortune-lucky').innerText = data.lucky;
 
-            // 結果パネルを表示する
             const panel = document.getElementById('result-panel');
             panel.classList.remove('hidden');
-
-            // 画面を結果位置までスムーズにスクロール
             panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
     </script>

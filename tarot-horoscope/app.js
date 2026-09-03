@@ -122,33 +122,43 @@ document.addEventListener('DOMContentLoaded', () => {
         const fileName = zodiacFiles[zodiacId];
 
         try {
-            // 3. データフォルダから該当する星座の.jsファイルを動的に読み込む
+            // 1. 各星座の.jsファイルを動的に読み込む（import）
             const module = await import(`./data/${fileName}.js`);
+            
+            // 2. 【ここを修正】exportされたデータを確実に引っ張る
+            // 例： module.ariesFortuneData や module.taurusFortuneData を自動で切り替えて取得します
             const fortuneData = module[`${fileName}FortuneData`];
             
-            // 今回引いたタロットカードのID（card.id）に対応する配列を取得
-            const fortuneArray = fortuneData[card.id];
-            
-            if (fortuneArray && fortuneArray.length > 0) {
-                // 3パターンの文章からランダムで1つを選択
-                const randomIndex = Math.floor(Math.random() * fortuneArray.length);
-                const fullText = fortuneArray[randomIndex];
+            if (fortuneData) {
+                // 今回引いたタロットカードのID（card.id）に対応する配列を取得
+                const fortuneArray = fortuneData[card.id];
+                
+                if (fortuneArray && fortuneArray.length > 0) {
+                    // 3パターンの文章からランダムで1つを選択
+                    const randomIndex = Math.floor(Math.random() * fortuneArray.length);
+                    const fullText = fortuneArray[randomIndex];
 
-                // 改行（\n）で区切られた3つの文章をバラバラに分解する
-                const lines = fullText.split('\n');
+                    // 改行（\n）で区切られた3つの文章をバラバラに分解する
+                    const lines = fullText.split('\n');
 
-                // 4. それぞれのHTML要素に「【全体運】」などの文字を消してスッキリ表示
-                const overallText = document.getElementById('overall-text');
-                const loveText = document.getElementById('love-text');
-                const healthText = document.getElementById('health-text');
+                    const overallText = document.getElementById('overall-text');
+                    const loveText = document.getElementById('love-text');
+                    const healthText = document.getElementById('health-text');
 
-                // 【修正箇所】linesの後に, [1], [2] を正しく指定しました
-                if (overallText) overallText.textContent = lines[0] ? lines[0].replace('【全体運】', '') : 'データがありません';
-                if (loveText) loveText.textContent = lines[1] ? lines[1].replace('【恋愛・対人】', '') : 'データがありません';
-                if (healthText) healthText.textContent = lines[2] ? lines[2].replace('【健康運】', '') : 'データがありません';
+                    // 3. 分解した文章から「【〇〇運】」を消して画面に表示
+                    if (overallText) overallText.textContent = lines[0] ? lines[0].replace('【全体運】', '') : 'データがありません';
+                    if (loveText) loveText.textContent = lines[1] ? lines[1].replace('【恋愛・対人】', '') : 'データがありません';
+                    if (healthText) healthText.textContent = lines[2] ? lines[2].replace('【健康運】', '') : 'データがありません';
+                } else {
+                    console.error('該当するカードのデータが見つかりません。ID:', card.id);
+                }
             } else {
-                console.error('該当するカードのデータが見つかりません。IDを確認してください:', card.id);
+                console.error(`データ '${fileName}FortuneData' がファイル内に見つかりません。`);
             }
+
+        } catch (error) {
+            console.error('データの読み込みに失敗しました。', error);
+        }
 
         } catch (error) {
             console.error('データの読み込みに失敗しました。', error);

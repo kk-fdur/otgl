@@ -174,3 +174,20 @@ h1 {
         grid-template-columns: repeat(2, 1fr); /* 激狭画面では2列 */
     }
 }
+/* 🌙 今月の占いカードの初期状態（怪しげで神秘的な薄紫色の枠線） */
+.monthly-card {
+    border-color: rgba(186, 145, 255, 0.35);
+}
+
+/* 右端の矢印をあらかじめ薄紫色にしておく */
+.monthly-card .card-link {
+    color: #c9a3ff; 
+}
+
+/* マウスを乗せた（ホバーした）とき：ふんわりと紫色のオーラが光る */
+.monthly-card:hover {
+    border-color: rgba(200, 170, 255, 0.9);
+    box-shadow:
+        0 10px 30px rgba(160, 110, 255, 0.15),
+        inset 0 0 22px rgba(200, 170, 255, 0.15);
+}

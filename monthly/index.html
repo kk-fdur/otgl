@@ -32,6 +32,9 @@
                 <button onclick="showFortune('aquarius')">♒ 水瓶座</button>
                 <button onclick="showFortune('pisces')">♓ 魚座</button>
             </div>
+            
+            <!-- 👇 新しく追加：今回使用したカードの一覧を表示する場所 -->
+            <p id="page-used-cards" style="margin: 24px 0 0; font-size: 0.88rem; color: var(--muted); border-top: 1px dashed rgba(155, 196, 255, 0.2); padding-top: 16px; font-style: italic;"></p>
         </section>
 
         <!-- 結果表示エリア -->
@@ -72,10 +75,12 @@
     <!-- データを読み込んで処理するスクリプト -->
     <script src="data.js"></script>
     <script>
-        // ページ読み込み時に今月のタイトルを自動セット
+        // ページ読み込み時に今月のタイトルと使用カードを自動セット
         if (typeof monthlyFortuneData !== 'undefined') {
             document.getElementById('page-title').innerText = monthlyFortuneData.meta.title;
             document.getElementById('page-subtitle').innerText = monthlyFortuneData.meta.subtitle;
+            // 👇 追加：使用カードを画面に表示
+            document.getElementById('page-used-cards').innerText = monthlyFortuneData.meta.usedCards || "";
         }
 
         // 星座の運勢を表示する関数

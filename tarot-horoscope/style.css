@@ -170,31 +170,36 @@ h1 {
     max-width: 620px;
 }
 
-/* ===================================================
-   画像ボックスの決定版（比率の計算はすべて自動化！）
-   =================================================== */
-
 .image-box {
-    /* 横幅だけを決めて、縦幅は画像に合わせます */
     width: clamp(120px, 23vw, 210px);
-    
-    /* 🔴 比率（aspect-ratio）や高さ（height）の指定をすべて消しました！ */
-    
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #050e17;
     border: 2px solid rgba(155, 196, 255, 0.3);
     border-radius: 18px;
     box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.04), 0 8px 24px rgba(0, 0, 0, 0.3);
     overflow: hidden;
 }
 
-.image-box img {
+/* 🃏 タロット側：画像本来の長方形に枠を自動で合わせる */
+.tarot-box {
+    background: #050e17;
+}
+.tarot-box img {
     width: 100%;
-    /* 🔴 これが魔法の一行！画像本来の縦横比（長方形）を100%維持して、枠を自動フィットさせます */
-    height: auto; 
+    height: auto; /* 画像の比率を維持して、見切れを防ぎます */
     display: block;
+}
+
+/* ✨ 星座側：CSSの背景デザインが潰れないよう、綺麗な長方形（縦横比）を固定する */
+.zodiac-box {
+    /* 🔴 ここで星座ボックスの縦横比を綺麗だった長方形（3:4の比率）に固定します */
+    aspect-ratio: 3 / 4; 
+}
+.zodiac-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .mix-mark {

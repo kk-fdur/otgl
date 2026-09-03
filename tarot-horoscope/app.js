@@ -106,7 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
         zodiacImage.alt = `${zodiac.name}のイメージ`;
     }
 
-    function drawReading() {
+    async function drawReading() {
         const zodiacId = Number(zodiacSelect.value);
         const { zodiac, card, resultTextBody } = resolveCardAndResult(zodiacId);
 
@@ -114,11 +114,46 @@ document.addEventListener('DOMContentLoaded', () => {
         tarotCardImage.alt = `${card.name}のカード`;
         updateZodiacPreview(zodiac);
 
+        // 1. これまでの総合メッセージを表示
         resultText.textContent = `${zodiac.name}のあなたは、${card.name}を引きました。${resultTextBody}`;
+
+        // 2. 12星座のファイル名（小文字の英語）のリスト
+        const zodiacFiles = ['aries', 'taurus', 'gemini', 'cancer', 'leo', 'virgo', 'libra', 'scorpio', 'sagittarius', 'capricorn', 'aquarius', 'pisces'];
+        const fileName = zodiacFiles[zodiacId];
+
+        try {
+            // 3. データフォルダから該当する星座の.jsファイルを動的に読み込む
+            const module = await import(`./data/${fileName}.js`);
+            const fortuneData = module[`${fileName}FortuneData`];
+            
+            // 今回引いたタロットカードのID（card.id）に対応する配列を取得
+            const fortuneArray = fortuneData[card.id];
+            
+            // 3パターンの文章からランダムで1つを選択
+            const randomIndex = Math.floor(Math.random() * fortuneArray.length);
+            const fullText = fortuneArray[randomIndex];
+
+            // 改行（\n）で区切られた3つの文章をバラバラに分解する
+            const lines = fullText.split('\n');
+
+            // 4. それぞれのHTML要素に「【全体運】」などの文字を消してスッキリ表示
+            const overallText = document.getElementById('overall-text');
+            const loveText = document.getElementById('love-text');
+            const healthText = document.getElementById('health-text');
+
+            if (overallText) overallText.textContent = lines[0] ? lines[0].replace('【全体運】', '') : 'データがありません';
+            if (loveText) loveText.textContent = lines[1] ? lines[1].replace('【恋愛・対人】', '') : 'データがありません';
+            if (healthText) healthText.textContent = lines[2] ? lines[2].replace('【健康運】', '') : 'データがありません';
+
+        } catch (error) {
+            console.error('データの読み込みに失敗しました。', error);
+        }
+
+        // 結果パネルを表示してスクロール
         resultPanel.classList.remove('hidden');
         resultPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
-
+    
     function resetReading() {
         resultPanel.classList.add('hidden');
         zodiacSelect.focus();

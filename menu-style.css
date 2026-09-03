@@ -58,23 +58,23 @@ body {
 .menu-cards {
     display: flex;
     flex-direction: column; /* 縦並び */
-    gap: 16px; /* カード同士の間隔を少し詰める */
-    max-width: 550px; /* 縦長画面でも見やすいスマートな幅 */
+    gap: 18px; /* カード同士の間隔を少しだけ広げてゆったりに */
+    max-width: 680px; /* ★カード全体の最大幅を広げました（550px → 680px） */
     width: 100%;
     margin: 0 auto 40px;
 }
 
 .menu-card {
     display: flex;
-    flex-direction: row; /* ★カードの中身を横並びに変更 */
+    flex-direction: row; /* 横並び */
     align-items: center; /* 上下中央揃え */
     justify-content: flex-start;
-    padding: 16px 20px; /* ★上下の余白を16pxにしてコンパクトに */
+    padding: 20px 24px; /* ★ボックスが大きくなったのに合わせて余白も少し拡大（16px→20px / 20px→24px） */
     background:
         linear-gradient(135deg, rgba(255,255,255,0.12), rgba(111, 177, 216, 0.05)),
         linear-gradient(180deg, #183a53 0%, #0f2940 100%);
     border: 2px solid rgba(123, 184, 217, 0.4);
-    border-radius: 12px; /* 少しシャープにしてコンパクト感を強調 */
+    border-radius: 14px; /* ボックスサイズに合わせて角丸をほんの少し滑らかに */
     text-decoration: none;
     color: inherit;
     transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
@@ -89,34 +89,34 @@ body {
 
 /* アイコンのサイズと右側の余白 */
 .card-icon {
-    font-size: 28px;
-    margin-right: 16px;
-    flex-shrink: 0; /* アイコンが潰れないように固定 */
+    font-size: 34px; /* ★アイコンを少し大きく（28px → 34px） */
+    margin-right: 20px; /* 余白を少し拡大（16px → 20px） */
+    flex-shrink: 0;
 }
 
 /* テキストエリア（タイトルと説明文） */
 .card-body {
-    flex-grow: 1; /* 残りの幅をいっぱいに使う */
-    text-align: left; /* テキストを左寄せに */
+    flex-grow: 1;
+    text-align: left;
 }
 
 .card-body h2 {
-    font-size: 16px; /* 少し文字サイズを調整 */
-    margin: 0 0 4px 0; /* 下に少しだけ余白 */
+    font-size: 19px; /* ★タイトルの文字を大きく（16px → 19px） */
+    margin: 0 0 6px 0; /* 下の余白を少しだけ調整 */
     font-weight: bold;
 }
 
 .card-body p {
-    font-size: 13px;
+    font-size: 14px; /* ★説明文の文字を大きく（13px → 14px） */
     margin: 0;
-    line-height: 1.4;
-    opacity: 0.8; /* 説明文を少しだけなじませる */
+    line-height: 1.5; /* 文字が大きくなったので行間も少しゆったりに */
+    opacity: 0.85; /* 少しだけ文字をくっきり見せる（0.8 → 0.85） */
 }
 
 /* 右端の矢印リンク */
 .card-link {
-    font-size: 16px;
-    margin-left: 12px;
+    font-size: 20px; /* ★矢印も少し大きく（16px → 20px） */
+    margin-left: 16px;
     opacity: 0.6;
     flex-shrink: 0;
 }

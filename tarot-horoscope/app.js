@@ -108,28 +108,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function drawReading() {
         const zodiacId = Number(zodiacSelect.value);
-        const { zodiac, card, resultTextBody } = resolveCardAndResult(zodiacId);
+        const { zodiac, card } = resolveCardAndResult(zodiacId); // resultTextBody は使わないので削除
 
         tarotCardImage.src = card.image;
         tarotCardImage.alt = `${card.name}のカード`;
         updateZodiacPreview(zodiac);
 
-        // 1. 総合メッセージを表示
-        resultText.textContent = `${zodiac.name}のあなたは、${card.name}を引きました。${resultTextBody}`;
+        // 【変更】最初に出ていた総合運のテキスト（resultText）への表示を完全に廃止しました。
 
-        // 2. 12星座のデータ名（windowオブジェクトに登録されている名前）のリスト
+        // 1. 12星座のデータ名のリスト
         const fortuneDataNames = [
             'ariesFortuneData', 'taurusFortuneData', 'geminiFortuneData', 'cancerFortuneData', 
             'leoFortuneData', 'virgoFortuneData', 'libraFortuneData', 'scorpioFortuneData', 
             'sagittariusFortuneData', 'capricornFortuneData', 'aquariusFortuneData', 'piscesFortuneData'
         ];
         
-        // 選択された星座のデータを取得
         const targetDataName = fortuneDataNames[zodiacId];
         const fortuneData = window[targetDataName];
 
         if (fortuneData) {
-            // 今回引いたタロットカードのIDに対応する配列を取得
             const fortuneArray = fortuneData[card.id];
             
             if (fortuneArray && fortuneArray.length > 0) {
@@ -137,21 +134,29 @@ document.addEventListener('DOMContentLoaded', () => {
                 const randomIndex = Math.floor(Math.random() * fortuneArray.length);
                 const fullText = fortuneArray[randomIndex];
 
-                // 改行（\n）で区切られた3つの文章をバラバラに分解する
-                const lines = fullText.split('\n');
+                // 【強化】改行だけでなく、文字の中に「【」が含まれているかで確実に3つに分解する
+                const lines = fullText.split(/[\n\r]+/);
 
-                // 各項目のHTML要素を取得
                 const overallText = document.getElementById('overall-text');
                 const loveText = document.getElementById('love-text');
                 const healthText = document.getElementById('health-text');
 
-                // 分解した文章から「【〇〇運】」という文字を消して中身だけを表示
-                if (overallText && lines[0]) overallText.textContent = lines[0].replace('【全体運】', '');
-                if (loveText && lines[1]) loveText.textContent = lines[1].replace('【恋愛・対人】', '');
-                if (healthText && lines[2]) healthText.textContent = lines[2].replace('【健康運】', '');
+                // 2. 「【〇〇運】」という見出しを見つけたら、その中身を綺麗に表示
+                lines.forEach(line => {
+                    const cleanLine = line.trim();
+                    if (cleanLine.includes('【全体運】') && overallText) {
+                        overallText.textContent = cleanLine.replace('【全体運】', '');
+                    }
+                    if ((cleanLine.includes('【恋愛・対人】') || cleanLine.includes('【恋愛対人】')) && loveText) {
+                        loveText.textContent = cleanLine.replace(/【恋愛・対人】|【恋愛対人】/, '');
+                    }
+                    if (cleanLine.includes('【健康運】') && healthText) {
+                        healthText.textContent = cleanLine.replace('【健康運】', '');
+                    }
+                });
             }
         } else {
-            console.error(`データ '${targetDataName}' が見つかりません。HTMLでの読み込み順を確認してください。`);
+            console.error(`データ '${targetDataName}' が見つかりません。`);
         }
 
         // 結果パネルを表示してスクロール

@@ -50,22 +50,24 @@
             </div>
 
             <div class="result-copy">
+                <!-- 総合メッセージ -->
                 <p id="result-text" class="result-text"></p>
-                <!-- 項目別の表示エリア -->
+
+                <!-- 項目別の占い結果エリア -->
                 <div class="fortune-details">
                     <div class="detail-item">
-                    <h3>🌟 全体運</h3>
-                    <p id="overall-text" class="detail-text"></p>
-                </div>
-                <div class="detail-item">
-                    <h3>💖 恋愛・対人運</h3>
-                    <p id="love-text" class="detail-text"></p>
+                        <h3>🌟 全体運</h3>
+                        <p id="overall-text" class="detail-text"></p>
                     </div>
-                <div class="detail-item">
-                    <h3>🌿 健康運</h3>
-                    <p id="health-text" class="detail-text"></p>
+                    <div class="detail-item">
+                        <h3>💖 恋愛・対人運</h3>
+                        <p id="love-text" class="detail-text"></p>
+                    </div>
+                    <div class="detail-item">
+                        <h3>🌿 健康運</h3>
+                        <p id="health-text" class="detail-text"></p>
+                    </div>
                 </div>
-        </div>
             </div>
 
             <div class="button-row">
@@ -78,7 +80,7 @@
         </footer>
     </main>
 
-    <!-- 先にデータを全部読み込ませておきます -->
+    <!-- 12星座のデータを先にすべて読み込む（エラー回避の一番安全な方法） -->
     <script src="./data/aries.js"></script>
     <script src="./data/taurus.js"></script>
     <script src="./data/gemini.js"></script>
@@ -92,7 +94,7 @@
     <script src="./data/aquarius.js"></script>
     <script src="./data/pisces.js"></script>
 
-    <!-- 最後にメインのプログラムを読み込む -->
+    <!-- 最後にメインプログラムを読み込む -->
     <script src="app.js"></script>
 </body>
 </html>

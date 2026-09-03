@@ -191,3 +191,36 @@ h1 {
         0 10px 30px rgba(160, 110, 255, 0.15),
         inset 0 0 22px rgba(200, 170, 255, 0.15);
 }
+/* ===================================================
+   追加：結果画面の「引いたカード名」の装飾
+   =================================================== */
+.drawn-cards-box {
+    background: rgba(255, 220, 150, 0.04);
+    border: 1px solid rgba(255, 215, 0, 0.25); /* ほんのりゴールドの枠線 */
+    border-radius: 14px;
+    padding: 16px;
+    margin: -10px auto 26px;
+    max-width: 660px;
+    position: relative;
+}
+
+.box-label {
+    position: absolute;
+    top: -10px;
+    left: 20px;
+    background: #112235; /* 背景色と合わせて文字を浮き立たせる */
+    padding: 0 10px;
+    font-size: 0.8rem;
+    color: #ffd700; /* ゴールド */
+    font-weight: bold;
+    letter-spacing: 0.08em;
+}
+
+.drawn-cards-text {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.6;
+    color: #ffeeb3;
+    font-weight: bold;
+    letter-spacing: 0.06em;
+}

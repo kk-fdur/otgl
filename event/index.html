@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>秘密のイベント館 - こきょうの占い屋</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="header-nav">
+        <a href="../index.html" class="back-link">← メニューに戻る</a>
+    </div>
+
+    <!-- 🔒 期間外：扉が閉じている時の画面 -->
+    <main id="closed-screen" class="page-shell id-screen hidden">
+        <div class="closed-box">
+            <div class="lock-icon">🔒</div>
+            <h1>秘密のイベント館</h1>
+            <p class="subtitle">現在は、静かに扉が閉じられています…</p>
+            <div class="info-note">
+                <p>ここはハロウィン、クリスマス、バレンタインなど、<br>特別なイベントの当日付近にだけ開く秘密の部屋です。</p>
+                <p class="next-hint">✨ 次の開館をお楽しみに ✨</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- 🔓 期間内：お祭り占い画面 -->
+    <main id="open-screen" class="page-shell id-screen hidden">
+        <h1 id="event-title">イベントタイトル</h1>
+        <p id="event-subtitle" class="subtitle">サブタイトル</p>
+
+        <section class="event-result-panel">
+            <!-- 引いたカード -->
+            <div class="event-cards-box">
+                <p id="event-cards"></p>
+            </div>
+
+            <!-- メッセージ本文 -->
+            <div class="event-text-block">
+                <h3>📜 あなたへの限定託宣</h3>
+                <p id="event-content"></p>
+            </div>
+
+            <!-- 使用カード情報 -->
+            <p id="event-used-cards" class="event-used-cards-text"></p>
+        </section>
+
+        <footer class="site-privacy-note">
+            <p>🔒 秘密のメッセージはあなただけの端末で安全に処理されています。</p>
+        </footer>
+    </main>
+
+    <script src="data.js"></script>
+    <script>
+        // 🛠️ 【超重要】テストしたい時は、下の「false」を「true」に書き換えると、
+        // 日付に関係なく「ハロウィン占い」を強制的に画面に表示してテストできます！
+        const isTestMode = false;
+
+        function checkEvent() {
+            const now = new Date();
+            const currentMonth = now.getMonth() + 1; // 1月〜12月
+            const currentDate = now.getDate();
+
+            let activeEvent = null;
+
+            // テストモードなら強制的にハロウィンにする
+            if (isTestMode) {
+                activeEvent = eventFortuneData.halloween;
+            } else {
+                // 今日がイベント期間内かどうかをループで判定
+                for (let key in eventFortuneData) {
+                    const ev = eventFortuneData[key];
+                    // 月をまたがない簡易判定（2月、10月、12月用）
+                    if (currentMonth === ev.startMonth && currentDate >= ev.startDate && currentDate <= ev.endDate) {
+                        activeEvent = ev;
+                        break;
+                    }
+                }
+            }
+
+            // 画面の切り替え処理
+            if (activeEvent) {
+                // 期間内：データを入れて表示
+                document.body.classList.add(activeEvent.themeClass);
+                document.getElementById('event-title').innerText = activeEvent.title;
+                document.getElementById('event-subtitle').innerText = activeEvent.subtitle;
+                document.getElementById('event-cards').innerText = activeEvent.cards;
+                document.getElementById('event-content').innerText = activeEvent.content;
+                document.getElementById('event-used-cards').innerText = activeEvent.usedCards;
+                
+                document.getElementById('open-screen').classList.remove('hidden');
+            } else {
+                // 期間外：閉じている画面を表示
+                document.getElementById('closed-screen').classList.remove('hidden');
+            }
+        }
+
+        // 判定を実行
+        checkEvent();
+    </script>
+</body>
+</html>

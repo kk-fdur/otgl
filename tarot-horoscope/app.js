@@ -76,8 +76,33 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateZodiacPreview(zodiac) {
-        zodiacImage.src = buildZodiacImage(zodiac);
-        zodiacImage.alt = `${zodiac.name}のイメージ`;
+        // 画像の「中身（アウターHTML）」そのものを、生成したSVGのコードで直接上書きします
+        zodiacImage.outerHTML = buildZodiacImage(zodiac).replace('data:image/svg+xml;charset=UTF-8,', decodeURIComponent(buildZodiacImage(zodiac).split(',')[1]));
+        
+        // もし上のコードが複雑で動かなければ、一番確実なこちらに変えてみてください：
+        // HTMLの img タグの代わりに、直接ブラウザに描画させます
+        const svgRaw = `
+            <svg xmlns="http://w3.org" viewBox="0 0 220 220" width="100%" height="100%">
+                <defs>
+                    <linearGradient id="g_${zodiac.id}" x1="0" x2="1" y1="0" y2="1">
+                        <stop offset="0%" stop-color="${zodiac.color}"/>
+                        <stop offset="100%" stop-color="#1b2a46"/>
+                    </linearGradient>
+                </defs>
+                <rect width="220" height="220" rx="28" fill="url(#g_${zodiac.id})"/>
+                <circle cx="110" cy="76" r="48" fill="rgba(255,255,255,0.12)"/>
+                <text x="110" y="132" text-anchor="middle" font-size="76" font-family="Segoe UI Emoji, Apple Color Emoji, sans-serif" fill="white">${zodiac.symbol}</text>
+                <text x="110" y="180" text-anchor="middle" font-size="18" font-family="Noto Sans JP, sans-serif" fill="${zodiac.accent}">${zodiac.name}</text>
+            </svg>
+        `;
+        // 親のボックスに直接ぶち込みます
+        const parent = zodiacImage.parentElement;
+        if (parent) {
+            parent.innerHTML = svgRaw;
+            // 次回以降も捕まえらえるように、新しく作られた要素にidを振り直します
+            const newImg = parent.querySelector('svg');
+            if (newImg) newImg.id = 'zodiac-image';
+        }
     }
 
     function drawReading() {

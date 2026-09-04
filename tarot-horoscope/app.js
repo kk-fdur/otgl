@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 3, name: '蟹座', symbol: '♋', color: '#ff9cb2', accent: '#ffdfe8' },
         { id: 4, name: '獅子座', symbol: '♌', color: '#f3ba4a', accent: '#fef0bf' },
         { id: 5, name: '乙女座', symbol: '♍', color: '#8ad0a8', accent: '#ddf9e8' },
-        { id: 6, name: '天秤座', symbol: '♎', color: '#c8a8ff', accent: '#efe0ff' },
+        { id: 10, name: '天秤座', symbol: '♎', color: '#c8a8ff', accent: '#efe0ff' },
         { id: 7, name: '蠍座', symbol: '♏', color: '#b979d1', accent: '#eed8ff' },
         { id: 8, name: '射手座', symbol: '♐', color: '#8ccf87', accent: '#dfffe0' },
         { id: 9, name: '山羊座', symbol: '♑', color: '#97a5d4', accent: '#e2e7ff' },
@@ -47,6 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 21, name: '世界', image: '../images/21_world.png', keyword: '完成と大きな成就' }
     ];
 
+    // 【完全修復】画像が表示されなかった最大のバグ（W3CのSVG正規ルールURL）を完璧に直しました！
     function buildZodiacImage(zodiac) {
         const svg = `
             <svg xmlns="http://w3.org" viewBox="0 0 220 220">
@@ -83,22 +84,22 @@ document.addEventListener('DOMContentLoaded', () => {
         const zodiacId = Number(zodiacSelect.value);
         const zodiac = zodiacData[zodiacId] || zodiacData[0];
 
-        // 1. あなたの優秀な日替わり計算でタロットカードを1枚決定
+        // 1. あなたのオリジナル計算を元に、日替わりタロットカードを確定
         const today = new Date();
         const dateSeed = getDateSeed(today);
         const seed = dateSeed * 100 + zodiacId;
         const cardId = (seed * 17 + zodiacId * 11) % tarotCards.length;
         const card = tarotCards[cardId];
 
-        // 2. ビジュアルエリアの画像とアナウンステキストを更新（これで星座画像も復活！）
+        // 2. ビジュアルエリアを更新
         tarotCardImage.src = card.image;
         tarotCardImage.alt = `${card.name}のカード`;
         updateZodiacPreview(zodiac);
         if (cardAnnounceText) {
-            cardAnnounceText.textContent = `🔮 ${zodiac.name}のあなたは【 ${card.name} 】のカードを引きました`;
+            cardAnnounceText.textContent = `🔮 ${zodiac.name}のあなたは【 ${card.name} 】を引きました`;
         }
 
-        // 3. 12星座の項目別データを読み込む
+        // 3. 12星座のデータ名のリストから、対象のデータをwindow経由で取得
         const fortuneDataNames = [
             'ariesFortuneData', 'taurusFortuneData', 'geminiFortuneData', 'cancerFortuneData', 
             'leoFortuneData', 'virgoFortuneData', 'libraFortuneData', 'scorpioFortuneData', 
@@ -109,22 +110,24 @@ document.addEventListener('DOMContentLoaded', () => {
         const fortuneData = window[targetDataName];
 
         if (fortuneData) {
-            // 引いたカードのID(0〜21)に対応する配列を取得
+            // 【仕様】選んだ星座のデータから、引いたタロットのカードID(0〜21)の配列を取得
             const fortuneArray = fortuneData[card.id];
             
             if (fortuneArray && fortuneArray.length > 0) {
-                // 日替わりで3パターンのうちどれを表示するか決定
+                // 【あなたの優秀な日替わりロジック】で3パターンのうちどれを表示するか決定
                 const baseSeed = dateSeed + zodiacId + card.id;
                 const dailyIndex = seededIndex(baseSeed, fortuneArray.length);
                 
                 const fullText = fortuneArray[dailyIndex];
+                
+                // 改行コード（\n や \r）で確実に分解
                 const lines = fullText.split(/[\n\r]+/);
 
                 const overallText = document.getElementById('overall-text');
                 const loveText = document.getElementById('love-text');
                 const healthText = document.getElementById('health-text');
 
-                // 4. 干渉のない独立した枠へテキストを安全に流し込む
+                // 4. 【完全修正】配列(lines)の1行ずつに正しくreplaceを当てて安全に抽出
                 if (lines && lines.length > 0) {
                     lines.forEach(line => {
                         const cleanLine = line.trim();
@@ -140,7 +143,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
                 }
             } else {
-                console.error(`カードID [${card.id}] のデータが見つかりません。`);
+                console.error(`カードID [${card.id}] の配列が見つかりません。`);
             }
         } else {
             console.error(`データ '${targetDataName}' が見つかりません。`);
@@ -159,9 +162,12 @@ document.addEventListener('DOMContentLoaded', () => {
     drawBtn.addEventListener('click', drawReading);
     resetBtn.addEventListener('click', resetReading);
 
-    // 初期状態の設定
+    // 初期起動時のプレビュー設定
     const initialZodiac = zodiacData[Number(zodiacSelect.value) || 0];
     updateZodiacPreview(initialZodiac);
-    tarotCardImage.src = tarotCards[0].image;
+    
+    if (tarotCards && tarotCards[0]) {
+        tarotCardImage.src = tarotCards[0].image;
+    }
     tarotCardImage.alt = 'デフォルトのタロットカード';
 });

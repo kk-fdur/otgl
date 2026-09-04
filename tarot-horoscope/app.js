@@ -108,13 +108,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function drawReading() {
         const zodiacId = Number(zodiacSelect.value);
-        const { zodiac, card } = resolveCardAndResult(zodiacId); // resultTextBody は使わないので削除
+        const { zodiac, card } = resolveCardAndResult(zodiacId);
 
         tarotCardImage.src = card.image;
         tarotCardImage.alt = `${card.name}のカード`;
         updateZodiacPreview(zodiac);
-
-        // 【変更】最初に出ていた総合運のテキスト（resultText）への表示を完全に廃止しました。
 
         // 1. 12星座のデータ名のリスト
         const fortuneDataNames = [
@@ -134,7 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const randomIndex = Math.floor(Math.random() * fortuneArray.length);
                 const fullText = fortuneArray[randomIndex];
 
-                // 【強化】改行だけでなく、文字の中に「【」が含まれているかで確実に3つに分解する
+                // 改行コード（\n や \r）で文章を確実に分解
                 const lines = fullText.split(/[\n\r]+/);
 
                 const overallText = document.getElementById('overall-text');
@@ -154,9 +152,11 @@ document.addEventListener('DOMContentLoaded', () => {
                         healthText.textContent = cleanLine.replace('【健康運】', '');
                     }
                 });
+            } else {
+                console.error(`カードID [${card.id}] に対応する占いの文章がデータ内に見つかりません。`);
             }
         } else {
-            console.error(`データ '${targetDataName}' が見つかりません。`);
+            console.error(`データ '${targetDataName}' が見つかりません。HTML側でファイルが正しく読み込まれているか確認してください。`);
         }
 
         // 結果パネルを表示してスクロール

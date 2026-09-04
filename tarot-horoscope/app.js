@@ -76,7 +76,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateZodiacPreview(zodiac) {
-        // 白い点線を消去し、絵文字とテキストの位置（y座標）を中央に美しく合わせました
         const svgRaw = `
             <svg id="zodiac-image" xmlns="http://w3.org" viewBox="0 0 220 220" style="width: 100%; height: 100%; display: block;">
                 <defs>
@@ -86,14 +85,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     </radialGradient>
                 </defs>
                 
-                <!-- 神秘的な球体オーラ（全体に広がる） -->
+                <!-- 神秘的な球体オーラ -->
                 <circle cx="110" cy="110" r="110" fill="url(#g_${zodiac.id})"/>
                 
-                <!-- 2重SVGで比率を完全にキープしつつ、配置のズレを修正 -->
+                <!-- 2重SVGで比率をキープ -->
                 <svg viewBox="0 0 220 220" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
-                    <!-- 【修正】シンボルマークをオーラの「ど真ん中（y=120）」に配置 -->
-                    <text x="110" y="120" text-anchor="middle" font-size="85" font-family="Segoe UI Emoji, Apple Color Emoji, sans-serif" fill="white">${zodiac.symbol}</text>
-                    <!-- 【修正】星座名を下側に綺麗に配置 -->
+                    <!-- 【微調整】y座標を120から128に変更し、あと1〜2ミリ下に下げました -->
+                    <text x="110" y="128" text-anchor="middle" font-size="85" font-family="Segoe UI Emoji, Apple Color Emoji, sans-serif" fill="white">${zodiac.symbol}</text>
+                    <!-- 星座名 -->
                     <text x="110" y="195" text-anchor="middle" font-size="18" font-family="Noto Sans JP, sans-serif" fill="${zodiac.accent}" letter-spacing="4" font-weight="bold">${zodiac.name}</text>
                 </svg>
             </svg>
@@ -101,13 +100,12 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const zodiacBox = document.querySelector('.zodiac-box');
         if (zodiacBox) {
-            // 親の箱のボーダーや背景を完全に消去して溶け込ませる
             zodiacBox.style.background = 'transparent';
             zodiacBox.style.border = 'none';
             zodiacBox.style.boxShadow = 'none';
             zodiacBox.innerHTML = svgRaw;
         }
-    }
+    } 
     
     function drawReading() {
         const zodiacId = Number(zodiacSelect.value);

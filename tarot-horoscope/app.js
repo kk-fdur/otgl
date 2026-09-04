@@ -14,9 +14,9 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 3, name: '蟹座', symbol: '♋', color: '#ff9cb2', accent: '#ffdfe8' },
         { id: 4, name: '獅子座', symbol: '♌', color: '#f3ba4a', accent: '#fef0bf' },
         { id: 5, name: '乙女座', symbol: '♍', color: '#8ad0a8', accent: '#ddf9e8' },
-        { id: 6, name: '天秤座', symbol: '♎', color: '#c8a8ff', accent: '#efe0ff' }, // idを6に修正完了
+        { id: 6, name: '天秤座', symbol: '♎', color: '#c8a8ff', accent: '#efe0ff' },
         { id: 7, name: '蠍座', symbol: '♏', color: '#b979d1', accent: '#eed8ff' },
-        { id: 8, name: '射手座', stroke: '#8ccf87', name: '射手座', symbol: '♐', color: '#8ccf87', accent: '#dfffe0' },
+        { id: 8, name: '射手座', symbol: '♐', color: '#8ccf87', accent: '#dfffe0' }, // スッキリ綺麗に修正！
         { id: 9, name: '山羊座', symbol: '♑', color: '#97a5d4', accent: '#e2e7ff' },
         { id: 10, name: '水瓶座', symbol: '♒', color: '#66b5d8', accent: '#d8f3ff' },
         { id: 11, name: '魚座', symbol: '♓', color: '#7b9be7', accent: '#dfe9ff' }

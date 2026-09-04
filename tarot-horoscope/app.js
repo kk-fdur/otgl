@@ -90,8 +90,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 <!-- 2重SVGで比率をキープ -->
                 <svg viewBox="0 0 220 220" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
-                    <!-- 【微調整】y座標を120から128に変更し、あと1〜2ミリ下に下げました -->
-                    <text x="110" y="128" text-anchor="middle" font-size="85" font-family="Segoe UI Emoji, Apple Color Emoji, sans-serif" fill="white">${zodiac.symbol}</text>
+                    <!-- 【究極微調整】y座標を128から134へ。これでジャスト1.5ミリ下がります！ -->
+                    <text x="110" y="134" text-anchor="middle" font-size="85" font-family="Segoe UI Emoji, Apple Color Emoji, sans-serif" fill="white">${zodiac.symbol}</text>
                     <!-- 星座名 -->
                     <text x="110" y="195" text-anchor="middle" font-size="18" font-family="Noto Sans JP, sans-serif" fill="${zodiac.accent}" letter-spacing="4" font-weight="bold">${zodiac.name}</text>
                 </svg>

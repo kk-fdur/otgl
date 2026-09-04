@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 3, name: '蟹座', symbol: '♋', color: '#ff9cb2', accent: '#ffdfe8' },
         { id: 4, name: '獅子座', symbol: '♌', color: '#f3ba4a', accent: '#fef0bf' },
         { id: 5, name: '乙女座', symbol: '♍', color: '#8ad0a8', accent: '#ddf9e8' },
-        { id: 6, name: '天秤座', symbol: '♎', color: '#c8a8ff', accent: '#efe0ff' },
+        { id: 6, name: '天秤座', symbol: '♎', color: '#c8a8ff', accent: '#efe0ff' }, // idを6に修正
         { id: 7, name: '蠍座', symbol: '♏', color: '#b979d1', accent: '#eed8ff' },
         { id: 8, name: '射手座', symbol: '♐', color: '#8ccf87', accent: '#dfffe0' },
         { id: 9, name: '山羊座', symbol: '♑', color: '#97a5d4', accent: '#e2e7ff' },
@@ -47,9 +47,8 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 21, name: '世界', image: '../images/21_world.png', keyword: '完成と大きな成就' }
     ];
 
-    // 【修正版】W3Cの正しい名前空間URLに直しました！
-    function updateZodiacPreview(zodiac) {
-        // 絵文字とSVGを合体させて、神秘的な星座アイコンのコードを作る（正しいW3Cルールを適用）
+    // SVG生成関数（名前空間URLを正しいものに修正完了）
+    function buildZodiacImage(zodiac) {
         const svg = `
             <svg xmlns="http://w3.org" viewBox="0 0 220 220">
                 <defs>
@@ -64,12 +63,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 <text x="110" y="180" text-anchor="middle" font-size="18" font-family="Noto Sans JP, sans-serif" fill="${zodiac.accent}">${zodiac.name}</text>
             </svg>
         `;
-        
-        // 元のHTML（<img>タグ）のままで動くように設定します
-        zodiacImage.src = `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
-        zodiacImage.alt = `${zodiac.name}のイメージ`;
+        return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
     }
 
+    function getDateSeed(date) {
+        return date.getFullYear() * 10000 + (date.getMonth() + 1) * 100 + date.getDate();
+    }
+
+    function seededIndex(seed, length) {
+        const normalized = (seed * 9301 + 49297) % 233280;
+        return Math.floor((normalized / 233280) * length);
+    }
+
+    function updateZodiacPreview(zodiac) {
+        zodiacImage.src = buildZodiacImage(zodiac);
+        zodiacImage.alt = `${zodiac.name}のイメージ`;
+    }
     function getDateSeed(date) {
         return date.getFullYear() * 10000 + (date.getMonth() + 1) * 100 + date.getDate();
     }

@@ -48,7 +48,8 @@ document.addEventListener('DOMContentLoaded', () => {
     ];
 
     // 【修正版】W3Cの正しい名前空間URLに直しました！
-    function buildZodiacImage(zodiac) {
+    function updateZodiacPreview(zodiac) {
+        // 絵文字とSVGを合体させて、神秘的な星座アイコンのコードを作る（正しいW3Cルールを適用）
         const svg = `
             <svg xmlns="http://w3.org" viewBox="0 0 220 220">
                 <defs>
@@ -63,7 +64,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 <text x="110" y="180" text-anchor="middle" font-size="18" font-family="Noto Sans JP, sans-serif" fill="${zodiac.accent}">${zodiac.name}</text>
             </svg>
         `;
-        return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+        
+        // 元のHTML（<img>タグ）のままで動くように設定します
+        zodiacImage.src = `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+        zodiacImage.alt = `${zodiac.name}のイメージ`;
     }
 
     function getDateSeed(date) {

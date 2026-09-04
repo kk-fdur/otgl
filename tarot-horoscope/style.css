@@ -298,3 +298,70 @@ h1 {
         flex-wrap: nowrap;
     }
 }
+/* ==========================================================================
+   追加：項目別占い（全体運・恋愛対人・健康運）のデザイン
+   ========================================================================== */
+.zodiac-fortune-box {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    padding: 2rem 1.5rem;
+    border-radius: 16px;
+    margin: 2rem 0;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+.zodiac-fortune-title {
+    text-align: center;
+    font-size: 1.4rem;
+    color: #efe0ff;
+    margin-bottom: 2rem;
+    letter-spacing: 2px;
+    border-bottom: 2px solid rgba(200, 168, 255, 0.2);
+    padding-bottom: 0.5rem;
+}
+
+.fortune-details {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.detail-item {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 1.2rem;
+    border-radius: 12px;
+    border-left: 4px solid #fff; /* JavaScriptで星座ごとの色に染めます */
+    transition: transform 0.2s ease;
+}
+
+.detail-item:hover {
+    transform: translateX(4px);
+}
+
+.detail-item h3 {
+    margin: 0 0 0.6rem 0;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.detail-text {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: #e0e6ed;
+    white-space: pre-wrap; /* 改行を綺麗に保ちます */
+}
+
+/* 各項目のテーマカラー（アクセント） */
+.item-overall { border-left-color: #f3ba4a; }
+.item-overall h3 { color: #f3ba4a; }
+
+.item-love { border-left-color: #ff9cb2; }
+.item-love h3 { color: #ff9cb2; }
+
+.item-health { border-left-color: #8ccf87; }
+.item-health h3 { color: #8ccf87; }

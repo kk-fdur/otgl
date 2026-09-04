@@ -36,8 +36,8 @@
             <button id="draw-btn" class="btn draw-btn" type="button">タロットをシャッフルして引く</button>
         </section>
 
-        <!-- 【結果画面】デザインをCSSに逃がしてスッキリさせました -->
-        <section id="result-panel" class="result-panel hidden" aria-live="polite">            
+        <!-- 【結果画面】干渉を完璧に防ぐ、2つの独立した結果ボックス構造 -->
+        <section id="result-panel" class="result-panel hidden" aria-live="polite">
             
             <!-- ボックス①：タロット×星座のビジュアルエリア -->
             <div class="visual-mix-box">
@@ -47,14 +47,14 @@
                     </div>
                     <div class="mix-mark" aria-hidden="true">✕</div>
                     <div class="image-box zodiac-box">
-                        <!-- 【重要】画像がCSS制御の場合、srcではなくクラスや背景で動くため、元の状態を維持できるようにimgタグとして残すか、もし元のHTMLが空のdiv等だった場合はそれに合わせます。現状は前回の形をキープします -->
                         <img id="zodiac-image" src="" alt="選択中の星座画像">
                     </div>
                 </div>
-                <p id="card-announce-text"></p>
+                <!-- 総合運テキスト枠を消去し、シンプルなカード名発表エリアにスッキリ変更 -->
+                <p id="card-announce-text" style="text-align: center; font-weight: bold; margin-top: 1.5rem; font-size: 1.2rem;"></p>
             </div>
 
-            <!-- ボックス②：CSSでオシャレに装飾された独立占いエリア -->
+            <!-- ボックス②：CSSで美しく装飾される、干渉なしの独立した項目別占いエリア -->
             <div class="zodiac-fortune-box">
                 <h2 class="zodiac-fortune-title">✨ 本日の項目別運勢 ✨</h2>
                 <div class="fortune-details">
@@ -77,12 +77,13 @@
                 <button id="reset-btn" class="btn reset-btn" type="button">もう一度占う</button>
             </div>
         </section>
+
         <footer class="site-privacy-note">
-            <p>🔒 入力されたデータや占い結果は、どこにも送信されず安全に守られています。</p>
+            <p>🔒 入力されたデータや占い結果は、核心部分も含めて安全に守られています。</p>
         </footer>
     </main>
 
-    <!-- dataフォルダから各星座のファイルを安全に先行読み込み -->
+    <!-- 【同じフォルダ内】のdataフォルダから安全に先行自動読み込み -->
     <script src="data/aries.js"></script>
     <script src="data/taurus.js"></script>
     <script src="data/gemini.js"></script>
@@ -96,7 +97,7 @@
     <script src="data/aquarius.js"></script>
     <script src="data/pisces.js"></script>
 
-    <!-- 最後にメインのロジックを読み込む -->
+    <!-- 最後にすべての司令塔であるapp.jsを読み込む -->
     <script src="app.js"></script>
 </body>
 </html>

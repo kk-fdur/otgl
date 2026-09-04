@@ -76,34 +76,39 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateZodiacPreview(zodiac) {
-        // 背景の四角（rect）を消して、円と絵文字だけの透明なSVGにします
+        // 白い点線を消去し、絵文字とテキストの位置（y座標）を中央に美しく合わせました
         const svgRaw = `
             <svg id="zodiac-image" xmlns="http://w3.org" viewBox="0 0 220 220" style="width: 100%; height: 100%; display: block;">
-                <!-- 四角い背景を消し、中央の円にグラデーションを直接かけます -->
                 <defs>
                     <radialGradient id="g_${zodiac.id}" cx="50%" cy="50%" r="50%">
-                        <stop offset="0%" stop-color="${zodiac.color}" stop-opacity="0.6"/>
+                        <stop offset="0%" stop-color="${zodiac.color}" stop-opacity="0.7"/>
                         <stop offset="100%" stop-color="#1b2a46" stop-opacity="0"/>
                     </radialGradient>
                 </defs>
-                <circle cx="110" cy="110" r="90" fill="url(#g_${zodiac.id})"/>
-                <circle cx="110" cy="110" r="70" fill="none" stroke="${zodiac.accent}" stroke-width="1" stroke-dasharray="4 4" opacity="0.5"/>
                 
-                <!-- 絵文字とテキスト -->
-                <text x="110" y="115" text-anchor="middle" font-size="80" font-family="Segoe UI Emoji, Apple Color Emoji, sans-serif" fill="white">${zodiac.symbol}</text>
-                <text x="110" y="185" text-anchor="middle" font-size="18" font-family="Noto Sans JP, sans-serif" fill="${zodiac.accent}" letter-spacing="2">${zodiac.name}</text>
+                <!-- 神秘的な球体オーラ（全体に広がる） -->
+                <circle cx="110" cy="110" r="110" fill="url(#g_${zodiac.id})"/>
+                
+                <!-- 2重SVGで比率を完全にキープしつつ、配置のズレを修正 -->
+                <svg viewBox="0 0 220 220" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
+                    <!-- 【修正】シンボルマークをオーラの「ど真ん中（y=120）」に配置 -->
+                    <text x="110" y="120" text-anchor="middle" font-size="85" font-family="Segoe UI Emoji, Apple Color Emoji, sans-serif" fill="white">${zodiac.symbol}</text>
+                    <!-- 【修正】星座名を下側に綺麗に配置 -->
+                    <text x="110" y="195" text-anchor="middle" font-size="18" font-family="Noto Sans JP, sans-serif" fill="${zodiac.accent}" letter-spacing="4" font-weight="bold">${zodiac.name}</text>
+                </svg>
             </svg>
         `;
         
         const zodiacBox = document.querySelector('.zodiac-box');
         if (zodiacBox) {
-            // 親の箱の背景や枠線をJavaScriptから透明にして、溶け込ませます
+            // 親の箱のボーダーや背景を完全に消去して溶け込ませる
             zodiacBox.style.background = 'transparent';
             zodiacBox.style.border = 'none';
             zodiacBox.style.boxShadow = 'none';
             zodiacBox.innerHTML = svgRaw;
         }
-    }    
+    }
+    
     function drawReading() {
         const zodiacId = Number(zodiacSelect.value);
         const zodiac = zodiacData[zodiacId] || zodiacData[0];

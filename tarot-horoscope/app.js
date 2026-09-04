@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function buildZodiacImage(zodiac) {
         const svg = `
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 220">
+            <svg xmlns="http://w3.org" viewBox="0 0 220 220">
                 <defs>
                     <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
                         <stop offset="0%" stop-color="${zodiac.color}"/>
@@ -71,7 +71,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 <text x="110" y="180" text-anchor="middle" font-size="18" font-family="Noto Sans JP, sans-serif" fill="${zodiac.accent}">${zodiac.name}</text>
             </svg>
         `;
-
         return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
     }
 
@@ -106,6 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
         zodiacImage.alt = `${zodiac.name}のイメージ`;
     }
 
+    // ここから後半部分（完全に綺麗に整えました！）
     function drawReading() {
         const zodiacId = Number(zodiacSelect.value);
         const { zodiac, card } = resolveCardAndResult(zodiacId);
@@ -114,7 +114,6 @@ document.addEventListener('DOMContentLoaded', () => {
         tarotCardImage.alt = `${card.name}のカード`;
         updateZodiacPreview(zodiac);
 
-        // 1. 12星座のデータ名（windowに登録されている名前）のリスト
         const fortuneDataNames = [
             'ariesFortuneData', 'taurusFortuneData', 'geminiFortuneData', 'cancerFortuneData', 
             'leoFortuneData', 'virgoFortuneData', 'libraFortuneData', 'scorpioFortuneData', 
@@ -125,25 +124,22 @@ document.addEventListener('DOMContentLoaded', () => {
         const fortuneData = window[targetDataName];
 
         if (fortuneData) {
-            // 【仕様通り修正】選択された星座データの中から、引いたタロットカードID（0〜21）の配列を取得
+            // 【仕様】選んだ星座のデータから、引いたタロットのカードID(0〜21)の配列を取得
             const fortuneArray = fortuneData[card.id];
             
             if (fortuneArray && fortuneArray.length > 0) {
-                // ★【日替わりロジック】今日の日付（年+月+日）を元に、3パターンのうちどれを表示するか決定
+                // 【あなたの優秀な日替わり計算を適用！】
                 const today = new Date();
-                const dateSeed = today.getFullYear() + (today.getMonth() + 1) + today.getDate();
-                const dailyIndex = dateSeed % fortuneArray.length;
+                const baseSeed = getDateSeed(today) + zodiacId + card.id;
+                const dailyIndex = seededIndex(baseSeed, fortuneArray.length);
                 
                 const fullText = fortuneArray[dailyIndex];
-
-                // 改行（\n や \r）で文章をバラバラに分解する
                 const lines = fullText.split(/[\n\r]+/);
 
                 const overallText = document.getElementById('overall-text');
                 const loveText = document.getElementById('love-text');
                 const healthText = document.getElementById('health-text');
 
-                // 2. 【安全対策強化】エラーで止まらないよう、1行ずつ文字が含まれているかチェックして表示
                 if (lines && lines.length > 0) {
                     lines.forEach(line => {
                         const cleanLine = line.trim();
@@ -159,13 +155,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
                 }
             } else {
-                console.error(`カードID [${card.id}] に対応する占いの文章が見つかりません。`);
+                console.error(`カードID [${card.id}] のデータが見つかりません。`);
             }
         } else {
             console.error(`データ '${targetDataName}' が見つかりません。`);
         }
 
-        // 結果パネルを表示してスクロール
         resultPanel.classList.remove('hidden');
         resultPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
@@ -182,7 +177,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const initialZodiac = zodiacData[Number(zodiacSelect.value) || 0];
     updateZodiacPreview(initialZodiac);
     
-    // 【バグ修正】引数に[0]を正しく追加してデフォルト画像のエラーを解消
     if (tarotCards && tarotCards[0]) {
         tarotCardImage.src = tarotCards[0].image;
     }

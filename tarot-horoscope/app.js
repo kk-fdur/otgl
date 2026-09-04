@@ -76,11 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateZodiacPreview(zodiac) {
-        // 画像の「中身（アウターHTML）」そのものを、生成したSVGのコードで直接上書きします
-        zodiacImage.outerHTML = buildZodiacImage(zodiac).replace('data:image/svg+xml;charset=UTF-8,', decodeURIComponent(buildZodiacImage(zodiac).split(',')[1]));
-        
-        // もし上のコードが複雑で動かなければ、一番確実なこちらに変えてみてください：
-        // HTMLの img タグの代わりに、直接ブラウザに描画させます
+        // 暗号化（encode）を一切せず、生のSVGコードをそのままHTMLとして流し込みます！
         const svgRaw = `
             <svg xmlns="http://w3.org" viewBox="0 0 220 220" width="100%" height="100%">
                 <defs>
@@ -95,16 +91,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 <text x="110" y="180" text-anchor="middle" font-size="18" font-family="Noto Sans JP, sans-serif" fill="${zodiac.accent}">${zodiac.name}</text>
             </svg>
         `;
-        // 親のボックスに直接ぶち込みます
-        const parent = zodiacImage.parentElement;
-        if (parent) {
-            parent.innerHTML = svgRaw;
-            // 次回以降も捕まえらえるように、新しく作られた要素にidを振り直します
-            const newImg = parent.querySelector('svg');
-            if (newImg) newImg.id = 'zodiac-image';
+        
+        // <img>タグの親の箱（.zodiac-box）を捕まえて、中身を生のSVGに置き換えます
+        const zodiacBox = document.querySelector('.zodiac-box');
+        if (zodiacBox) {
+            zodiacBox.innerHTML = svgRaw;
         }
     }
-
+    
     function drawReading() {
         const zodiacId = Number(zodiacSelect.value);
         const zodiac = zodiacData[zodiacId] || zodiacData[0];

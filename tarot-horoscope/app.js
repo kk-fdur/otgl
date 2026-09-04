@@ -76,9 +76,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateZodiacPreview(zodiac) {
-        // 暗号化（encode）を一切せず、生のSVGコードをそのままHTMLとして流し込みます！
+        // svgタグ自体に id="zodiac-image" と class="tarot-box"（または元のimgにあったクラス）を付与してサイズを固定します
         const svgRaw = `
-            <svg xmlns="http://w3.org" viewBox="0 0 220 220" width="100%" height="100%">
+            <svg id="zodiac-image" class="zodiac-img-fix" xmlns="http://w3.org" viewBox="0 0 220 220" style="width: 100%; height: 100%; display: block; object-fit: cover;">
                 <defs>
                     <linearGradient id="g_${zodiac.id}" x1="0" x2="1" y1="0" y2="1">
                         <stop offset="0%" stop-color="${zodiac.color}"/>
@@ -92,7 +92,6 @@ document.addEventListener('DOMContentLoaded', () => {
             </svg>
         `;
         
-        // <img>タグの親の箱（.zodiac-box）を捕まえて、中身を生のSVGに置き換えます
         const zodiacBox = document.querySelector('.zodiac-box');
         if (zodiacBox) {
             zodiacBox.innerHTML = svgRaw;

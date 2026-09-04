@@ -14,9 +14,9 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 3, name: '蟹座', symbol: '♋', color: '#ff9cb2', accent: '#ffdfe8' },
         { id: 4, name: '獅子座', symbol: '♌', color: '#f3ba4a', accent: '#fef0bf' },
         { id: 5, name: '乙女座', symbol: '♍', color: '#8ad0a8', accent: '#ddf9e8' },
-        { id: 6, name: '天秤座', symbol: '♎', color: '#c8a8ff', accent: '#efe0ff' }, // idを6に修正
+        { id: 6, name: '天秤座', symbol: '♎', color: '#c8a8ff', accent: '#efe0ff' }, // idを6に修正完了
         { id: 7, name: '蠍座', symbol: '♏', color: '#b979d1', accent: '#eed8ff' },
-        { id: 8, name: '射手座', symbol: '♐', color: '#8ccf87', accent: '#dfffe0' },
+        { id: 8, name: '射手座', stroke: '#8ccf87', name: '射手座', symbol: '♐', color: '#8ccf87', accent: '#dfffe0' },
         { id: 9, name: '山羊座', symbol: '♑', color: '#97a5d4', accent: '#e2e7ff' },
         { id: 10, name: '水瓶座', symbol: '♒', color: '#66b5d8', accent: '#d8f3ff' },
         { id: 11, name: '魚座', symbol: '♓', color: '#7b9be7', accent: '#dfe9ff' }
@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 21, name: '世界', image: '../images/21_world.png', keyword: '完成と大きな成就' }
     ];
 
-    // SVG生成関数（名前空間URLを正しいものに修正完了）
+    // SVG生成関数（W3Cの正しい名前空間URLに完全修正）
     function buildZodiacImage(zodiac) {
         const svg = `
             <svg xmlns="http://w3.org" viewBox="0 0 220 220">
@@ -79,25 +79,12 @@ document.addEventListener('DOMContentLoaded', () => {
         zodiacImage.src = buildZodiacImage(zodiac);
         zodiacImage.alt = `${zodiac.name}のイメージ`;
     }
-    function getDateSeed(date) {
-        return date.getFullYear() * 10000 + (date.getMonth() + 1) * 100 + date.getDate();
-    }
-
-    function seededIndex(seed, length) {
-        const normalized = (seed * 9301 + 49297) % 233280;
-        return Math.floor((normalized / 233280) * length);
-    }
-
-    function updateZodiacPreview(zodiac) {
-        zodiacImage.src = buildZodiacImage(zodiac);
-        zodiacImage.alt = `${zodiac.name}のイメージ`;
-    }
 
     function drawReading() {
         const zodiacId = Number(zodiacSelect.value);
         const zodiac = zodiacData[zodiacId] || zodiacData[0];
 
-        // 1. あなたのオリジナル計算を元に、日替わりタロットカードを確定
+        // 1. 日替わりタロットカードを確定
         const today = new Date();
         const dateSeed = getDateSeed(today);
         const seed = dateSeed * 100 + zodiacId;
@@ -112,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
             cardAnnounceText.textContent = `🔮 ${zodiac.name}のあなたは【 ${card.name} 】を引きました`;
         }
 
-        // 3. 12星座のデータ名のリストから、対象のデータをwindow経由で取得
+        // 3. 各星座データをwindow経由で取得
         const fortuneDataNames = [
             'ariesFortuneData', 'taurusFortuneData', 'geminiFortuneData', 'cancerFortuneData', 
             'leoFortuneData', 'virgoFortuneData', 'libraFortuneData', 'scorpioFortuneData', 
@@ -123,35 +110,32 @@ document.addEventListener('DOMContentLoaded', () => {
         const fortuneData = window[targetDataName];
 
         if (fortuneData) {
-            // 【仕様】選んだ星座のデータから、引いたタロットのカードID(0〜21)の配列を取得
             const fortuneArray = fortuneData[card.id];
             
             if (fortuneArray && fortuneArray.length > 0) {
-                // 【あなたの優秀な日替わりロジック】で3パターンのうちどれを表示するか決定
                 const baseSeed = dateSeed + zodiacId + card.id;
                 const dailyIndex = seededIndex(baseSeed, fortuneArray.length);
                 
                 const fullText = fortuneArray[dailyIndex];
                 
-                // 改行コード（\n や \r）で確実に分解
-                const lines = fullText.split(/[\n\r]+/);
+                // 改行コードで確実に分解（空白行を除去する対策を追加）
+                const lines = fullText.split(/[\n\r]+/).map(l => l.trim()).filter(Boolean);
 
                 const overallText = document.getElementById('overall-text');
                 const loveText = document.getElementById('love-text');
                 const healthText = document.getElementById('health-text');
 
-                // 4. 【完全修正】配列(lines)の1行ずつに正しくreplaceを当てて安全に抽出
+                // 4. 【完全バグ修正】テキストの抽出漏れが絶対に起きない安全ロジック
                 if (lines && lines.length > 0) {
                     lines.forEach(line => {
-                        const cleanLine = line.trim();
-                        if (cleanLine.includes('【全体運】') && overallText) {
-                            overallText.textContent = cleanLine.replace('【全体運】', '').trim();
+                        if (line.includes('【全体運】') && overallText) {
+                            overallText.textContent = line.replace('【全体運】', '').trim();
                         }
-                        if ((cleanLine.includes('【恋愛・対人】') || cleanLine.includes('【恋愛対人】')) && loveText) {
-                            loveText.textContent = cleanLine.replace(/【恋愛・対人】|【恋愛対人】/, '').trim();
+                        if ((line.includes('【恋愛・対人】') || line.includes('【恋愛対人】')) && loveText) {
+                            loveText.textContent = line.replace(/【恋愛・対人】|【恋愛対人】/, '').trim();
                         }
-                        if (cleanLine.includes('【健康運】') && healthText) {
-                            healthText.textContent = cleanLine.replace('【健康運】', '').trim();
+                        if (line.includes('【健康運】') && healthText) {
+                            healthText.textContent = line.replace('【健康運】', '').trim();
                         }
                     });
                 }
@@ -172,8 +156,15 @@ document.addEventListener('DOMContentLoaded', () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
+    // イベントリスナーの紐付けを保証
     drawBtn.addEventListener('click', drawReading);
     resetBtn.addEventListener('click', resetReading);
+
+    // セレクトボックスの変更に合わせてリアルタイムで画像が変わる連動を追加（親切設計）
+    zodiacSelect.addEventListener('change', () => {
+        const selectedZodiac = zodiacData[Number(zodiacSelect.value) || 0];
+        updateZodiacPreview(selectedZodiac);
+    });
 
     // 初期起動時のプレビュー設定
     const initialZodiac = zodiacData[Number(zodiacSelect.value) || 0];

@@ -36,39 +36,39 @@
             <button id="draw-btn" class="btn draw-btn" type="button">タロットをシャッフルして引く</button>
         </section>
 
-        <!-- 【結果画面】完全に2つのボックスに分離して干渉をシャットアウト！ -->
-        <section id="result-panel" class="result-panel hidden" aria-live="polite">
+        <!-- 【結果画面】デザインをCSSに逃がしてスッキリさせました -->
+        <section id="result-panel" class="result-panel hidden" aria-live="polite">            
             
             <!-- ボックス①：タロット×星座のビジュアルエリア -->
-            <div class="visual-mix-box" style="margin-bottom: 2rem;">
+            <div class="visual-mix-box">
                 <div class="visual-mix">
                     <div class="image-box tarot-box">
                         <img id="tarot-card-image" src="" alt="引いたタロットカード">
                     </div>
                     <div class="mix-mark" aria-hidden="true">✕</div>
                     <div class="image-box zodiac-box">
+                        <!-- 【重要】画像がCSS制御の場合、srcではなくクラスや背景で動くため、元の状態を維持できるようにimgタグとして残すか、もし元のHTMLが空のdiv等だった場合はそれに合わせます。現状は前回の形をキープします -->
                         <img id="zodiac-image" src="" alt="選択中の星座画像">
                     </div>
                 </div>
-                <!-- シンプルに何を引いたかだけを伝えるエリア -->
-                <p id="card-announce-text" style="text-align: center; font-weight: bold; margin-top: 1rem; font-size: 1.2rem;"></p>
+                <p id="card-announce-text"></p>
             </div>
 
-            <!-- ボックス②：干渉を完全に防いだ、独立した12星座の項目別占いエリア -->
-            <div class="zodiac-fortune-box" style="background: rgba(255,255,255,0.05); padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem;">
-                <h2 style="text-align: center; font-size: 1.3rem; margin-bottom: 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 0.5rem;">✨ 本日の項目別運勢 ✨</h2>
+            <!-- ボックス②：CSSでオシャレに装飾された独立占いエリア -->
+            <div class="zodiac-fortune-box">
+                <h2 class="zodiac-fortune-title">✨ 本日の項目別運勢 ✨</h2>
                 <div class="fortune-details">
-                    <div class="detail-item" style="margin-bottom: 1.5rem;">
-                        <h3 style="color: #f3ba4a; margin-bottom: 0.5rem;">🌟 全体運</h3>
-                        <p id="overall-text" class="detail-text" style="line-height: 1.6;"></p>
+                    <div class="detail-item item-overall">
+                        <h3>🌟 全体運</h3>
+                        <p id="overall-text" class="detail-text"></p>
                     </div>
-                    <div class="detail-item" style="margin-bottom: 1.5rem;">
-                        <h3 style="color: #ff9cb2; margin-bottom: 0.5rem;">💖 恋愛・対人運</h3>
-                        <p id="love-text" class="detail-text" style="line-height: 1.6;"></p>
+                    <div class="detail-item item-love">
+                        <h3>💖 恋愛・対人運</h3>
+                        <p id="love-text" class="detail-text"></p>
                     </div>
-                    <div class="detail-item" style="margin-bottom: 0.5rem;">
-                        <h3 style="color: #8ccf87; margin-bottom: 0.5rem;">🌿 健康運</h3>
-                        <p id="health-text" class="detail-text" style="line-height: 1.6;"></p>
+                    <div class="detail-item item-health">
+                        <h3>🌿 健康運</h3>
+                        <p id="health-text" class="detail-text"></p>
                     </div>
                 </div>
             </div>
@@ -77,7 +77,6 @@
                 <button id="reset-btn" class="btn reset-btn" type="button">もう一度占う</button>
             </div>
         </section>
-
         <footer class="site-privacy-note">
             <p>🔒 入力されたデータや占い結果は、どこにも送信されず安全に守られています。</p>
         </footer>

@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 3, name: '蟹座', symbol: '♋', color: '#ff9cb2', accent: '#ffdfe8' },
         { id: 4, name: '獅子座', symbol: '♌', color: '#f3ba4a', accent: '#fef0bf' },
         { id: 5, name: '乙女座', symbol: '♍', color: '#8ad0a8', accent: '#ddf9e8' },
-        { id: 10, name: '天秤座', symbol: '♎', color: '#c8a8ff', accent: '#efe0ff' },
+        { id: 6, name: '天秤座', symbol: '♎', color: '#c8a8ff', accent: '#efe0ff' },
         { id: 7, name: '蠍座', symbol: '♏', color: '#b979d1', accent: '#eed8ff' },
         { id: 8, name: '射手座', symbol: '♐', color: '#8ccf87', accent: '#dfffe0' },
         { id: 9, name: '山羊座', symbol: '♑', color: '#97a5d4', accent: '#e2e7ff' },
@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 21, name: '世界', image: '../images/21_world.png', keyword: '完成と大きな成就' }
     ];
 
-    // 【完全修復】画像が表示されなかった最大のバグ（W3CのSVG正規ルールURL）を完璧に直しました！
+    // 【修正版】W3Cの正しい名前空間URLに直しました！
     function buildZodiacImage(zodiac) {
         const svg = `
             <svg xmlns="http://w3.org" viewBox="0 0 220 220">

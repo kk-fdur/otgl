@@ -3,9 +3,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const drawBtn = document.getElementById('draw-btn');
     const resetBtn = document.getElementById('reset-btn');
     const resultPanel = document.getElementById('result-panel');
-    const resultText = document.getElementById('result-text');
     const tarotCardImage = document.getElementById('tarot-card-image');
     const zodiacImage = document.getElementById('zodiac-image');
+    const cardAnnounceText = document.getElementById('card-announce-text');
 
     const zodiacData = [
         { id: 0, name: '牡羊座', symbol: '♈', color: '#ff8a7a', accent: '#ffd7d1' },
@@ -47,15 +47,6 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 21, name: '世界', image: '../images/21_world.png', keyword: '完成と大きな成就' }
     ];
 
-    const resultMessages = [
-        '今日のあなたは、{zodiac}の情熱が、{card}の導きとよく合っています。心の中ですでに答えは出ていて、ひとつ勇気を持って一歩踏み出すと、思わぬ好転が始まります。',
-        '今日の{zodiac}は、{card}の象徴どおり「待つこと」も大切です。焦らず、静かな判断をしたときに、最も大事な出会いが自然にやってきます。',
-        'この日は、{zodiac}の懐深さが{card}のメッセージと重なり、信頼できる人と協力して進むと運が開けます。人に頼るのは弱さではなく、次の成長の入口です。',
-        '今日の{zodiac}には、{card}が「今のあなたが本当に欲しいもの」を教えてくれます。見えない不安より、目の前の小さな一歩を大切にすると、道が見えてきます。',
-        '奇妙な巡り合わせが、今日の{zodiac}に訪れます。{card}は、思い込みを手放し、自由な選択をするよう促しています。自分の心に素直になれば、運の流れが整います。',
-        '今日の{zodiac}は、{card}の輝きにより、過去の重荷を置き去りにできる日です。表に出ていた悩みより、内側の声を信じると、明るい展望が見えてきます。'
-    ];
-
     function buildZodiacImage(zodiac) {
         const svg = `
             <svg xmlns="http://w3.org" viewBox="0 0 220 220">
@@ -83,37 +74,31 @@ document.addEventListener('DOMContentLoaded', () => {
         return Math.floor((normalized / 233280) * length);
     }
 
-    function resolveCardAndResult(zodiacId) {
-        const today = new Date();
-        const dateSeed = getDateSeed(today);
-        const zodiac = zodiacData[zodiacId] || zodiacData[0];
-
-        const seed = dateSeed * 100 + zodiacId;
-        const cardId = (seed * 17 + zodiacId * 11) % tarotCards.length;
-
-        const card = tarotCards[cardId];
-        const resultIndex = (dateSeed + zodiacId * 23 + cardId * 31) % resultMessages.length;
-        const resultTextBody = resultMessages[resultIndex]
-            .replace('{zodiac}', zodiac.name)
-            .replace('{card}', card.name);
-
-        return { zodiac, card, resultTextBody };
-    }
-
     function updateZodiacPreview(zodiac) {
         zodiacImage.src = buildZodiacImage(zodiac);
         zodiacImage.alt = `${zodiac.name}のイメージ`;
     }
 
-    // ここから後半部分（完全に綺麗に整えました！）
     function drawReading() {
         const zodiacId = Number(zodiacSelect.value);
-        const { zodiac, card } = resolveCardAndResult(zodiacId);
+        const zodiac = zodiacData[zodiacId] || zodiacData[0];
 
+        // 1. あなたの優秀な日替わり計算でタロットカードを1枚決定
+        const today = new Date();
+        const dateSeed = getDateSeed(today);
+        const seed = dateSeed * 100 + zodiacId;
+        const cardId = (seed * 17 + zodiacId * 11) % tarotCards.length;
+        const card = tarotCards[cardId];
+
+        // 2. ビジュアルエリアの画像とアナウンステキストを更新（これで星座画像も復活！）
         tarotCardImage.src = card.image;
         tarotCardImage.alt = `${card.name}のカード`;
         updateZodiacPreview(zodiac);
+        if (cardAnnounceText) {
+            cardAnnounceText.textContent = `🔮 ${zodiac.name}のあなたは【 ${card.name} 】のカードを引きました`;
+        }
 
+        // 3. 12星座の項目別データを読み込む
         const fortuneDataNames = [
             'ariesFortuneData', 'taurusFortuneData', 'geminiFortuneData', 'cancerFortuneData', 
             'leoFortuneData', 'virgoFortuneData', 'libraFortuneData', 'scorpioFortuneData', 
@@ -124,13 +109,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const fortuneData = window[targetDataName];
 
         if (fortuneData) {
-            // 【仕様】選んだ星座のデータから、引いたタロットのカードID(0〜21)の配列を取得
+            // 引いたカードのID(0〜21)に対応する配列を取得
             const fortuneArray = fortuneData[card.id];
             
             if (fortuneArray && fortuneArray.length > 0) {
-                // 【あなたの優秀な日替わり計算を適用！】
-                const today = new Date();
-                const baseSeed = getDateSeed(today) + zodiacId + card.id;
+                // 日替わりで3パターンのうちどれを表示するか決定
+                const baseSeed = dateSeed + zodiacId + card.id;
                 const dailyIndex = seededIndex(baseSeed, fortuneArray.length);
                 
                 const fullText = fortuneArray[dailyIndex];
@@ -140,6 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const loveText = document.getElementById('love-text');
                 const healthText = document.getElementById('health-text');
 
+                // 4. 干渉のない独立した枠へテキストを安全に流し込む
                 if (lines && lines.length > 0) {
                     lines.forEach(line => {
                         const cleanLine = line.trim();
@@ -174,11 +159,9 @@ document.addEventListener('DOMContentLoaded', () => {
     drawBtn.addEventListener('click', drawReading);
     resetBtn.addEventListener('click', resetReading);
 
+    // 初期状態の設定
     const initialZodiac = zodiacData[Number(zodiacSelect.value) || 0];
     updateZodiacPreview(initialZodiac);
-    
-    if (tarotCards && tarotCards[0]) {
-        tarotCardImage.src = tarotCards[0].image;
-    }
+    tarotCardImage.src = tarotCards[0].image;
     tarotCardImage.alt = 'デフォルトのタロットカード';
 });

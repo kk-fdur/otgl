@@ -39,17 +39,22 @@
         <!-- 【結果画面】干渉を完璧に防ぐ、2つの独立した結果ボックス構造 -->
         <section id="result-panel" class="result-panel hidden" aria-live="polite">
             
-            <!-- ボックス①：タロット×星座のビジュアルエリア -->
-            <div class="visual-mix-box">
+            <!-- 【結果画面のビジュアルエリア】を以下のように入れ替えてください -->
                 <div class="visual-mix">
-                    <div class="image-box tarot-box">
-                        <img id="tarot-card-image" src="" alt="引いたタロットカード">
-                    </div>
-                    <div class="mix-mark" aria-hidden="true">✕</div>
-                    <div class="image-box zodiac-box" style="height: 100%; min-height: 220px; display: block;">
-                        <div id="zodiac-image" class="zodiac-svg-container"></div>
-                    </div>
+    <!-- ①【星座】を上に移動（左側に表示されるようになります） -->
+                    <div class="image-box zodiac-box">
+                    <img id="zodiac-image" src="" alt="選択中の星座画像">
                 </div>
+
+    <!-- 真ん中の✕マーク -->
+                <div class="mix-mark" aria-hidden="true">✕</div>
+
+    <!-- ②【タロット】を下に移動（右側に表示されるようになります） -->
+                <div class="image-box tarot-box">
+                    <img id="tarot-card-image" src="" alt="引いたタロットカード">
+                </div>
+                </div>
+            
                 <!-- 総合運テキスト枠を消去し、シンプルなカード名発表エリアにスッキリ変更 -->
                 <p id="card-announce-text" style="text-align: center; font-weight: bold; margin-top: 1.5rem; font-size: 1.2rem;"></p>
             </div>

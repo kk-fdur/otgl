@@ -114,7 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
         tarotCardImage.alt = `${card.name}のカード`;
         updateZodiacPreview(zodiac);
 
-        // 1. 12星座のデータ名のリスト
+        // 1. 12星座のデータ名（windowオブジェクトに登録されている名前）のリスト
         const fortuneDataNames = [
             'ariesFortuneData', 'taurusFortuneData', 'geminiFortuneData', 'cancerFortuneData', 
             'leoFortuneData', 'virgoFortuneData', 'libraFortuneData', 'scorpioFortuneData', 
@@ -125,45 +125,46 @@ document.addEventListener('DOMContentLoaded', () => {
         const fortuneData = window[targetDataName];
 
         if (fortuneData) {
+            // 引いたタロットカードのIDに対応する配列（3パターンの文章が入っている）
             const fortuneArray = fortuneData[card.id];
             
             if (fortuneArray && fortuneArray.length > 0) {
-                // 3パターンの文章からランダムで1つを選択
-                const randomIndex = Math.floor(Math.random() * fortuneArray.length);
-                const fullText = fortuneArray[randomIndex];
+                // ★【日替わりロジック】今日の日付（年+月+日）を元に、毎日決まった1パターンを算出
+                const today = new Date();
+                const dateSeed = today.getFullYear() + (today.getMonth() + 1) + today.getDate();
+                const dailyIndex = dateSeed % fortuneArray.length; // 毎日0〜2のいずれかに固定される
+                
+                const fullText = fortuneArray[dailyIndex];
 
-                // 改行コード（\n や \r）で文章を確実に分解
-                const lines = fullText.split(/[\n\r]+/);
+                // 改行（\n）で3つの文章に切り分ける
+                const lines = fullText.split('\n');
 
                 const overallText = document.getElementById('overall-text');
                 const loveText = document.getElementById('love-text');
                 const healthText = document.getElementById('health-text');
 
-                // 2. 「【〇〇運】」という見出しを見つけたら、その中身を綺麗に表示
-                lines.forEach(line => {
-                    const cleanLine = line.trim();
-                    if (cleanLine.includes('【全体運】') && overallText) {
-                        overallText.textContent = cleanLine.replace('【全体運】', '');
-                    }
-                    if ((cleanLine.includes('【恋愛・対人】') || cleanLine.includes('【恋愛対人】')) && loveText) {
-                        loveText.textContent = cleanLine.replace(/【恋愛・対人】|【恋愛対人】/, '');
-                    }
-                    if (cleanLine.includes('【健康運】') && healthText) {
-                        healthText.textContent = cleanLine.replace('【健康運】', '');
-                    }
-                });
+                // 2. 配列（lines）の各行をチェックして、対応するHTML要素に文字を表示
+                if (lines && lines[0] && overallText) {
+                    overallText.textContent = lines[0].replace('【全体運】', '').trim();
+                }
+                if (lines && lines[1] && loveText) {
+                    // 「【恋愛・対人】」「【恋愛対人】」のどちらでも消せるように対応
+                    loveText.textContent = lines[1].replace(/【恋愛・対人】|【恋愛対人】/, '').trim();
+                }
+                if (lines && lines[2] && healthText) {
+                    healthText.textContent = lines[2].replace('【健康運】', '').trim();
+                }
             } else {
-                console.error(`カードID [${card.id}] に対応する占いの文章がデータ内に見つかりません。`);
+                console.error(`カードID [${card.id}] のデータが見つかりません。`);
             }
         } else {
-            console.error(`データ '${targetDataName}' が見つかりません。HTML側でファイルが正しく読み込まれているか確認してください。`);
+            console.error(`データ '${targetDataName}' が見つかりません。`);
         }
 
         // 結果パネルを表示してスクロール
         resultPanel.classList.remove('hidden');
         resultPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-    
+    }    
     function resetReading() {
         resultPanel.classList.add('hidden');
         zodiacSelect.focus();

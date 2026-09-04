@@ -76,33 +76,34 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateZodiacPreview(zodiac) {
-        // グラデーション背景用のSVG（100%広がる）と、中の要素用のSVG（比率を保つ）を2重に重ねる最強の構造に変えます
+        // 背景の四角（rect）を消して、円と絵文字だけの透明なSVGにします
         const svgRaw = `
             <svg id="zodiac-image" xmlns="http://w3.org" viewBox="0 0 220 220" style="width: 100%; height: 100%; display: block;">
+                <!-- 四角い背景を消し、中央の円にグラデーションを直接かけます -->
                 <defs>
-                    <linearGradient id="g_${zodiac.id}" x1="0" x2="1" y1="0" y2="1">
-                        <stop offset="0%" stop-color="${zodiac.color}"/>
-                        <stop offset="100%" stop-color="#1b2a46"/>
-                    </linearGradient>
+                    <radialGradient id="g_${zodiac.id}" cx="50%" cy="50%" r="50%">
+                        <stop offset="0%" stop-color="${zodiac.color}" stop-opacity="0.6"/>
+                        <stop offset="100%" stop-color="#1b2a46" stop-opacity="0"/>
+                    </radialGradient>
                 </defs>
-                <!-- 背景の四角形だけは縦横100%に引き伸ばして隙間をなくす -->
-                <rect width="100%" height="100%" rx="28" fill="url(#g_${zodiac.id})"/>
+                <circle cx="110" cy="110" r="90" fill="url(#g_${zodiac.id})"/>
+                <circle cx="110" cy="110" r="70" fill="none" stroke="${zodiac.accent}" stroke-width="1" stroke-dasharray="4 4" opacity="0.5"/>
                 
-                <!-- 内側の円と文字だけは、xMidYMid meet（比率を保って中央に収める）で絶対に潰さない！ -->
-                <svg viewBox="0 0 220 220" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
-                    <circle cx="110" cy="76" r="48" fill="rgba(255,255,255,0.12)"/>
-                    <text x="110" y="132" text-anchor="middle" font-size="76" font-family="Segoe UI Emoji, Apple Color Emoji, sans-serif" fill="white">${zodiac.symbol}</text>
-                    <text x="110" y="180" text-anchor="middle" font-size="18" font-family="Noto Sans JP, sans-serif" fill="${zodiac.accent}">${zodiac.name}</text>
-                </svg>
+                <!-- 絵文字とテキスト -->
+                <text x="110" y="115" text-anchor="middle" font-size="80" font-family="Segoe UI Emoji, Apple Color Emoji, sans-serif" fill="white">${zodiac.symbol}</text>
+                <text x="110" y="185" text-anchor="middle" font-size="18" font-family="Noto Sans JP, sans-serif" fill="${zodiac.accent}" letter-spacing="2">${zodiac.name}</text>
             </svg>
         `;
         
         const zodiacBox = document.querySelector('.zodiac-box');
         if (zodiacBox) {
+            // 親の箱の背景や枠線をJavaScriptから透明にして、溶け込ませます
+            zodiacBox.style.background = 'transparent';
+            zodiacBox.style.border = 'none';
+            zodiacBox.style.boxShadow = 'none';
             zodiacBox.innerHTML = svgRaw;
         }
-    }
-    
+    }    
     function drawReading() {
         const zodiacId = Number(zodiacSelect.value);
         const zodiac = zodiacData[zodiacId] || zodiacData[0];

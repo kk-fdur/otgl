@@ -76,16 +76,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateZodiacPreview(zodiac) {
-        // svgタグ自体に id="zodiac-image" と class="tarot-box"（または元のimgにあったクラス）を付与してサイズを固定します
+        // preserveAspectRatio="none" を追加して、縦横の比率を無視して箱いっぱいに広げます
         const svgRaw = `
-            <svg id="zodiac-image" class="zodiac-img-fix" xmlns="http://w3.org" viewBox="0 0 220 220" style="width: 100%; height: 100%; display: block; object-fit: cover;">
+            <svg id="zodiac-image" class="zodiac-img-fix" xmlns="http://w3.org" viewBox="0 0 220 220" preserveAspectRatio="none" style="width: 100%; height: 100%; display: block;">
                 <defs>
                     <linearGradient id="g_${zodiac.id}" x1="0" x2="1" y1="0" y2="1">
                         <stop offset="0%" stop-color="${zodiac.color}"/>
                         <stop offset="100%" stop-color="#1b2a46"/>
                     </linearGradient>
                 </defs>
-                <rect width="220" height="220" rx="28" fill="url(#g_${zodiac.id})"/>
+                <rect width="100%" height="100%" rx="28" fill="url(#g_${zodiac.id})"/> <!-- rectも100%にして背景を広げる -->
                 <circle cx="110" cy="76" r="48" fill="rgba(255,255,255,0.12)"/>
                 <text x="110" y="132" text-anchor="middle" font-size="76" font-family="Segoe UI Emoji, Apple Color Emoji, sans-serif" fill="white">${zodiac.symbol}</text>
                 <text x="110" y="180" text-anchor="middle" font-size="18" font-family="Noto Sans JP, sans-serif" fill="${zodiac.accent}">${zodiac.name}</text>

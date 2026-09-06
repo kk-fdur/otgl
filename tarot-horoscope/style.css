@@ -365,6 +365,7 @@ h1 {
 
 .item-health { border-left-color: #8ccf87; }
 .item-health h3 { color: #8ccf87; }
+
 /* オリジナルタロット画像のコピー防止用スタイル */
 .prevent-copy {
     /* iPad / iPhone用：長押し時のメニューポップアップを禁止 */

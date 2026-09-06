@@ -227,3 +227,22 @@ h1 {
     -moz-user-select: none;
     pointer-events: none;
 }
+/* ぷち札占い：外枠を基準にする設定を追加 */
+#tarot-card {
+    position: relative; /* 👈 これが超重要！ */
+}
+
+/* 🔮 タロット画像の上にサイン画像を敷き詰めるバリア（ぷち札用） */
+.watermark-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%; /* これで裏面でも表面でも、画像と同じサイズに自動で吸い付きます */
+    
+    background-image: url('../images/あなたのサイン画像名.png'); /* 小文字の.pngで指定 */
+    background-repeat: repeat;
+    background-size: 80px auto; /* 星札術で決めたベストなサイズに調整してください */
+    opacity: 0.2; /* 星札術で決めたベストな濃さに調整してください */
+    pointer-events: auto; /* 長押し・右クリックをここでキャッチして防衛 */
+}

@@ -205,7 +205,7 @@ h1 {
     height: 100%; /* これで自動的にタロット画像と同じ高さになります */
     
     /* アップロードしたサイン画像のパス（環境に合わせて調整してください） */
-    background-image: url('../images/あなたのサイン画像名.png'); 
+    background-image: url('../images/Watermark.png'); 
     background-repeat: repeat; /* 画像を格子状に敷き詰める */
     
     /* タロットが見えるように少し透けさせる（0.2〜0.4くらいでお好み調整） */

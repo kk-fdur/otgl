@@ -114,3 +114,12 @@ const handleResetClick = (event) => {
 resetButtonElement.addEventListener("click", handleResetClick);
 resetButtonElement.addEventListener("touchend", handleResetClick, { passive: false });
 resetButtonElement.addEventListener("pointerup", handleResetClick, { passive: false });
+
+document.addEventListener('DOMContentLoaded', () => {
+    const cardImg = document.getElementById('card-image');
+    if (cardImg) {
+        cardImg.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+        });
+    }
+});

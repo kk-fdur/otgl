@@ -36,25 +36,29 @@
             <button id="draw-btn" class="btn draw-btn" type="button">タロットをシャッフルして引く</button>
         </section>
 
-        <!-- 【結果画面】干渉を完璧に防ぐ、2つの独立した結果ボックス構造 -->
+                <!-- 【結果画面】干渉を完璧に防ぐ、2つの独立した結果ボックス構造 -->
         <section id="result-panel" class="result-panel hidden" aria-live="polite">
             
-            <!-- 【結果画面のビジュアルエリア】を以下のように入れ替えてください -->
-                <div class="visual-mix">
-    <!-- ①【星座】を上に移動（左側に表示されるようになります） -->
-                    <div class="image-box zodiac-box">
+            <div class="visual-mix">
+                <!-- ①【星座】 -->
+                <div class="image-box zodiac-box">
                     <img id="zodiac-image" src="" alt="選択中の星座画像">
                 </div>
 
-    <!-- 真ん中の✕マーク -->
+                <!-- 真ん中の✕マーク -->
                 <div class="mix-mark" aria-hidden="true">✕</div>
 
-        <!-- ②【タロット】を下に移動（右側に表示されるようになります） -->
+                <!-- ②【タロット】（中は画像だけに綺麗に戻します） -->
                 <div class="image-box tarot-box">
                     <img id="tarot-card-image" src="" alt="引いたタロットカード">
-                    <!-- 🔮 ここに短い警告文を追加 -->
-                    <p class="img-warning-text">※当店のタロット画像はオリジナル作品です。無断転載・保存・加工はご遠慮願います。</p>
                 </div>
+            </div> <!-- 💡 visual-mix はここで終わり -->
+            
+            <!-- 🔮 ここに切り離して警告文を配置！ -->
+            <p class="img-warning-text">※当店のタロット画像はオリジナル作品です。無断転載・保存・加工はご遠慮願います。</p>
+            
+            <!-- 既存のカード名発表エリア -->
+            <p id="card-announce-text" style="text-align: center; font-weight: bold; margin-top: 1.5rem; font-size: 1.2rem;"></p>
             
                 <!-- 総合運テキスト枠を消去し、シンプルなカード名発表エリアにスッキリ変更 -->
                 <p id="card-announce-text" style="text-align: center; font-weight: bold; margin-top: 1.5rem; font-size: 1.2rem;"></p>

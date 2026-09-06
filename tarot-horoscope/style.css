@@ -374,3 +374,19 @@ h1 {
     -moz-user-select: none;
     pointer-events: none;
 }
+/* タロット画像の下の警告文スタイル */
+.tarot-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.img-warning-text {
+    font-size: 0.7rem;
+    color: #aaa2cb;
+    opacity: 0.7;
+    margin-top: 8px;
+    text-align: center;
+    line-height: 1.4;
+    word-break: break-all;
+}

@@ -366,16 +366,11 @@ h1 {
 .item-health { border-left-color: #8ccf87; }
 .item-health h3 { color: #8ccf87; }
 
-/* オリジナルタロット画像のコピー防止用スタイル */
-.prevent-copy {
-    /* iPad / iPhone用：長押し時のメニューポップアップを禁止 */
+/* 星札術のオリジナルタロット画像のコピー防止（長押し・ドラッグ禁止） */
+#tarot-card-image {
     -webkit-touch-callout: none;
-    
-    /* テキストや画像の選択を禁止 */
     -webkit-user-select: none;
     user-select: none;
-    
-    /* 画像のドラッグ＆ドロップを禁止 */
     -moz-user-select: none;
     pointer-events: none;
 }

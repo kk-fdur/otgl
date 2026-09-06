@@ -135,10 +135,10 @@ body {
     transform: translateX(4px);
 }
 
-/* プライバシーノート */
+/* プライバシーノート（外周ボックス） */
 .site-privacy-note {
     margin-top: 50px;
-    padding: 15px;
+    padding: 20px; /* 上下の余白を少しだけ広げて全体を包みやすく */
     background: rgba(255, 255, 255, 0.05);
     border-radius: 8px;
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -147,12 +147,32 @@ body {
     margin-right: auto;
 }
 
+/* ボックス内のすべての段落の共通設定 */
 .site-privacy-note p {
     font-size: 0.8rem;
     line-height: 1.6;
     color: #aaa2cb;
-    margin: 0;
+    margin: 0 0 8px 0; /* 下側だけに少し余白を入れ、上側の余白をゼロに */
     text-align: left;
+}
+
+/* 最後の段落（一番下）だけは下マージンを無くす */
+.site-privacy-note p:last-child {
+    margin-bottom: 0;
+}
+
+/* 著作権注意書きブロックの仕切り線 */
+.copyright-note {
+    border-bottom: 1px dashed rgba(170, 162, 203, 0.3); /* テキストの色に合わせた薄い紫の点線 */
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+}
+
+/* コピーライト（一番小さな文字）の調整 */
+.copyright-note .cr-date {
+    font-size: 0.75rem;
+    opacity: 0.7;
+    margin-top: 4px;
 }
 
 /* 特定のカード専用スタイル */

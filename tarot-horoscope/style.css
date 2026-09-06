@@ -212,7 +212,7 @@ h1 {
     background-size: 80px auto; 
     
     /* タロットが見えるように少し透けさせる（0.2〜0.4くらいでお好み調整） */
-    opacity: 0.4; 
+    opacity: 0.2; 
     
     /* 下のタロット画像への長押し・右クリックを物理的に通さない設定 */
     pointer-events: auto; 

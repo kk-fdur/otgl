@@ -202,3 +202,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     tarotCardImage.alt = 'デフォルトのタロットカード';
 });
+
+// 🔮 オリジナルタロット画像の右クリック（2本指タップ）禁止処理
+document.addEventListener('DOMContentLoaded', () => {
+    const tarotImg = document.getElementById('tarot-card-image');
+    if (tarotImg) {
+        tarotImg.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+        });
+    }
+});
+

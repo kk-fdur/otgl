@@ -26,8 +26,6 @@ const showResetButton = () => {
     }
 };
 
-const isResetButtonVisible = () => !resetButtonElement.classList.contains("hidden");
-
 const resetToInitialState = () => {
     const fadeOutDuration = 180;
     cardImage.style.opacity = "0";
@@ -42,47 +40,49 @@ const resetToInitialState = () => {
         cardImage.alt = "タロットカード";
         cardImage.style.opacity = "1";
         cardImage.style.transform = "scale(1.02)";
-        resultElement.textContent = initialMessage;
+        resultElement.innerHTML = initialMessage; // HTML構造をクリアするためinnerHTMLに統一
         showDrawButton();
     }, fadeOutDuration);
 };
 
-const updateCardImage = (selectedCard, isReversed = false) => {
-    if (!cardImage) {
-        return;
-    }
+// 💡 画像の読み込みと回転のアニメーションを完全に同期させる関数
+const updateCardImageAndRotation = (selectedCard, isReversed) => {
+    if (!cardImage) return;
 
     const thisToken = ++imageTransitionToken;
-    const applyVisibleState = () => {
-        if (thisToken !== imageTransitionToken) {
-            return;
-        }
-        cardImage.style.opacity = "1";
-        // JSでのtransform上書きを削除し、CSS側（.reversed）の傾き演出を活かします
-    };
 
+    // 1. まず一旦カードを透明にして、回転クラスを外す（アニメーションの準備）
     cardImage.style.opacity = "0";
-    cardImage.src = selectedCard.image;
+    cardElement.classList.remove("reversed");
+
+    // 2. 新しい画像のURLをセット（キャッシュ対策として後ろにランダムな文字を付与）
+    const cacheBuster = selectedCard.image.includes('?') ? `&t=${Date.now()}` : `?t=${Date.now()}`;
+    cardImage.src = selectedCard.image + cacheBuster;
     cardImage.alt = selectedCard.name;
 
+    // 3. 画像が完全に読み込まれたら実行する処理
     const revealCard = () => {
-        if (thisToken !== imageTransitionToken) {
-            return;
-        }
-        window.setTimeout(applyVisibleState, 180);
+        if (thisToken !== imageTransitionToken) return;
+
+        // iPadの画面更新タイミングに合わせて、確実に「回転」と「表示」を同時に行う
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                if (isReversed) {
+                    cardElement.classList.add("reversed");
+                }
+                cardImage.style.opacity = "1";
+            });
+        });
     };
 
+    // すでに画像がキャッシュされていて読み込み完了している場合
     if (cardImage.complete) {
         revealCard();
         return;
     }
 
+    // まだ読み込まれていない場合はロードイベントを待つ
     cardImage.addEventListener("load", revealCard, { once: true });
-    requestAnimationFrame(() => {
-        if (thisToken === imageTransitionToken && cardImage.complete) {
-            revealCard();
-        }
-    });
 };
 
 buttonElement.addEventListener("click", () => {
@@ -90,19 +90,15 @@ buttonElement.addEventListener("click", () => {
     const selectedCard = tarotDeck[randomIndex];
     const isReversed = Math.random() < 0.3;
 
-    updateCardImage(selectedCard, isReversed);
-
-    // 一度リセットしてから、逆位置なら「reversed」クラスを付与
-    cardElement.classList.remove("reversed");
-    void cardElement.offsetWidth; // アニメーションを再トリガーするためのハック
-    cardElement.classList.toggle("reversed", isReversed);
+    // 💡 画像変更と回転処理を一本化して確実に実行させる
+    updateCardImageAndRotation(selectedCard, isReversed);
 
     const positionText = isReversed ? "逆位置" : "正位置";
     const message = isReversed ? selectedCard.reversed : selectedCard.upright;
+    
     resultElement.innerHTML = `<div class="result-card-title">結果：${selectedCard.name}（${positionText}）</div><div class="result-card-detail">${message.replace(/\n/g, "<br>")}</div>`;
     showResetButton();
 });
-
 
 const handleResetClick = (event) => {
     if (event) {

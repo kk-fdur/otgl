@@ -249,3 +249,99 @@ body {
         font-size: 15px;
     }
 }
+/* 🔮 新設：占い屋の回 回覧板（お知らせ＆SNS） */
+.shop-info-board {
+    max-width: 550px;
+    width: 100%;
+    margin: 0 auto 32px auto;
+    padding: 16px 20px;
+    background: rgba(17, 35, 52, 0.3); /* AIお知らせよりさらにうっすら半透明 */
+    border: 1px solid rgba(123, 184, 217, 0.15); /* 細く繊細な枠線 */
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    text-align: left;
+    box-shadow: 0 4px 15px var(--shadow);
+}
+
+.info-tag {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--frame);
+    background: rgba(123, 184, 217, 0.12);
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-bottom: 8px;
+    letter-spacing: 0.05em;
+}
+
+/* お知らせリスト */
+.info-list {
+    margin: 0;
+    padding-left: 18px; /* 点の内側の余白 */
+    color: var(--muted);
+    font-size: 0.85rem;
+    line-height: 1.6;
+}
+
+.info-list li {
+    margin-bottom: 4px;
+    list-style-type: square; /* 可愛い四角のバレット */
+}
+
+.info-list li:last-child {
+    margin-bottom: 0;
+}
+
+/* SNSリンクエリア */
+.sns-section {
+    border-top: 1px dashed rgba(123, 184, 217, 0.15); /* セクション間の細い仕切り */
+    padding-top: 12px;
+}
+
+.sns-links {
+    display: flex;
+    gap: 16px;
+    padding-left: 4px;
+}
+
+.sns-link {
+    font-size: 0.85rem;
+    color: #edf8ff;
+    text-decoration: none;
+    position: relative;
+    transition: color 0.2s ease;
+}
+
+/* SNSリンクの下にこっそり光る線 */
+.sns-link::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    transform: scaleX(0);
+    height: 1px;
+    bottom: -2px;
+    left: 0;
+    background-color: var(--frame);
+    transform-origin: bottom right;
+    transition: transform 0.25s ease-out;
+}
+
+.sns-link:hover {
+    color: var(--frame);
+}
+
+.sns-link:hover::after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+}
+
+/* スマホ対応（横幅いっぱいに綺麗に収める） */
+@media (max-width: 768px) {
+    .shop-info-board {
+        margin-bottom: 24px;
+        padding: 14px 18px;
+    }
+}

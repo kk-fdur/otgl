@@ -173,10 +173,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     healthContent = fullText.substring(idxHealth + 5).trim();
                 }
 
-                // 5. 【完全バグ修正】改行を生かしたままinnerTextで画面に流し込む
-                if (overallText) overallText.innerText = overallContent;
-                if (loveText) loveText.innerText = loveContent;
-                if (healthText) healthText.innerText = healthContent;
+                // 5. 【完全バグ修正】改行コードを<br>タグに変換してinnerHTMLで確実に流し込む
+                if (overallText) overallText.innerHTML = overallContent.replace(/\n/g, "<br>");
+                if (loveText) loveText.innerHTML = loveContent.replace(/\n/g, "<br>");
+                if (healthText) healthText.innerHTML = healthContent.replace(/\n/g, "<br>");
 
                 } else {
                 console.error(`カードID [${card.id}] の配列が見つかりません。`);

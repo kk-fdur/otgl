@@ -72,11 +72,11 @@ h1 {
 
 .zodiac-buttons {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 横に2列並べる */
-    gap: 12px 12px; /* ボタン同士の間隔（上下12px、左右16px） */
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px 12px;
     width: 100%;
-    max-width: 550px; /* 横に広がりすぎないように制限 */
-    margin: 15px auto 0 auto; /* 全体を中央寄せ */
+    max-width: 550px;
+    margin: 15px auto 0 auto;
 }
 
 .zodiac-btn {
@@ -160,37 +160,50 @@ h1 {
 
 .fortune-grid {
     display: flex;
-    flex-direction: column; /* 横並びから「縦並び」に変更 */
-    gap: 20px; /* 各運勢ボックスの間の余白 */
+    flex-direction: column;
+    gap: 20px;
     width: 100%;
-    max-width: 600px; /* 画面が大きすぎるときに変に広がらないよう制限 */
-    margin: 0 auto;   /* 中央寄せ */
+    max-width: 600px;
+    margin: 0 auto;
 }
 
+/* 🔮 各運勢ボックスのデザイン改良（浮かないように統一） */
 .fortune-item {
-    background-color: #708090; /* 必要に応じて背景色を（ダークモードなら暗い色に） */
-    border-radius: 8px;
-    padding: 15px 20px;       /* 内側の余白をゆったりとる */
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); /* 軽い影をつけて見やすく */
+    background-color: var(--paper); /* 💡 深みのある半透明の紺色に変更 */
+    border-radius: 12px;
+    padding: 18px 24px;
+    border: 1px solid rgba(123, 184, 217, 0.2); /* 💡 繊細な細い青枠を追加 */
+    box-shadow: 0 4px 12px var(--shadow);
+    transition: all 0.3s ease;
+    text-align: justify;
 }
 
+/* 💡 ホバー時に怪しく上品に光るエフェクト */
 .fortune-item:hover {
-    background: rgba(17, 52, 77, 0.7);
-    border-color: rgba(123, 184, 217, 0.4);
-    box-shadow: 0 8px 16px rgba(8, 20, 31, 0.2);
+    background: rgba(22, 45, 66, 0.85);
+    border-color: rgba(123, 184, 217, 0.5);
+    box-shadow: 
+        0 8px 20px rgba(8, 20, 31, 0.3),
+        0 0 10px rgba(123, 184, 217, 0.15);
+    transform: translateY(-1px);
 }
 
+/* 💡 項目見出し（総合運、恋愛運など）の色変更 */
 .fortune-item h3 {
     margin-top: 0;
-    margin-bottom: 8px;
-    font-size: 1.1rem;
-    color: #000000;
+    margin-bottom: 10px;
+    font-size: 1.15rem;
+    color: var(--frame); /* 💡 暗黒に映えるライトブルーに変更 */
+    letter-spacing: 0.06em;
+    font-weight: 700;
 }
 
+/* 💡 本文テキストの色変更 */
 .fortune-item p {
     margin: 0;
-    line-height: 1.6; /* 行間を広げて視認性をアップ */
-    color: #000000;
+    line-height: 1.7;
+    color: var(--ink); /* 💡 読みやすい白に近い水色に変更 */
+    font-size: 0.98rem;
 }
 
 .reset-area {
@@ -244,12 +257,14 @@ h1 {
 .btn-reset {
     min-width: 200px;
 }
+
+/* 💡 プライバシーの注意書きもダークモード用に調整 */
 .privacy-note {
     margin-top: 24px;
     padding-top: 16px;
-    border-top: 1px solid #e0e0e0; /* 上側に薄いグレーの区切り線 */
-    font-size: 0.85rem;            /* 文字を少し小さくして控えめに */
-    color: #708090;               /* クールなスレートグレーの文字色 */
-    text-align: center;            /* 中央寄せ */
+    border-top: 1px dashed rgba(255, 255, 255, 0.1); /* 💡 白い点線に変更 */
+    font-size: 0.8rem;
+    color: #aaa2cb; /* 💡 タロット側と同じ落ち着いた色に変更 */
+    text-align: center;
     line-height: 1.5;
 }

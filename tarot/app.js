@@ -13,6 +13,14 @@ const initialImagePath = "../images/000_taroura.png";
 const initialMessage = "カードに尋ねたいことを思い浮かべて引くとよいでしょう";
 let imageTransitionToken = 0;
 
+// 💡 爆速連打対策：すべてのカード画像をあらかじめブラウザに読み込ませる（プリロード）
+if (typeof tarotDeck !== 'undefined' && Array.isArray(tarotDeck)) {
+    tarotDeck.forEach((card) => {
+        const img = new Image();
+        img.src = card.image;
+    });
+}
+
 const showDrawButton = () => {
     buttonElement.classList.remove("hidden");
     resetButtonElement.classList.add("hidden");
@@ -40,31 +48,29 @@ const resetToInitialState = () => {
         cardImage.alt = "タロットカード";
         cardImage.style.opacity = "1";
         cardImage.style.transform = "scale(1.02)";
-        resultElement.innerHTML = initialMessage; // HTML構造をクリアするためinnerHTMLに統一
+        resultElement.innerHTML = initialMessage;
         showDrawButton();
     }, fadeOutDuration);
 };
 
-// 💡 画像の読み込みと回転のアニメーションを完全に同期させる関数
+// 💡 画像の切り替えと回転を完全に同期させる関数（連打最適化版）
 const updateCardImageAndRotation = (selectedCard, isReversed) => {
     if (!cardImage) return;
 
     const thisToken = ++imageTransitionToken;
 
-    // 1. まず一旦カードを透明にして、回転クラスを外す（アニメーションの準備）
+    // 1. まず一旦カードを透明にして、回転クラスを外す
     cardImage.style.opacity = "0";
     cardElement.classList.remove("reversed");
 
-    // 2. 新しい画像のURLをセット（キャッシュ対策として後ろにランダムな文字を付与）
-    const cacheBuster = selectedCard.image.includes('?') ? `&t=${Date.now()}` : `?t=${Date.now()}`;
-    cardImage.src = selectedCard.image + cacheBuster;
+    // 2. 画像のURLをセット（事前読み込みされているので一瞬で切り替わります）
+    cardImage.src = selectedCard.image;
     cardImage.alt = selectedCard.name;
 
-    // 3. 画像が完全に読み込まれたら実行する処理
     const revealCard = () => {
         if (thisToken !== imageTransitionToken) return;
 
-        // iPadの画面更新タイミングに合わせて、確実に「回転」と「表示」を同時に行う
+        // ブラウザの描画タイミングに完全同期させ、回転と表示を一気に行う
         requestAnimationFrame(() => {
             requestAnimationFrame(() => {
                 if (isReversed) {
@@ -75,13 +81,12 @@ const updateCardImageAndRotation = (selectedCard, isReversed) => {
         });
     };
 
-    // すでに画像がキャッシュされていて読み込み完了している場合
+    // 事前読み込みのおかげでほぼcompleteになります
     if (cardImage.complete) {
         revealCard();
         return;
     }
 
-    // まだ読み込まれていない場合はロードイベントを待つ
     cardImage.addEventListener("load", revealCard, { once: true });
 };
 
@@ -90,7 +95,6 @@ buttonElement.addEventListener("click", () => {
     const selectedCard = tarotDeck[randomIndex];
     const isReversed = Math.random() < 0.3;
 
-    // 💡 画像変更と回転処理を一本化して確実に実行させる
     updateCardImageAndRotation(selectedCard, isReversed);
 
     const positionText = isReversed ? "逆位置" : "正位置";

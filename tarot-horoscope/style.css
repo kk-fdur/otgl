@@ -375,12 +375,16 @@ h1 {
     gap: 0.5rem;
 }
 
+/* 各運勢テキストが綺麗に左端から折り返されるようにする設定 */
 .detail-text {
     margin: 0;
-    font-size: 0.95rem;
-    line-height: 1.7;
-    color: #e0e6ed;
-    white-space: pre-wrap; /* 改行を綺麗に保ちます */
+    line-height: 1.75;
+    color: var(--ink);
+    font-size: 0.98rem;
+    text-align: left; /* 💡 確実に左詰めにする */
+    white-space: normal;
+    word-break: break-word;
+    overflow-wrap: break-word;
 }
 
 /* 各項目のテーマカラー（アクセント） */

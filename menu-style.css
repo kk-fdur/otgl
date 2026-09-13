@@ -71,14 +71,14 @@ body {
     box-shadow: 0 6px 20px var(--shadow);
 }
 
-/* カード全体のコンテナ */
+/* カード全体のコンテナ（2カラムの右側エリアになります） */
 .menu-cards {
     display: flex;
     flex-direction: column; 
     gap: 18px; 
     max-width: 680px; 
     width: 100%;
-    margin: 0 auto 40px;
+    margin: 0; /* 💡 2カラム化に伴い、中央寄せの margin を 0 に変更 */
 }
 
 /* 各メニューカード */
@@ -343,5 +343,41 @@ body {
     .shop-info-board {
         margin-bottom: 24px;
         padding: 14px 18px;
+    }
+}
+/* 🔮 画面が広いとき（iPad横向き・パソコンなど）だけ美しい2カラムにする魔法 */
+@media (min-width: 992px) {
+    /* お知らせとメニューを横に並べるための親要素の調整 */
+    .container {
+        max-width: 1100px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 1fr; /* タイトル等は通常通り */
+        justify-items: center;
+    }
+
+    /* 💡 タイトル下の要素（お知らせ枠とメニュー枠）を横並びの2カラムに結合 */
+    .menu-wrap-2col {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        justify-content: center;
+        gap: 32px; /* 左と右の隙間 */
+        width: 100%;
+        margin: 0 auto 40px auto;
+    }
+
+    /* 左側：お知らせボードを左に固定 */
+    .ai-announcement, .shop-info-board {
+        margin: 0 0 18px 0;
+        max-width: 380px; /* 横並び用に少しスリムに */
+    }
+    
+    /* お知らせ2つを束ねる左側カラム */
+    .left-column {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        max-width: 380px;
     }
 }

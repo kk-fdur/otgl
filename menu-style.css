@@ -48,17 +48,33 @@ body {
 }
 
 .subtitle {
-    margin: 0 0 50px;
+    margin: 0 0 32px; /* 💡 ボックスが入るので50pxから32pxに少し縮めてバランス調整 */
     font-size: clamp(1rem, 2.5vw, 1.3rem);
     color: var(--muted);
     letter-spacing: 0.1em;
     font-weight: 400;
 }
 
+/* 💡 冒頭のAIお知らせボックス（枠は中央・文字は読みやすい左詰め） */
+.ai-announcement {
+    max-width: 550px;
+    width: 100%;
+    margin: 0 auto 40px auto; /* 💡 ボックスの下側に40pxの余白をとって引き締める */
+    padding: 18px 24px;
+    font-size: 0.92rem;
+    line-height: 1.75;
+    color: #b7d8f3;
+    background: rgba(17, 35, 52, 0.55); /* 💡 背景を少しだけ濃くして視認性アップ */
+    border: 1px dashed rgba(123, 184, 217, 0.35);
+    border-radius: 12px;
+    text-align: left; /* 💡 文字の頭を左側に綺麗に揃える */
+    box-shadow: 0 6px 20px var(--shadow);
+}
+
 /* カード全体のコンテナ */
 .menu-cards {
     display: flex;
-    flex-direction: column; /* 縦並び */
+    flex-direction: column; 
     gap: 18px; 
     max-width: 680px; 
     width: 100%;
@@ -68,8 +84,8 @@ body {
 /* 各メニューカード */
 .menu-card {
     display: flex;
-    flex-direction: row; /* 横並び */
-    align-items: center; /* 上下中央揃え */
+    flex-direction: row; 
+    align-items: center; 
     justify-content: flex-start;
     padding: 22px 24px 22px 18px; 
     background:
@@ -87,6 +103,18 @@ body {
         inset 0 0 20px rgba(138, 201, 234, 0.1);
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
+}
+
+/* カードホバー時のエフェクト（全体の統一感アップ用） */
+.menu-card:hover {
+    border-color: rgba(123, 184, 217, 0.8);
+    background:
+        linear-gradient(135deg, rgba(255,255,255,0.16), rgba(111, 177, 216, 0.08)),
+        linear-gradient(180deg, #1d4563 0%, #12324e 100%);
+    box-shadow: 
+        0 12px 32px var(--shadow),
+        0 0 15px rgba(123, 184, 217, 0.1);
+    transform: translateY(-2px);
 }
 
 /* アイコン */
@@ -110,12 +138,12 @@ body {
     color: #edf8ff;
 }
 
-/* ★ご希望の説明文（pタグ）の設定 */
+/* 説明文（pタグ）の設定 */
 .card-body p {
-    font-size: 17px;        /* 文字を大きく */
+    font-size: 17px;        
     margin: 0;
     line-height: 1.5; 
-    opacity: 0.95;          /* 文字をハッキリくっきり表示 */
+    opacity: 0.95;          
     color: var(--muted);
     overflow-wrap: anywhere;
     word-break: keep-all;
@@ -138,7 +166,7 @@ body {
 /* プライバシーノート（外周ボックス） */
 .site-privacy-note {
     margin-top: 50px;
-    padding: 20px; /* 上下の余白を少しだけ広げて全体を包みやすく */
+    padding: 20px; 
     background: rgba(255, 255, 255, 0.05);
     border-radius: 8px;
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -152,7 +180,7 @@ body {
     font-size: 0.8rem;
     line-height: 1.6;
     color: #aaa2cb;
-    margin: 0 0 8px 0; /* 下側だけに少し余白を入れ、上側の余白をゼロに */
+    margin: 0 0 8px 0; 
     text-align: left;
 }
 
@@ -163,12 +191,12 @@ body {
 
 /* 著作権注意書きブロックの仕切り線 */
 .copyright-note {
-    border-bottom: 1px dashed rgba(170, 162, 203, 0.3); /* テキストの色に合わせた薄い紫の点線 */
+    border-bottom: 1px dashed rgba(170, 162, 203, 0.3); 
     padding-bottom: 15px;
     margin-bottom: 15px;
 }
 
-/* コピーライト（一番小さな文字）の調整 */
+/* コピーライトの調整 */
 .copyright-note .cr-date {
     font-size: 0.75rem;
     opacity: 0.7;
@@ -180,7 +208,17 @@ body {
     color: #bfa3ff; 
 }
 .combo-card:hover {
-    border-color: rgba(191, 163, 255, 0.8); 
+    border-color: rgba(191, 163, 255, 0.8) !important; 
+}
+
+/* 🗝️ 秘密のイベント館ボタンのスタイル */
+.event-card {
+    border-color: rgba(255, 255, 255, 0.15);
+    background: linear-gradient(180deg, #1f2326 0%, #111314 100%) !important; 
+}
+.event-card:hover {
+    border-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 10px 30px rgba(255, 255, 255, 0.05);
 }
 
 /* レスポンシブ対応（スマホ画面） */
@@ -198,37 +236,16 @@ body {
     }
 
     .subtitle {
-        margin-bottom: 32px;
+        margin-bottom: 24px;
+    }
+    
+    .ai-announcement {
+        margin-bottom: 30px;
+        padding: 14px 18px;
+        font-size: 0.85rem;
     }
 
-    /* スマホでは文字が大きすぎるとはみ出すため、少しだけ自動調整 */
     .card-body p {
         font-size: 15px;
     }
-}
-/* 🗝️ 秘密のイベント館ボタンのスタイル */
-.event-card {
-    border-color: rgba(255, 255, 255, 0.15);
-    background: linear-gradient(180deg, #1f2326 0%, #111314 100%) !important; /* 普段は鍵がかかったようなモノトーン */
-}
-.event-card:hover {
-    border-color: rgba(255, 255, 255, 0.5);
-    box-shadow: 0 10px 30px rgba(255, 255, 255, 0.05);
-}
-/* 💡 冒頭のAIお知らせボックス */
-/* 💡 冒頭のAIお知らせボックス（読みやすさ最優先版） */
-.ai-announcement {
-    max-width: 550px;
-    margin: 0 auto 24px auto; /* 枠自体を画面の中央に配置 */
-    padding: 16px 24px;
-    font-size: 0.9rem;
-    line-height: 1.7;
-    color: #b7d8f3;
-    background: rgba(17, 35, 52, 0.4);
-    border: 1px dashed rgba(123, 184, 217, 0.3);
-    border-radius: 10px;
-    
-    /* 💡 ここがポイント！ */
-    text-align: left; /* 文字の頭を左側にピシッと揃える */
-    display: inline-block; /* 枠の横幅を中身に合わせるお守り */
 }

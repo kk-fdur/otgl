@@ -48,37 +48,139 @@ body {
 }
 
 .subtitle {
-    margin: 0 0 32px; /* 💡 ボックスが入るので50pxから32pxに少し縮めてバランス調整 */
+    margin: 0 0 32px;
     font-size: clamp(1rem, 2.5vw, 1.3rem);
     color: var(--muted);
     letter-spacing: 0.1em;
     font-weight: 400;
 }
 
-/* 💡 冒頭のAIお知らせボックス（枠は中央・文字は読みやすい左詰め） */
+/* 💡 初期状態（スマホなど）では縦に積む1カラム */
+.menu-wrap-2col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 0;
+}
+
+.left-column {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+}
+
+/* 💡 冒頭のAIお知らせボックス */
 .ai-announcement {
     max-width: 550px;
     width: 100%;
-    margin: 0 auto 40px auto; /* 💡 ボックスの下側に40pxの余白をとって引き締める */
+    margin: 0 auto 18px auto;
     padding: 18px 24px;
     font-size: 0.92rem;
     line-height: 1.75;
     color: #b7d8f3;
-    background: rgba(17, 35, 52, 0.55); /* 💡 背景を少しだけ濃くして視認性アップ */
+    background: rgba(17, 35, 52, 0.55);
     border: 1px dashed rgba(123, 184, 217, 0.35);
     border-radius: 12px;
-    text-align: left; /* 💡 文字の頭を左側に綺麗に揃える */
+    text-align: left;
     box-shadow: 0 6px 20px var(--shadow);
 }
 
-/* カード全体のコンテナ（2カラムの右側エリアになります） */
+/* 🔮 新設：占い屋の回覧板（お知らせ＆SNS） */
+.shop-info-board {
+    max-width: 550px;
+    width: 100%;
+    margin: 0 auto 32px auto;
+    padding: 16px 20px;
+    background: rgba(17, 35, 52, 0.3);
+    border: 1px solid rgba(123, 184, 217, 0.15);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    text-align: left;
+    box-shadow: 0 4px 15px var(--shadow);
+}
+
+.info-tag {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--frame);
+    background: rgba(123, 184, 217, 0.12);
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-bottom: 8px;
+    letter-spacing: 0.05em;
+}
+
+.info-list {
+    margin: 0;
+    padding-left: 18px;
+    color: var(--muted);
+    font-size: 0.85rem;
+    line-height: 1.6;
+}
+
+.info-list li {
+    margin-bottom: 4px;
+    list-style-type: square;
+}
+
+.info-list li:last-child {
+    margin-bottom: 0;
+}
+
+.sns-section {
+    border-top: 1px dashed rgba(123, 184, 217, 0.15);
+    padding-top: 12px;
+}
+
+.sns-links {
+    display: flex;
+    gap: 16px;
+    padding-left: 4px;
+}
+
+.sns-link {
+    font-size: 0.85rem;
+    color: #edf8ff;
+    text-decoration: none;
+    position: relative;
+    transition: color 0.2s ease;
+}
+
+.sns-link::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    transform: scaleX(0);
+    height: 1px;
+    bottom: -2px;
+    left: 0;
+    background-color: var(--frame);
+    transform-origin: bottom right;
+    transition: transform 0.25s ease-out;
+}
+
+.sns-link:hover {
+    color: var(--frame);
+}
+
+.sns-link:hover::after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+}
+
+/* カード全体のコンテナ */
 .menu-cards {
     display: flex;
     flex-direction: column; 
     gap: 18px; 
     max-width: 680px; 
     width: 100%;
-    margin: 0; /* 💡 2カラム化に伴い、中央寄せの margin を 0 に変更 */
+    margin: 0 auto 40px auto;
 }
 
 /* 各メニューカード */
@@ -105,7 +207,6 @@ body {
     -webkit-tap-highlight-color: transparent;
 }
 
-/* カードホバー時のエフェクト（全体の統一感アップ用） */
 .menu-card:hover {
     border-color: rgba(123, 184, 217, 0.8);
     background:
@@ -117,14 +218,12 @@ body {
     transform: translateY(-2px);
 }
 
-/* アイコン */
 .card-icon {
     font-size: 36px; 
     margin-right: 12px;
     flex-shrink: 0;
 }
 
-/* テキストエリア（タイトルと説明文） */
 .card-body {
     flex-grow: 1;
     text-align: left;
@@ -138,7 +237,6 @@ body {
     color: #edf8ff;
 }
 
-/* 説明文（pタグ）の設定 */
 .card-body p {
     font-size: 17px;        
     margin: 0;
@@ -149,7 +247,6 @@ body {
     word-break: keep-all;
 }
 
-/* 右端の矢印リンク */
 .card-link {
     font-size: 22px; 
     margin-left: 16px;
@@ -173,9 +270,9 @@ body {
     max-width: 600px;
     margin-left: auto;
     margin-right: auto;
+    width: 100%;
 }
 
-/* ボックス内のすべての段落の共通設定 */
 .site-privacy-note p {
     font-size: 0.8rem;
     line-height: 1.6;
@@ -184,26 +281,22 @@ body {
     text-align: left;
 }
 
-/* 最後の段落（一番下）だけは下マージンを無くす */
 .site-privacy-note p:last-child {
     margin-bottom: 0;
 }
 
-/* 著作権注意書きブロックの仕切り線 */
 .copyright-note {
     border-bottom: 1px dashed rgba(170, 162, 203, 0.3); 
     padding-bottom: 15px;
     margin-bottom: 15px;
 }
 
-/* コピーライトの調整 */
 .copyright-note .cr-date {
     font-size: 0.75rem;
     opacity: 0.7;
     margin-top: 4px;
 }
 
-/* 特定のカード専用スタイル */
 .combo-card .card-link {
     color: #bfa3ff; 
 }
@@ -211,7 +304,6 @@ body {
     border-color: rgba(191, 163, 255, 0.8) !important; 
 }
 
-/* 🗝️ 秘密のイベント館ボタンのスタイル */
 .event-card {
     border-color: rgba(255, 255, 255, 0.15);
     background: linear-gradient(180deg, #1f2326 0%, #111314 100%) !important; 
@@ -219,6 +311,39 @@ body {
 .event-card:hover {
     border-color: rgba(255, 255, 255, 0.5);
     box-shadow: 0 10px 30px rgba(255, 255, 255, 0.05);
+}
+
+/* 🔮 【ここが魔法】画面が広いとき（iPad横向き・パソコンなど）だけ美しい2カラムにする */
+@media (min-width: 992px) {
+    .container {
+        max-width: 1150px;
+        margin: 0 auto;
+    }
+
+    .menu-wrap-2col {
+        flex-direction: row;
+        align-items: flex-start;
+        justify-content: center;
+        gap: 32px;
+        width: 100%;
+        margin: 0 auto 40px auto;
+    }
+
+    .left-column {
+        max-width: 400px;
+        flex-shrink: 0;
+    }
+
+    .ai-announcement, .shop-info-board {
+        margin: 0 0 20px 0;
+        max-width: 100%;
+    }
+
+    .menu-cards {
+        margin: 0;
+        flex-grow: 1;
+        max-width: 680px;
+    }
 }
 
 /* レスポンシブ対応（スマホ画面） */
@@ -240,144 +365,17 @@ body {
     }
     
     .ai-announcement {
-        margin-bottom: 30px;
+        margin-bottom: 18px;
         padding: 14px 18px;
         font-size: 0.85rem;
     }
 
-    .card-body p {
-        font-size: 15px;
-    }
-}
-/* 🔮 新設：占い屋の回 回覧板（お知らせ＆SNS） */
-.shop-info-board {
-    max-width: 550px;
-    width: 100%;
-    margin: 0 auto 32px auto;
-    padding: 16px 20px;
-    background: rgba(17, 35, 52, 0.3); /* AIお知らせよりさらにうっすら半透明 */
-    border: 1px solid rgba(123, 184, 217, 0.15); /* 細く繊細な枠線 */
-    border-radius: 12px;
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-    text-align: left;
-    box-shadow: 0 4px 15px var(--shadow);
-}
-
-.info-tag {
-    display: inline-block;
-    font-size: 0.75rem;
-    font-weight: 700;
-    color: var(--frame);
-    background: rgba(123, 184, 217, 0.12);
-    padding: 2px 8px;
-    border-radius: 4px;
-    margin-bottom: 8px;
-    letter-spacing: 0.05em;
-}
-
-/* お知らせリスト */
-.info-list {
-    margin: 0;
-    padding-left: 18px; /* 点の内側の余白 */
-    color: var(--muted);
-    font-size: 0.85rem;
-    line-height: 1.6;
-}
-
-.info-list li {
-    margin-bottom: 4px;
-    list-style-type: square; /* 可愛い四角のバレット */
-}
-
-.info-list li:last-child {
-    margin-bottom: 0;
-}
-
-/* SNSリンクエリア */
-.sns-section {
-    border-top: 1px dashed rgba(123, 184, 217, 0.15); /* セクション間の細い仕切り */
-    padding-top: 12px;
-}
-
-.sns-links {
-    display: flex;
-    gap: 16px;
-    padding-left: 4px;
-}
-
-.sns-link {
-    font-size: 0.85rem;
-    color: #edf8ff;
-    text-decoration: none;
-    position: relative;
-    transition: color 0.2s ease;
-}
-
-/* SNSリンクの下にこっそり光る線 */
-.sns-link::after {
-    content: "";
-    position: absolute;
-    width: 100%;
-    transform: scaleX(0);
-    height: 1px;
-    bottom: -2px;
-    left: 0;
-    background-color: var(--frame);
-    transform-origin: bottom right;
-    transition: transform 0.25s ease-out;
-}
-
-.sns-link:hover {
-    color: var(--frame);
-}
-
-.sns-link:hover::after {
-    transform: scaleX(1);
-    transform-origin: bottom left;
-}
-
-/* スマホ対応（横幅いっぱいに綺麗に収める） */
-@media (max-width: 768px) {
     .shop-info-board {
-        margin-bottom: 24px;
+        margin-bottom: 32px;
         padding: 14px 18px;
     }
-}
-/* 🔮 画面が広いとき（iPad横向き・パソコンなど）だけ美しい2カラムにする魔法 */
-@media (min-width: 992px) {
-    /* お知らせとメニューを横に並べるための親要素の調整 */
-    .container {
-        max-width: 1100px;
-        margin: 0 auto;
-        display: grid;
-        grid-template-columns: 1fr; /* タイトル等は通常通り */
-        justify-items: center;
-    }
 
-    /* 💡 タイトル下の要素（お知らせ枠とメニュー枠）を横並びの2カラムに結合 */
-    .menu-wrap-2col {
-        display: flex;
-        flex-direction: row;
-        align-items: flex-start;
-        justify-content: center;
-        gap: 32px; /* 左と右の隙間 */
-        width: 100%;
-        margin: 0 auto 40px auto;
-    }
-
-    /* 左側：お知らせボードを左に固定 */
-    .ai-announcement, .shop-info-board {
-        margin: 0 0 18px 0;
-        max-width: 380px; /* 横並び用に少しスリムに */
-    }
-    
-    /* お知らせ2つを束ねる左側カラム */
-    .left-column {
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-        max-width: 380px;
+    .card-body p {
+        font-size: 15px;
     }
 }

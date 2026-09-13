@@ -74,7 +74,6 @@ h1 {
     box-shadow:
         0 18px 35px var(--shadow),
         inset 0 0 18px rgba(138, 201, 234, 0.2);
-    /* 💡 iPadでの回転を確実にするため transform を復活 */
     transition: transform 0.4s cubic-bezier(.2,.8,.2,1), box-shadow 0.4s ease, filter 0.4s ease, opacity 0.25s ease;
     position: relative;
     
@@ -146,7 +145,7 @@ h1 {
     transition: transform 0.4s cubic-bezier(.2,.8,.2,1);
 }
 
-/* 💡 カードが逆位置になったとき、透かしだけ逆回転させて向きをキープする */
+/* カードが逆位置になったとき、透かしだけ逆回転させて向きをキープ */
 .card-display.reversed .watermark-overlay {
     transform: rotate(-180deg);
 }
@@ -209,12 +208,12 @@ h1 {
         0 2px 0 rgba(31, 72, 105, 0.8);
 }
 
-/* 🔮 結果のテキストボックス（サイズアップ版） */
+/* 🔮 結果のテキストボックス */
 #result-text {
-    max-width: 640px; /* 💡 520px から 640px に広げて大きくしました */
+    max-width: 640px;
     margin: 0 auto 24px auto;
-    padding: 30px 40px; /* 💡 内側の余白も広げてゆったりさせました */
-    font-size: 1.1rem;   /* 💡 文字もほんの少し大きく調整 */
+    padding: 30px 40px;
+    font-size: 1.1rem;
     line-height: 1.9;
     color: var(--ink);
     letter-spacing: 0.06em;
@@ -238,7 +237,26 @@ h1 {
     pointer-events: none;
 }
 
-/* 💡 カード結果の下のグラデーションラインを追加 */
+/* 💡 【追加】占い結果の「カードタイトル」のデザインと下線 */
+.result-card-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #edf8ff;
+    text-align: center;
+    padding-bottom: 14px;
+    margin-bottom: 18px;
+    letter-spacing: 0.08em;
+    /* 中央から左右に薄くなる神秘的な光るライン */
+    border-bottom: 1px solid transparent;
+    background: linear-gradient(90deg, transparent, rgba(123, 184, 217, 0.6) 20%, rgba(123, 184, 217, 0.6) 80%, transparent) bottom / 100% 1px no-repeat;
+}
+
+/* 💡 【追加】占い結果の「解説本文」用のデザイン（初期表示時と分けるため） */
+.result-card-detail {
+    display: block;
+}
+
+/* ボックスの一番下のグラデーションライン（前回のものも綺麗に残してあります） */
 #result-text::after {
     content: "";
     display: block;

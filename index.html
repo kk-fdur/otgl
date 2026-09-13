@@ -1,96 +1,93 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>こきょうの占い屋</title>
-    <link rel="stylesheet" href="menu-style.css">
-</head>
 <body>
-        <div class="container">
+    <div class="container">
         <h1 class="main-title">🎴 占い屋 🎴</h1>
-        
-        <!-- 💡 ポジティブな手書き情報を先出しした読みやすい文章 -->
-                <!-- 💡 冒頭のAIお知らせボックス -->
-        <div class="ai-announcement">
-            📢 「今月の12星座運勢リーディング」と「秘密のイベント館」の診断結果テキストは、〇〇がすべて作成しています。<br>
-            それ以外のコンテンツにおける診断結果は、AIと共同制作しました。<br>
-            「当たるも八卦、当たらぬも八卦」。日々のちょっとしたヒントとして、気楽に楽しんでいただければ幸いです。
-        </div>
-
-        <!-- 🔮 【新設】占い屋の回覧板（お知らせ ＆ SNSリンク） -->
-        <div class="shop-info-board">
-            <div class="info-section">
-                <span class="info-tag">✨ 更新情報</span>
-                <ul class="info-list">
-                    <li>2026.09.14 🌙 「星札術」の項目別表示バグを修正しました</li>
-                    <li>2026.09.13 🃏 528通りのタロットデータを絶賛構築中です！</li>
-                </ul>
-            </div>
-            <div class="sns-section">
-                <span class="info-tag">🗝️ 案内状</span>
-                <div class="sns-links">
-                    <a href="あなたのSNSのURL" target="_blank" rel="noopener" class="sns-link">X (Twitter)</a>
-                    <a href="あなたのSNSのURL" target="_blank" rel="noopener" class="sns-link">Instagram</a>
-                </div>
-            </div>
-        </div>
-
         <p class="subtitle">気になる占いを選んでください</p>
-    
-        <div class="menu-cards">
-            <!-- 1. 今月の12星座運勢リーディング（1番上） -->
-            <a href="monthly/index.html" class="menu-card monthly-card">
-                <div class="card-icon">🌙</div>
-                <div class="card-body">
-                    <h2>今月の12星座運勢リーディング</h2>
-                    <p>タロットと星が紡ぐ全体運・恋愛対人・健康運を毎月お届け。</p>
+        
+        <!-- 💡 左右の2カラムを包む大枠 -->
+        <div class="menu-wrap-2col">
+            
+            <!-- 💡 左カラム：お知らせ＆回覧板 -->
+            <div class="left-column">
+                <div class="ai-announcement">
+                    📢 「今月の12星座運勢リーディング」と「秘密のイベント館」の診断結果テキストは、〇〇がすべて作成しています。<br>
+                    それ以外のコンテンツにおける診断結果は、AIと共同制作しました。<br>
+                    「当たるも八卦、当たらぬも八卦」。日々のちょっとしたヒントとして、気楽に楽しんでいただければ幸いです。
                 </div>
-                <span class="card-link">→</span>
-            </a>
 
-            <!-- 2. 星札術（タロット×星座） -->
-            <a href="tarot-horoscope/index.html" class="menu-card combo-card">
-                <div class="card-icon">🔮</div>
-                <div class="card-body">
-                    <h2>星札術（タロット×星座）</h2>
-                    <p>星座とタロットを重ね合わせ、少し深い運命のメッセージを。</p>
+                <div class="shop-info-board">
+                    <div class="info-section">
+                        <span class="info-tag">✨ 更新情報</span>
+                        <ul class="info-list">
+                            <li>2026.09.14 🌙 「星札術」の項目別表示バグを修正しました</li>
+                            <li>2026.09.13 🃏 528通りのタロットデータを絶賛構築中です！</li>
+                        </ul>
+                    </div>
+                    <div class="sns-section">
+                        <span class="info-tag">🗝️ 案内状</span>
+                        <div class="sns-links">
+                            <a href="あなたのSNSのURL" target="_blank" rel="noopener" class="sns-link">X (Twitter)</a>
+                            <a href="あなたのSNSのURL" target="_blank" rel="noopener" class="sns-link">Instagram</a>
+                        </div>
+                    </div>
                 </div>
-                <span class="card-link">→</span>
-            </a>
-            
-            <!-- 3. ぷち札占い（タロット） -->
-            <a href="tarot/index.html" class="menu-card tarot-card">
-                <div class="card-icon">🃏</div>
-                <div class="card-body">
-                    <h2>ぷち札占い（タロット）</h2>
-                    <p>オリジナル大アルカナ22枚から今必要かもしれない言葉を。</p>
-                </div>
-                <span class="card-link">→</span>
-            </a>
-            
-            <!-- 4. 星座占い -->
-            <a href="horoscope/index.html" class="menu-card horoscope-card">
-                <div class="card-icon">✨</div>
-                <div class="card-body">
-                    <h2>星座占い</h2>
-                    <p>天体が示す今日の恋愛・仕事・金運などを日替わりでお届け。</p>
-                </div>
-                <span class="card-link">→</span>
-            </a>
-            <!-- 🎃🎄🍫 追加：秘密のイベント館へのリンクボタン -->
-            <a href="event/index.html" class="menu-card event-card">
-                <div class="card-icon">🗝️</div>
-                <div class="card-body">
-                    <h2>秘密のイベント館</h2>
-                    <p>ハロウィンやクリスマスなど特別な祝祭の日だけのひっそり占い。</p>
-                </div>
-                <span class="card-link">→</span>
-            </a>
-        </div>
+            </div> <!-- /left-column -->
+
+            <!-- 💡 右カラム：占いメニューカード一覧 -->
+            <div class="menu-cards">
+                <!-- 1. 今月の12星座運勢リーディング -->
+                <a href="monthly/index.html" class="menu-card monthly-card">
+                    <div class="card-icon">🌙</div>
+                    <div class="card-body">
+                        <h2>今月の12星座運勢リーディング</h2>
+                        <p>タロットと星が紡ぐ全体運・恋愛対人・健康運を毎月お届け。</p>
+                    </div>
+                    <span class="card-link">→</span>
+                </a>
+
+                <!-- 2. 星札術（タロット×星座） -->
+                <a href="tarot-horoscope/index.html" class="menu-card combo-card">
+                    <div class="card-icon">🔮</div>
+                    <div class="card-body">
+                        <h2>星札術（タロット×星座）</h2>
+                        <p>星座とタロットを重ね合わせ、少し深い運命のメッセージを。</p>
+                    </div>
+                    <span class="card-link">→</span>
+                </a>
+                
+                <!-- 3. ぷち札占い（タロット） -->
+                <a href="tarot/index.html" class="menu-card tarot-card">
+                    <div class="card-icon">🃏</div>
+                    <div class="card-body">
+                        <h2>ぷち札占い（タロット）</h2>
+                        <p>オリジナル大アルカナ22枚から今必要かもしれない言葉を。</p>
+                    </div>
+                    <span class="card-link">→</span>
+                </a>
+                
+                <!-- 4. 星座占い -->
+                <a href="horoscope/index.html" class="menu-card horoscope-card">
+                    <div class="card-icon">✨</div>
+                    <div class="card-body">
+                        <h2>星座占い</h2>
+                        <p>天体が示す今日の恋愛・仕事・金運などを日替わりでお届け。</p>
+                    </div>
+                    <span class="card-link">→</span>
+                </a>
+
+                <!-- 5. 秘密のイベント館 -->
+                <a href="event/index.html" class="menu-card event-card">
+                    <div class="card-icon">🗝️</div>
+                    <div class="card-body">
+                        <h2>秘密のイベント館</h2>
+                        <p>ハロウィンやクリスマスなど特別な祝祭の日だけのひっそり占い。</p>
+                    </div>
+                    <span class="card-link">→</span>
+                </a>
+            </div> <!-- /menu-cards -->
+
+        </div> <!-- /menu-wrap-2col -->
 
         <footer class="site-privacy-note">
-            <!-- 🔮 タロット画像の無断転載に関する注意書き -->
             <div class="copyright-note">
                 <p><strong>【占いを楽しんでいただくために】</strong></p>
                 <p>「ぷち札占い」と「星札術」で使用しているタロットカードは、すべて心を込めて描いたオリジナルのイラストです。</p>
@@ -99,10 +96,7 @@
                 <p>ご理解とご協力をお願いいたします。</p>
                 <p class="cr-date">© 2026 こきょうの占い屋. All Rights Reserved.</p>
             </div>
-
-            <!-- 🔒 既存のプライバシーポリシー -->
             <p>※当サイトは GitHub Pages を利用して公開されています。利用者の選択したデータや個人情報が外部サーバーへ転送・保管されることは一切ありません。すべての処理はご使用の端末（ブラウザ）内でのみ安全に完結します。</p>
         </footer>
-        </div>
+    </div>
 </body>
-</html>

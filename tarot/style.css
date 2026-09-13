@@ -58,7 +58,7 @@ h1 {
     text-shadow: 0 1px 0 rgba(7, 17, 29, 0.7);
 }
 
-/* 💡タロットカードの見た目（CSS） */
+/* 🔮 タロットカードの見た目 */
 .card-display {
     width: 220px;
     height: 340px;
@@ -75,11 +75,13 @@ h1 {
     box-shadow:
         0 18px 35px var(--shadow),
         inset 0 0 18px rgba(138, 201, 234, 0.2);
-    transition: transform 0.4s ease, cubic-bezier(.2,.8,.2,1), box-shadow 0.4s ease, filter 0.4s ease, opacity 0.25s ease;
-    transform-origin: center center;
-    transform-style: preserve-3d;
-    -webkit-transform-style: preserve-3d;
+    transition: box-shadow 0.4s ease, filter 0.4s ease, opacity 0.25s ease;
     position: relative;
+    
+    /* iPadの長押しメニューをカード全体でブロック */
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
 }
 
 .card-display::before {
@@ -111,19 +113,40 @@ h1 {
     opacity: 1;
     transform: scale(1.02);
     transform-origin: center center;
-    transition: transform 0.4s ease, opacity 0.4s ease, filter 0.4s ease;
+    transition: transform 0.4s cubic-bezier(.2,.8,.2,1), opacity 0.4s ease, filter 0.4s ease;
 }
 
 .card-display:hover {
-    transform: translateY(-2px);
     box-shadow:
         0 22px 42px rgba(13, 38, 57, 0.28),
         inset 0 0 18px rgba(138, 201, 234, 0.2);
 }
 
+/* ⚠️ 逆位置（.reversed）のときは透かしを回さず、画像だけを回転させる */
 .card-display.reversed {
-    transform: rotateX(180deg) rotateZ(2.5deg) scale(1.02);
     filter: saturate(0.9) brightness(0.96);
+}
+.card-display.reversed img {
+    transform: scale(1.02) rotate(180deg);
+}
+
+/* 🔮 タロット画像の上にサイン画像を敷き詰めるバリア */
+.watermark-overlay {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    right: 5px;
+    bottom: 5px;
+    border-radius: 14px;
+    background-image: url('../images/watermark.png');
+    background-repeat: repeat;
+    background-size: 80px auto;
+    opacity: 0.2;
+    pointer-events: auto;
+    z-index: 5;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
 }
 
 /* 占うボタン */
@@ -132,7 +155,7 @@ h1 {
     justify-content: center;
     align-items: center;
     gap: 18px;
-    margin-top: 10px;
+    margin-top: 24px;
 }
 
 .btn {
@@ -184,18 +207,33 @@ h1 {
         0 2px 0 rgba(31, 72, 105, 0.8);
 }
 
-/* 結果のテキスト */
+/* 🔮 結果のテキストボックス（改良版） */
 #result-text {
-    margin: 0 0 18px;
-    font-size: 1.08rem;
-    min-height: 1.5em;
+    max-width: 520px;
+    margin: 0 auto 24px auto;
+    padding: 22px 28px;
+    font-size: 1.05rem;
     line-height: 1.8;
     color: var(--ink);
-    letter-spacing: 0.08em;
+    letter-spacing: 0.06em;
+    background: var(--paper);
+    border: 1px solid rgba(123, 184, 217, 0.25);
+    border-radius: 12px;
+    box-shadow: 
+        0 10px 25px var(--shadow),
+        inset 0 0 12px rgba(123, 184, 217, 0.05);
+    position: relative;
+    text-align: justify; /* 日本語の端を綺麗に揃える */
 }
 
-#card-image {
-    transition: opacity 0.22s ease, transform 0.35s ease, filter 0.25s ease;
+/* テキストボックスの内側に繊細なダブルフレーム線を演出 */
+#result-text::before {
+    content: "";
+    position: absolute;
+    inset: 4px;
+    border: 1px solid rgba(123, 184, 217, 0.12);
+    border-radius: 8px;
+    pointer-events: none;
 }
 
 .hidden {
@@ -209,41 +247,7 @@ h1 {
     border-radius: 6px;
     padding: 8px 12px;
     display: inline-block;
-    margin-top: 15px;
+    margin-top: 24px;
     margin-bottom: 15px;
     border: 1px dashed rgba(255, 255, 255, 0.1);
-    animation: fadeIn 0.5s ease forwards; /* リセットボタンと一緒にフワッと出す */
-}
-/* オリジナルタロット画像のコピー防止用スタイル */
-#card-image {
-    /* iPad / iPhone用：長押し時のメニューポップアップを禁止 */
-    -webkit-touch-callout: none;
-    
-    /* テキストや画像の選択を禁止 */
-    -webkit-user-select: none;
-    user-select: none;
-    
-    /* 画像のドラッグ＆ドロップを禁止 */
-    -moz-user-select: none;
-    pointer-events: none;
-}
-/* ぷち札占い：外枠を基準にする設定を追加 */
-#tarot-card {
-    position: relative; /* 👈 これが超重要！ */
-}
-
-/* 🔮 タロット画像の上にサイン画像を敷き詰めるバリア（ぷち札用） */
-.watermark-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%; /* これで裏面でも表面でも、画像と同じサイズに自動で吸い付きます */
-    
-    background-image: url('../images/watermark.png'); /* 小文字の.pngで指定 */
-    background-repeat: repeat;
-    background-size: 80px auto; /* 星札術で決めたベストなサイズに調整してください */
-    opacity: 0.2; /* 星札術で決めたベストな濃さに調整してください */
-    pointer-events: auto; /* 長押し・右クリックをここでキャッチして防衛 */
-    z-index: 5;
 }

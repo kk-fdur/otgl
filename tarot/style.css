@@ -281,3 +281,7 @@ h1 {
     margin-bottom: 15px;
     border: 1px dashed rgba(255, 255, 255, 0.1);
 }
+/* 占った後の解説文だけは、読みやすいように端を綺麗に揃える設定 */
+.result-card-detail {
+    text-align: justify;
+}

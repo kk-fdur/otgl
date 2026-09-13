@@ -99,7 +99,7 @@ buttonElement.addEventListener("click", () => {
 
     const positionText = isReversed ? "逆位置" : "正位置";
     const message = isReversed ? selectedCard.reversed : selectedCard.upright;
-    resultElement.innerHTML = `結果：${selectedCard.name}（${positionText}）<br>${message.replace(/\n/g, "<br>")}`;
+    resultElement.innerHTML = `<div class="result-card-title">結果：${selectedCard.name}（${positionText}）</div><div class="result-card-detail">${message.replace(/\n/g, "<br>")}</div>`;
     showResetButton();
 });
 

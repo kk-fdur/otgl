@@ -224,7 +224,7 @@ h1 {
         0 12px 30px var(--shadow),
         inset 0 0 15px rgba(123, 184, 217, 0.05);
     position: relative;
-    text-align: justify;
+    text-align: center;
 }
 
 /* テキストボックスの内側の細枠フレーム */

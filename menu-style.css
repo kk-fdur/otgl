@@ -215,3 +215,16 @@ body {
     border-color: rgba(255, 255, 255, 0.5);
     box-shadow: 0 10px 30px rgba(255, 255, 255, 0.05);
 }
+/* 💡 冒頭のAIお知らせボックス */
+.ai-announcement {
+    max-width: 550px;
+    margin: 0 auto 24px auto;
+    padding: 14px 20px;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: #b7d8f3; /* すこし落ち着いた水色 */
+    background: rgba(17, 35, 52, 0.4); /* うっすら半透明 */
+    border: 1px dashed rgba(123, 184, 217, 0.3); /* 可愛い点線の枠 */
+    border-radius: 10px;
+    text-align: center;
+}

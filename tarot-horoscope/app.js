@@ -24,19 +24,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const tarotCards = [
         { id: 0, name: '愚者', image: '../images/00_fool.png', keyword: '新しい出会いと勇気' },
-        { id: 1, name: '魔術師', image: '../images/01_magician.png', keyword: '意志と行動力' },
-        { id: 2, name: '女教皇', image: '../images/02_priestess.png', keyword: '直感と静かな知恵' },
+        { id: 1, name: '陰陽師', image: '../images/01_magician.png', keyword: '意志と行動力' },
+        { id: 2, name: '御巫', image: '../images/02_priestess.png', keyword: '直感と静かな知恵' },
         { id: 3, name: '女帝', image: '../images/03_empress.png', keyword: '豊かさと母なる安心' },
         { id: 4, name: '皇帝', image: '../images/04_emperor.png', keyword: '安定と責任の象徴' },
-        { id: 5, name: '教皇', image: '../images/05_hirophant.png', keyword: '信頼と価値観の再確認' },
+        { id: 5, name: '神主', image: '../images/05_hirophant.png', keyword: '信頼と価値観の再確認' },
         { id: 6, name: '恋人', image: '../images/06_lovers.png', keyword: '選択と心の一致' },
         { id: 7, name: '戦車', image: '../images/07_chariot.png', keyword: '前進と意思の強さ' },
         { id: 8, name: '力', image: '../images/08_strength.png', keyword: '優しさと内なる支え' },
         { id: 9, name: '隠者', image: '../images/09_hermit.png', keyword: '内省と静かな準備' },
         { id: 10, name: '運命の輪', image: '../images/10_wheel of fortune.png', keyword: '流れの変化と巡り合わせ' },
         { id: 11, name: '正義', image: '../images/11_justice.png', keyword: '冷静さと公平な判断' },
-        { id: 12, name: '吊るされた男', image: '../images/12_hanged man.png', keyword: '待機と見方を変える時' },
-        { id: 13, name: '死神', image: '../images/13_death.png', keyword: '終わりと再生の合図' },
+        { id: 12, name: '吊るし人', image: '../images/12_hanged man.png', keyword: '待機と見方を変える時' },
+        { id: 13, name: 'し', image: '../images/13_death.png', keyword: '終わりと再生の合図' },
         { id: 14, name: '節制', image: '../images/14_temperance.png', keyword: '調和と余裕のバランス' },
         { id: 15, name: '悪魔', image: '../images/15_devil.png', keyword: '執着と手放しのテーマ' },
         { id: 16, name: '塔', image: '../images/16_tower.png', keyword: '驚きと転機' },
@@ -140,33 +140,45 @@ document.addEventListener('DOMContentLoaded', () => {
             const fortuneArray = fortuneData[card.id];
             
             if (fortuneArray && fortuneArray.length > 0) {
-                const baseSeed = dateSeed + zodiacId + card.id;
+                                const baseSeed = dateSeed + zodiacId + card.id;
                 const dailyIndex = seededIndex(baseSeed, fortuneArray.length);
                 
+                // 💡 日替わりで選ばれたテキスト全体（改行を含んだ塊）を取得
                 const fullText = fortuneArray[dailyIndex];
                 
-                // 改行コードで確実に分解（空白行を除去する対策を追加）
-                const lines = fullText.split(/[\n\r]+/).map(l => l.trim()).filter(Boolean);
-
                 const overallText = document.getElementById('overall-text');
                 const loveText = document.getElementById('love-text');
                 const healthText = document.getElementById('health-text');
 
-                // 4. 【完全バグ修正】テキストの抽出漏れが絶対に起きない安全ロジック
-                if (lines && lines.length > 0) {
-                    lines.forEach(line => {
-                        if (line.includes('【全体運】') && overallText) {
-                            overallText.innerText = line.replace('【全体運】', '').trim();
-                        }
-                        if ((line.includes('【恋愛・対人】') || line.includes('【恋愛対人】')) && loveText) {
-                            loveText.innerText = line.replace(/【恋愛・対人】|【恋愛対人】/, '').trim();
-                        }
-                        if (line.includes('【健康運】') && healthText) {
-                            healthText.innerText = line.replace('【健康運】', '').trim();
-                        }
-                    });
+                // 各【項目】の開始位置を探して、文章を丸ごと綺麗に切り分けるロジック
+                let overallContent = '';
+                let loveContent = '';
+                let healthContent = '';
+
+                // 文字列の中から各項目の位置を特定
+                const idxOverall = fullText.indexOf('【全体運】');
+                const idxLove = fullText.search(/【恋愛・対人】|【恋愛対人】/);
+                const idxHealth = fullText.indexOf('【健康運】');
+
+                // 順番通りに並んでいる前提で、それぞれの塊をそのまま抽出（改行を保持）
+                if (idxOverall !== -1 && idxLove !== -1) {
+                    overallContent = fullText.substring(idxOverall + 5, idxLove).trim();
                 }
-            } else {
+                if (idxLove !== -1 && idxHealth !== -1) {
+                    // 【恋愛・対人】は6文字、【恋愛対人】は4文字なので長さを判定してカット
+                    const loveMarkerLength = fullText.includes('【恋愛・対人】') ? 6 : 4;
+                    loveContent = fullText.substring(idxLove + loveMarkerLength, idxHealth).trim();
+                }
+                if (idxHealth !== -1) {
+                    healthContent = fullText.substring(idxHealth + 5).trim();
+                }
+
+                // 5. 【完全バグ修正】改行を生かしたままinnerTextで画面に流し込む
+                if (overallText) overallText.innerText = overallContent;
+                if (loveText) loveText.innerText = loveContent;
+                if (healthText) healthText.innerText = healthContent;
+
+                } else {
                 console.error(`カードID [${card.id}] の配列が見つかりません。`);
             }
         } else {

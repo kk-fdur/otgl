@@ -122,6 +122,9 @@ document.addEventListener('DOMContentLoaded', () => {
         tarotCardImage.src = card.image;
         tarotCardImage.alt = `${card.name}のカード`;
         updateZodiacPreview(zodiac);
+        if (cardAnnounceText) {
+            cardAnnounceText.textContent = `🔮 ${zodiac.name}のあなたは【 ${card.name} 】を引きました`;
+        }
 
         // 3. 各星座データをwindow経由で取得
         const fortuneDataNames = [
@@ -140,26 +143,29 @@ document.addEventListener('DOMContentLoaded', () => {
                 const baseSeed = dateSeed + zodiacId + card.id;
                 const dailyIndex = seededIndex(baseSeed, fortuneArray.length);
                 
-                // 💡 日替わりで選ばれたオブジェクト（正位置 or 逆位置）を取得
-                const fortuneObj = fortuneArray[dailyIndex];
+                const fullText = fortuneArray[dailyIndex];
                 
-                // 正位置・逆位置のラベルを決定
-                const posLabel = fortuneObj.position === "up" ? "正位置" : "逆位置";
-                
-                // カード名発表エリアを「〇〇（正位置）」の形に更新
-                if (cardAnnounceText) {
-                    cardAnnounceText.textContent = `🔮 ${zodiac.name}のあなたは【 ${card.name}（${posLabel}） 】を引きました`;
-                }
+                // 改行コードで確実に分解（空白行を除去する対策を追加）
+                const lines = fullText.split(/[\n\r]+/).map(l => l.trim()).filter(Boolean);
 
                 const overallText = document.getElementById('overall-text');
                 const loveText = document.getElementById('love-text');
                 const healthText = document.getElementById('health-text');
 
-                // 4. 【新・安全ロジック】オブジェクトから直接、改行を維持して流し込む
-                if (overallText) overallText.innerText = fortuneObj.overall || '';
-                if (loveText) loveText.innerText = fortuneObj.love || '';
-                if (healthText) healthText.innerText = fortuneObj.health || '';
-
+                // 4. 【完全バグ修正】テキストの抽出漏れが絶対に起きない安全ロジック
+                if (lines && lines.length > 0) {
+                    lines.forEach(line => {
+                        if (line.includes('【全体運】') && overallText) {
+                            overallText.innerText = line.replace('【全体運】', '').trim();
+                        }
+                        if ((line.includes('【恋愛・対人】') || line.includes('【恋愛対人】')) && loveText) {
+                            loveText.innerText = line.replace(/【恋愛・対人】|【恋愛対人】/, '').trim();
+                        }
+                        if (line.includes('【健康運】') && healthText) {
+                            healthText.innerText = line.replace('【健康運】', '').trim();
+                        }
+                    });
+                }
             } else {
                 console.error(`カードID [${card.id}] の配列が見つかりません。`);
             }
@@ -171,9 +177,6 @@ document.addEventListener('DOMContentLoaded', () => {
         resultPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
-        resultPanel.classList.remove('hidden');
-        resultPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
     
     function resetReading() {
         resultPanel.classList.add('hidden');

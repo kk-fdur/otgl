@@ -166,7 +166,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 if (idxLove !== -1 && idxHealth !== -1) {
                     // 【恋愛・対人】は6文字、【恋愛対人】は4文字なので長さを判定してカット
-                    const loveMarkerLength = fullText.includes('【恋愛・対人】') ? 6 : 4;
+                    const loveMarkerLength = fullText.includes('【恋愛・対人】') ? 7 : 5;
                     loveContent = fullText.substring(idxLove + loveMarkerLength, idxHealth).trim();
                 }
                 if (idxHealth !== -1) {

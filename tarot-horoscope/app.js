@@ -16,41 +16,41 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 5, name: '乙女座', symbol: '♍', color: '#8ad0a8', accent: '#ddf9e8' },
         { id: 6, name: '天秤座', symbol: '♎', color: '#c8a8ff', accent: '#efe0ff' },
         { id: 7, name: '蠍座', symbol: '♏', color: '#b979d1', accent: '#eed8ff' },
-        { id: 8, name: '射手座', symbol: '♐', color: '#8ccf87', accent: '#dfffe0' }, // スッキリ綺麗に修正！
+        { id: 8, name: '射手座', symbol: '♐', color: '#8ccf87', accent: '#dfffe0' },
         { id: 9, name: '山羊座', symbol: '♑', color: '#97a5d4', accent: '#e2e7ff' },
         { id: 10, name: '水瓶座', symbol: '♒', color: '#66b5d8', accent: '#d8f3ff' },
         { id: 11, name: '魚座', symbol: '♓', color: '#7b9be7', accent: '#dfe9ff' }
     ];
 
     const tarotCards = [
-        { id: 0, name: '愚者', image: '../images/00_fool.png', keyword: '新しい出会いと勇気' },
-        { id: 1, name: '陰陽師', image: '../images/01_magician.png', keyword: '意志と行動力' },
-        { id: 2, name: '御巫', image: '../images/02_priestess.png', keyword: '直感と静かな知恵' },
-        { id: 3, name: '女帝', image: '../images/03_empress.png', keyword: '豊かさと母なる安心' },
-        { id: 4, name: '皇帝', image: '../images/04_emperor.png', keyword: '安定と責任の象徴' },
-        { id: 5, name: '神主', image: '../images/05_hirophant.png', keyword: '信頼と価値観の再確認' },
-        { id: 6, name: '恋人', image: '../images/06_lovers.png', keyword: '選択と心の一致' },
-        { id: 7, name: '戦車', image: '../images/07_chariot.png', keyword: '前進と意思の強さ' },
-        { id: 8, name: '力', image: '../images/08_strength.png', keyword: '優しさと内なる支え' },
-        { id: 9, name: '隠者', image: '../images/09_hermit.png', keyword: '内省と静かな準備' },
-        { id: 10, name: '運命の輪', image: '../images/10_wheel of fortune.png', keyword: '流れの変化と巡り合わせ' },
-        { id: 11, name: '正義', image: '../images/11_justice.png', keyword: '冷静さと公平な判断' },
-        { id: 12, name: '吊るし人', image: '../images/12_hanged man.png', keyword: '待機と見方を変える時' },
-        { id: 13, name: 'し', image: '../images/13_death.png', keyword: '終わりと再生の合図' },
-        { id: 14, name: '節制', image: '../images/14_temperance.png', keyword: '調和と余裕のバランス' },
-        { id: 15, name: '悪魔', image: '../images/15_devil.png', keyword: '執着と手放しのテーマ' },
-        { id: 16, name: '塔', image: '../images/16_tower.png', keyword: '驚きと転機' },
-        { id: 17, name: '星', image: '../images/17_star.png', keyword: '明るい希望と再生' },
-        { id: 18, name: '月', image: '../images/18_moon.png', keyword: '不安の影と潜在意識' },
-        { id: 19, name: '太陽', image: '../images/19_sun.png', keyword: '輝きと自信の開花' },
-        { id: 20, name: '審判', image: '../images/20_judgement.png', keyword: '自分の声を聞く時' },
-        { id: 21, name: '世界', image: '../images/21_world.png', keyword: '完成と大きな成就' }
+        { id: 0, name: '愚者', image: '../images/00_fool.png' },
+        { id: 1, name: '陰陽師', image: '../images/01_magician.png' },
+        { id: 2, name: '御巫', image: '../images/02_priestess.png' },
+        { id: 3, name: '女帝', image: '../images/03_empress.png' },
+        { id: 4, name: '皇帝', image: '../images/04_emperor.png' },
+        { id: 5, name: '神主', image: '../images/05_hirophant.png' },
+        { id: 6, name: '恋人', image: '../images/06_lovers.png' },
+        { id: 7, name: '戦車', image: '../images/07_chariot.png' },
+        { id: 8, name: '力', image: '../images/08_strength.png' },
+        { id: 9, name: '隠者', image: '../images/09_hermit.png' },
+        { id: 10, name: '運命の輪', image: '../images/10_wheel of fortune.png' },
+        { id: 11, name: '正義', image: '../images/11_justice.png' },
+        { id: 12, name: '吊るし人', image: '../images/12_hanged man.png' },
+        { id: 13, name: 'し', image: '../images/13_death.png' },
+        { id: 14, name: '節制', image: '../images/14_temperance.png' },
+        { id: 15, name: '悪魔', image: '../images/15_devil.png' },
+        { id: 16, name: '塔', image: '../images/16_tower.png' },
+        { id: 17, name: '星', image: '../images/17_star.png' },
+        { id: 18, name: '月', image: '../images/18_moon.png' },
+        { id: 19, name: '太陽', image: '../images/19_sun.png' },
+        { id: 20, name: '審判', image: '../images/20_judgement.png' },
+        { id: 21, name: '世界', image: '../images/21_world.png' }
     ];
 
     // SVG生成関数（W3Cの正しい名前空間URLに完全修正）
     function buildZodiacImage(zodiac) {
         const svg = `
-            <svg xmlns="http://w3.org" viewBox="0 0 220 220">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 220">
                 <defs>
                     <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
                         <stop offset="0%" stop-color="${zodiac.color}"/>
@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function updateZodiacPreview(zodiac) {
         const svgRaw = `
-            <svg id="zodiac-image" xmlns="http://w3.org" viewBox="0 0 220 220" style="width: 100%; height: 100%; display: block;">
+            <svg id="zodiac-image" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 220" style="width: 100%; height: 100%; display: block;">
                 <defs>
                     <radialGradient id="g_${zodiac.id}" cx="50%" cy="50%" r="50%">
                         <stop offset="0%" stop-color="${zodiac.color}" stop-opacity="0.7"/>
@@ -85,14 +85,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     </radialGradient>
                 </defs>
                 
-                <!-- 神秘的な球体オーラ -->
                 <circle cx="110" cy="110" r="110" fill="url(#g_${zodiac.id})"/>
                 
-                <!-- 2重SVGで比率をキープ -->
                 <svg viewBox="0 0 220 220" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
-                    <!-- 【究極微調整】y座標を128から134へ。これでジャスト1.5ミリ下がります！ -->
                     <text x="110" y="134" text-anchor="middle" font-size="85" font-family="Segoe UI Emoji, Apple Color Emoji, sans-serif" fill="white">${zodiac.symbol}</text>
-                    <!-- 星座名 -->
                     <text x="110" y="195" text-anchor="middle" font-size="18" font-family="Noto Sans JP, sans-serif" fill="${zodiac.accent}" letter-spacing="4" font-weight="bold">${zodiac.name}</text>
                 </svg>
             </svg>
@@ -107,18 +103,16 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     } 
     
-        function drawReading() {
+    function drawReading() {
         const zodiacId = Number(zodiacSelect.value);
         const zodiac = zodiacData[zodiacId] || zodiacData[0];
 
-        // 1. 日替わりタロットカードを確定
         const today = new Date();
         const dateSeed = getDateSeed(today);
         const seed = dateSeed * 100 + zodiacId;
         const cardId = (seed * 17 + zodiacId * 11) % tarotCards.length;
         const card = tarotCards[cardId];
 
-        // 2. ビジュアルエリアを更新
         tarotCardImage.src = card.image;
         tarotCardImage.alt = `${card.name}のカード`;
         updateZodiacPreview(zodiac);
@@ -126,7 +120,6 @@ document.addEventListener('DOMContentLoaded', () => {
             cardAnnounceText.textContent = `🔮 ${zodiac.name}のあなたは【 ${card.name} 】を引きました`;
         }
 
-        // 3. 各星座データをwindow経由で取得
         const fortuneDataNames = [
             'ariesFortuneData', 'taurusFortuneData', 'geminiFortuneData', 'cancerFortuneData', 
             'leoFortuneData', 'virgoFortuneData', 'libraFortuneData', 'scorpioFortuneData', 
@@ -140,32 +133,27 @@ document.addEventListener('DOMContentLoaded', () => {
             const fortuneArray = fortuneData[card.id];
             
             if (fortuneArray && fortuneArray.length > 0) {
-                                const baseSeed = dateSeed + zodiacId + card.id;
+                const baseSeed = dateSeed + zodiacId + card.id;
                 const dailyIndex = seededIndex(baseSeed, fortuneArray.length);
                 
-                // 💡 日替わりで選ばれたテキスト全体（改行を含んだ塊）を取得
                 const fullText = fortuneArray[dailyIndex];
                 
                 const overallText = document.getElementById('overall-text');
                 const loveText = document.getElementById('love-text');
                 const healthText = document.getElementById('health-text');
 
-                // 各【項目】の開始位置を探して、文章を丸ごと綺麗に切り分けるロジック
                 let overallContent = '';
                 let loveContent = '';
                 let healthContent = '';
 
-                // 文字列の中から各項目の位置を特定
                 const idxOverall = fullText.indexOf('【全体運】');
                 const idxLove = fullText.search(/【恋愛・対人】|【恋愛対人】/);
                 const idxHealth = fullText.indexOf('【健康運】');
 
-                // 順番通りに並んでいる前提で、それぞれの塊をそのまま抽出（改行を保持）
                 if (idxOverall !== -1 && idxLove !== -1) {
                     overallContent = fullText.substring(idxOverall + 5, idxLove).trim();
                 }
                 if (idxLove !== -1 && idxHealth !== -1) {
-                    // 【恋愛・対人】は6文字、【恋愛対人】は4文字なので長さを判定してカット
                     const loveMarkerLength = fullText.includes('【恋愛・対人】') ? 7 : 5;
                     loveContent = fullText.substring(idxLove + loveMarkerLength, idxHealth).trim();
                 }
@@ -173,12 +161,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     healthContent = fullText.substring(idxHealth + 5).trim();
                 }
 
-                // 5. 【完全バグ修正】改行コードを<br>タグに変換してinnerHTMLで確実に流し込む
                 if (overallText) overallText.innerHTML = overallContent.replace(/\n/g, "<br>");
                 if (loveText) loveText.innerHTML = loveContent.replace(/\n/g, "<br>");
                 if (healthText) healthText.innerHTML = healthContent.replace(/\n/g, "<br>");
 
-                } else {
+            } else {
                 console.error(`カードID [${card.id}] の配列が見つかりません。`);
             }
         } else {
@@ -189,24 +176,20 @@ document.addEventListener('DOMContentLoaded', () => {
         resultPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
-    
     function resetReading() {
         resultPanel.classList.add('hidden');
         zodiacSelect.focus();
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // イベントリスナーの紐付けを保証
     drawBtn.addEventListener('click', drawReading);
     resetBtn.addEventListener('click', resetReading);
 
-    // セレクトボックスの変更に合わせてリアルタイムで画像が変わる連動を追加（親切設計）
     zodiacSelect.addEventListener('change', () => {
         const selectedZodiac = zodiacData[Number(zodiacSelect.value) || 0];
         updateZodiacPreview(selectedZodiac);
     });
 
-    // 初期起動時のプレビュー設定
     const initialZodiac = zodiacData[Number(zodiacSelect.value) || 0];
     updateZodiacPreview(initialZodiac);
     
@@ -216,13 +199,11 @@ document.addEventListener('DOMContentLoaded', () => {
     tarotCardImage.alt = 'デフォルトのタロットカード';
 });
 
-// 🔮 オリジナルタロット画像の右クリック（2本指タップ）禁止処理
 document.addEventListener('DOMContentLoaded', () => {
     const tarotImg = document.getElementById('tarot-card-image');
     if (tarotImg) {
         tarotImg.addEventListener('contextmenu', (e) => {
-            e.preventDefault();
-        });
+        e.preventDefault();
+    });
     }
 });
-

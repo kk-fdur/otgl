@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // SVG生成関数（W3Cの正しい名前空間URLに完全修正）
     function buildZodiacImage(zodiac) {
         const svg = `
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 220">
+            <svg xmlns="http://w3.org" viewBox="0 0 220 220">
                 <defs>
                     <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
                         <stop offset="0%" stop-color="${zodiac.color}"/>
@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function updateZodiacPreview(zodiac) {
         const svgRaw = `
-            <svg id="zodiac-image" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 220" style="width: 100%; height: 100%; display: block;">
+            <svg id="zodiac-image" xmlns="http://w3.org" viewBox="0 0 220 220" style="width: 100%; height: 100%; display: block;">
                 <defs>
                     <radialGradient id="g_${zodiac.id}" cx="50%" cy="50%" r="50%">
                         <stop offset="0%" stop-color="${zodiac.color}" stop-opacity="0.7"/>
@@ -107,19 +107,35 @@ document.addEventListener('DOMContentLoaded', () => {
         const zodiacId = Number(zodiacSelect.value);
         const zodiac = zodiacData[zodiacId] || zodiacData[0];
 
+        // 1. 日替わりタロットカードを確定
         const today = new Date();
         const dateSeed = getDateSeed(today);
         const seed = dateSeed * 100 + zodiacId;
         const cardId = (seed * 17 + zodiacId * 11) % tarotCards.length;
         const card = tarotCards[cardId];
 
+        // 🔮 正位置・逆位置の判定（今日のシード値から50%の確率を計算）
+        const isReversed = (seed + cardId) % 2 === 0; 
+        const positionText = isReversed ? '・逆位置' : '';
+
+        // 2. ビジュアルエリアを更新
         tarotCardImage.src = card.image;
-        tarotCardImage.alt = `${card.name}のカード`;
-        updateZodiacPreview(zodiac);
-        if (cardAnnounceText) {
-            cardAnnounceText.textContent = `🔮 ${zodiac.name}のあなたは【 ${card.name} 】を引きました`;
+        tarotCardImage.alt = `${card.name}のカード${positionText}`;
+        
+        // 🔮 逆位置なら画像を上下回転、正位置なら戻す処理
+        if (isReversed) {
+            tarotCardImage.style.transform = 'rotate(180deg)';
+        } else {
+            tarotCardImage.style.transform = 'none';
         }
 
+        updateZodiacPreview(zodiac);
+        
+        if (cardAnnounceText) {
+            cardAnnounceText.textContent = `🔮 ${zodiac.name}のあなたは【 ${card.name}${positionText} 】を引きました`;
+        }
+
+        // 3. 各星座データをwindow経由で取得
         const fortuneDataNames = [
             'ariesFortuneData', 'taurusFortuneData', 'geminiFortuneData', 'cancerFortuneData', 
             'leoFortuneData', 'virgoFortuneData', 'libraFortuneData', 'scorpioFortuneData', 
@@ -178,32 +194,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function resetReading() {
         resultPanel.classList.add('hidden');
+        tarotCardImage.style.transform = 'none'; // 次のために回転状態をリセット
         zodiacSelect.focus();
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     drawBtn.addEventListener('click', drawReading);
     resetBtn.addEventListener('click', resetReading);
-
     zodiacSelect.addEventListener('change', () => {
-        const selectedZodiac = zodiacData[Number(zodiacSelect.value) || 0];
-        updateZodiacPreview(selectedZodiac);
+    const selectedZodiac = zodiacData[Number(zodiacSelect.value) || 0];
+    updateZodiacPreview(selectedZodiac);
     });
-
     const initialZodiac = zodiacData[Number(zodiacSelect.value) || 0];
     updateZodiacPreview(initialZodiac);
-    
     if (tarotCards && tarotCards[0]) {
-        tarotCardImage.src = tarotCards[0].image;
+    tarotCardImage.src = tarotCards[0].image;
     }
-    tarotCardImage.alt = 'デフォルトのタロットカード';
+tarotCardImage.alt = 'デフォルトのタロットカード';
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-    const tarotImg = document.getElementById('tarot-card-image');
-    if (tarotImg) {
-        tarotImg.addEventListener('contextmenu', (e) => {
-        e.preventDefault();
-    });
-    }
+const tarotImg = document.getElementById('tarot-card-image');
+if (tarotImg) {
+tarotImg.addEventListener('contextmenu', (e) => {
+e.preventDefault();
+});
+}
 });

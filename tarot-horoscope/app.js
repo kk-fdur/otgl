@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 21, name: '世界', image: '../images/21_world.png' }
     ];
 
-    // SVG生成関数（W3Cの正しい名前空間URLに完全修正）
+    // SVG生成関数
     function buildZodiacImage(zodiac) {
         const svg = `
             <svg xmlns="http://w3.org" viewBox="0 0 220 220">
@@ -191,33 +191,38 @@ document.addEventListener('DOMContentLoaded', () => {
         resultPanel.classList.remove('hidden');
         resultPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
-
-    function resetReading() {
+        function resetReading() {
         resultPanel.classList.add('hidden');
-        tarotCardImage.style.transform = 'none'; // 次のために回転状態をリセット
+        tarotCardImage.style.transform = 'none'; // 回転をリセット
         zodiacSelect.focus();
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
+    // 各ボタンのイベント紐付け
     drawBtn.addEventListener('click', drawReading);
     resetBtn.addEventListener('click', resetReading);
+
+    // 星座変更時のリアルタイムプレビュー
     zodiacSelect.addEventListener('change', () => {
-    const selectedZodiac = zodiacData[Number(zodiacSelect.value) || 0];
-    updateZodiacPreview(selectedZodiac);
+        const selectedZodiac = zodiacData[Number(zodiacSelect.value) || 0];
+        updateZodiacPreview(selectedZodiac);
     });
+
+    // 初期起動時のプレビュー設定
     const initialZodiac = zodiacData[Number(zodiacSelect.value) || 0];
     updateZodiacPreview(initialZodiac);
+    
     if (tarotCards && tarotCards[0]) {
-    tarotCardImage.src = tarotCards[0].image;
+        tarotCardImage.src = tarotCards[0].image;
     }
-tarotCardImage.alt = 'デフォルトのタロットカード';
+    tarotCardImage.alt = 'デフォルトのタロットカード';
 });
-
+// 🔮 オリジナルタロット画像の右クリック（2本指タップ）禁止処理
 document.addEventListener('DOMContentLoaded', () => {
-const tarotImg = document.getElementById('tarot-card-image');
-if (tarotImg) {
-tarotImg.addEventListener('contextmenu', (e) => {
-e.preventDefault();
-});
-}
+    const tarotImg = document.getElementById('tarot-card-image');
+    if (tarotImg) {
+        tarotImg.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+        });
+    }
 });

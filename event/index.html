@@ -3,9 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>秘密のイベント館 - こきょうの占い屋</title>
+    <title>秘密 of イベント館 - こきょうの占い屋</title>
     <link rel="stylesheet" href="style.css">
-   </head>
+    <style>
+        /* 12星座ボタンとアドバイス領域の基本スタイル */
+        .sign-selector {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin: 20px 0 10px;
+        }
+        @media (min-width: 480px) {
+            .sign-selector {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+        .sign-btn {
+            font-family: inherit;
+            padding: 12px 8px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: var(--muted);
+            border-radius: 12px;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .sign-btn:hover {
+            color: var(--text);
+            border-color: var(--border);
+            background: rgba(255, 255, 255, 0.08);
+        }
+        .sign-btn.active {
+            color: var(--text);
+            border-color: var(--accent);
+            background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.12) 100%);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            font-weight: bold;
+            transform: translateY(-2px);
+        }
+        .personal-advice-box {
+            margin-top: 24px;
+            padding: 24px;
+            background: rgba(0, 0, 0, 0.25);
+            border-left: 4px solid var(--accent);
+            border-radius: 0 16px 16px 0;
+            text-align: left;
+            animation: fadeIn 0.4s ease-out;
+        }
+        .personal-advice-box h4 {
+            margin: 0 0 14px 0;
+            font-size: 1.1rem;
+            color: var(--text);
+            letter-spacing: 0.08em;
+        }
+        .advice-item {
+            margin: 8px 0;
+            font-size: 0.95rem;
+            line-height: 1.8;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
 <body>
     <div class="header-nav">
         <a href="../index.html" class="back-link">← メニューに戻る</a>
@@ -30,7 +92,7 @@
         <p id="event-subtitle" class="subtitle">サブタイトル</p>
 
         <section class="event-result-panel">
-            <!-- 🌟 空いていた上の空間に「使用カード情報」を配置 -->
+            <!-- 上の空間に「使用カード情報」を配置 -->
             <div class="event-cards-box">
                 <p id="event-used-cards" class="event-used-cards-text"></p>
             </div>
@@ -59,30 +121,30 @@
         </section>
 
         <footer class="site-privacy-note">
-            <p>🔒 秘密のメッセージはあなただけの端末で safe に処理されています。</p>
+            <p>🔒 秘密のメッセージはあなただけの端末で安全に処理されています。</p>
         </footer>
     </main>
 
     <script src="data.js"></script>
     <script>
-        // 🛠️ 【超重要】テストしたい時は、下の「false」を「true」に書き換えると、
-        // 日付に関係なく強制的に画面に表示してテストできます！
+        // 🛠️ 【テストモード設定】
+        // 1. テストしたい時は、下の「false」を「true」に書き換えます。
         const isTestMode = true;
+        
+        // 2. 「true」の時、ここを書き換えるだけで好きなイベントの画面を確認できます！
+        // 対象キーワード: 'halloween', 'christmas', 'valentine', 'midsummer'
+        const testTarget = 'midsummer'; 
 
-                function checkEvent() {
+        function checkEvent() {
             const now = new Date();
-            const currentMonth = now.getMonth() + 1; // 1月〜12月
+            const currentMonth = now.getMonth() + 1;
             const currentDate = now.getDate();
 
             let activeEvent = null;
 
-            // 🌟 テストモードの時は、見たいイベントのID（キー名）をここに書くだけ！
-            // 表示させたいもの以外を「//」で消す（コメントアウトする）と切り替わります。
-            if (isTestMode) {
-                // activeEvent = eventFortuneData.halloween;
-                // activeEvent = eventFortuneData.christmas;
-                // activeEvent = eventFortuneData.valentine;
-                activeEvent = eventFortuneData.midsummer; // ☀️ 今はこれが動きます！
+            // テストモードなら指定したキーのイベントを強制取得
+            if (isTestMode && eventFortuneData[testTarget]) {
+                activeEvent = eventFortuneData[testTarget];
             } else {
                 // 今日がイベント期間内かどうかをループで判定
                 for (let key in eventFortuneData) {
@@ -96,10 +158,7 @@
 
             // 画面の切り替え処理
             if (activeEvent) {
-                // 過去のイベントクラスが残らないように一度まっさらにする
-                document.body.className = ''; 
-                
-                // 期間内：共通データを入れて表示
+                document.body.className = ''; // 過去のクラスを一度リセット
                 document.body.classList.add(activeEvent.themeClass);
                 document.getElementById('event-title').innerText = activeEvent.title;
                 document.getElementById('event-subtitle').innerText = activeEvent.subtitle;
@@ -110,16 +169,14 @@
                 generateSignButtons(activeEvent);
 
                 document.getElementById('open-screen').classList.remove('hidden');
-                document.getElementById('closed-screen').classList.add('hidden'); // 閉じ画面を隠す
+                document.getElementById('closed-screen').classList.add('hidden');
             } else {
-                // 期間外：閉じている画面を表示
-                document.body.className = '';
                 document.getElementById('closed-screen').classList.remove('hidden');
-                document.getElementById('open-screen').classList.add('hidden'); // 開き画面を隠す
+                document.getElementById('open-screen').classList.add('hidden');
             }
         }
 
-        // 12星座ボタンを自動で並べてクリックイベントをつける関数
+        // 12星座ボタンを自動生成する関数
         function generateSignButtons(eventData) {
             const selectorContainer = document.getElementById('sign-selector');
             if (!selectorContainer || !eventData.horoscope) return;

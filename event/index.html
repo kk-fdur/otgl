@@ -63,10 +63,10 @@
         <h1 id="event-title">イベントタイトル</h1>
         <p id="event-subtitle" class="subtitle">サブタイトル</p>
 
-        <section class="event-result-panel">
-            <!-- 引いたカード -->
+                <section class="event-result-panel">
+            <!-- 🌟 下から上に引っ越してきた「使用カード情報」 -->
             <div class="event-cards-box">
-                <p id="event-cards"></p>
+                <p id="event-used-cards" class="event-used-cards-text"></p>
             </div>
 
             <!-- メッセージ本文（共通運勢） -->
@@ -75,7 +75,7 @@
                 <p id="event-content"></p>
             </div>
 
-            <!-- 🌟 追加：12星座の選択ボタンエリア -->
+            <!-- 12星座の選択ボタンエリア -->
             <div class="event-text-block" style="margin-top: 30px;">
                 <h3>✨ あなたの星座の特別導き</h3>
                 <p class="subtitle" style="font-size: 0.9em; margin-bottom: 10px;">星座を選ぶと、この冬のラッキーアクションとアイテムが表示されます</p>
@@ -84,15 +84,14 @@
                 </div>
             </div>
 
-            <!-- 🌟 追加：選んだ星座のアドバイス表示エリア -->
+            <!-- 選んだ星座のアドバイス表示エリア -->
             <div id="personal-advice" class="personal-advice-box hidden">
                 <h4 id="selected-sign-title">⏳座のあなたへ</h4>
                 <p id="lucky-action" class="advice-item">🎯 ラッキーアクション: </p>
                 <p id="lucky-item" class="advice-item">🔮 ラッキーアイテム: </p>
             </div>
-
-            <!-- 使用カード情報 -->
-            <p id="event-used-cards" class="event-used-cards-text" style="margin-top: 40px;"></p>
+            
+            <!-- ✂️ 元々ここにあった「event-used-cards」のPタグは削除しました -->
         </section>
 
         <footer class="site-privacy-note">

@@ -99,7 +99,7 @@ h1 { margin: 12px 0 10px; font-size: clamp(1.8rem, 4vw, 2.8rem); letter-spacing:
     50% { transform: scale(1.05); opacity: 0.9; }
 }
 /* ==========================================
-   ✨ 12星座選択ボタン＆アドバイスエリアのデザイン
+   ✨ 12星座選択ボタン＆アドバイスエリアのデザイン（中央寄せ版）
 ========================================== */
 
 /* 12星座ボタンが並ぶグリッド。スマホ時は3列、iPad/PC時は4列に自動調整 */
@@ -129,7 +129,7 @@ h1 { margin: 12px 0 10px; font-size: clamp(1.8rem, 4vw, 2.8rem); letter-spacing:
     transition: all 0.3s ease;
 }
 
-/* ホバーした時と、選択されて光っている時のデザイン（イベントごとのアクセントカラーに自動連動） */
+/* ホバーした時と、選択されて光っている時のデザイン */
 .sign-btn:hover {
     color: var(--text);
     border-color: var(--border);
@@ -145,14 +145,16 @@ h1 { margin: 12px 0 10px; font-size: clamp(1.8rem, 4vw, 2.8rem); letter-spacing:
     transform: translateY(-2px);
 }
 
-/* 選んだ星座のアドバイスが滑り出てくる箱 */
+/* 選んだ星座のアドバイスが滑り出てくる箱（中央寄せに修正） */
 .personal-advice-box {
     margin-top: 24px;
     padding: 24px;
     background: rgba(0, 0, 0, 0.25);
-    border-left: 4px solid var(--accent); /* イベントごとの色になる */
-    border-radius: 0 16px 16px 0;
-    text-align: left;
+    border-radius: 16px;
+    /* 🌟 枠線を左側だけではなく、全体をうっすら囲むかアクセント色で締めるのが中央寄せでは綺麗です */
+    border: 1px solid var(--border); 
+    border-top: 3px solid var(--accent); /* 上側にアクセントラインを持ってくると中央寄せと相性抜群です */
+    text-align: center; /* 🌟 中央寄せに変更 */
     animation: fadeIn 0.4s ease-out;
 }
 

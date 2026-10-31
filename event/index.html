@@ -66,19 +66,23 @@
     <script src="data.js"></script>
     <script>
         // 🛠️ 【超重要】テストしたい時は、下の「false」を「true」に書き換えると、
-        // 日付に関係なく「ハロウィン占い」を強制的に画面に表示してテストできます！
-        const isTestMode = false;
+        // 日付に関係なく強制的に画面に表示してテストできます！
+        const isTestMode = true;
 
-        function checkEvent() {
+                function checkEvent() {
             const now = new Date();
             const currentMonth = now.getMonth() + 1; // 1月〜12月
             const currentDate = now.getDate();
 
             let activeEvent = null;
 
-            // テストモードなら強制的にハロウィンにする
+            // 🌟 テストモードの時は、見たいイベントのID（キー名）をここに書くだけ！
+            // 表示させたいもの以外を「//」で消す（コメントアウトする）と切り替わります。
             if (isTestMode) {
-                activeEvent = eventFortuneData.halloween;
+                // activeEvent = eventFortuneData.halloween;
+                // activeEvent = eventFortuneData.christmas;
+                // activeEvent = eventFortuneData.valentine;
+                activeEvent = eventFortuneData.midsummer; // ☀️ 今はこれが動きます！
             } else {
                 // 今日がイベント期間内かどうかをループで判定
                 for (let key in eventFortuneData) {
@@ -92,6 +96,9 @@
 
             // 画面の切り替え処理
             if (activeEvent) {
+                // 過去のイベントクラスが残らないように一度まっさらにする
+                document.body.className = ''; 
+                
                 // 期間内：共通データを入れて表示
                 document.body.classList.add(activeEvent.themeClass);
                 document.getElementById('event-title').innerText = activeEvent.title;
@@ -103,9 +110,12 @@
                 generateSignButtons(activeEvent);
 
                 document.getElementById('open-screen').classList.remove('hidden');
+                document.getElementById('closed-screen').classList.add('hidden'); // 閉じ画面を隠す
             } else {
                 // 期間外：閉じている画面を表示
+                document.body.className = '';
                 document.getElementById('closed-screen').classList.remove('hidden');
+                document.getElementById('open-screen').classList.add('hidden'); // 開き画面を隠す
             }
         }
 

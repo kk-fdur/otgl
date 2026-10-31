@@ -191,6 +191,11 @@ h1 {
     height: auto; /* 画像の比率を維持して、見切れを防ぎます */
     display: block;
 }
+/* 💡 HTMLのクラス名に合わせてカード全体を回転させます */
+.tarot-box.reversed {
+    transform: rotate(180deg);
+    filter: saturate(0.9) brightness(0.96);
+}
 
 /* ===================================================
    👇 ここから下を新しく【追記】してください

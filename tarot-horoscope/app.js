@@ -70,16 +70,9 @@ document.addEventListener('DOMContentLoaded', () => {
         return date.getFullYear() * 10000 + (date.getMonth() + 1) * 100 + date.getDate();
     }
 
-    // ⭕ 修正版：絶対に偏らない、均等にバラけるシード乱数関数
-    function seededIndex(seed, length) {
-        // Mulberry32アルゴリズムでシード値を完全にシャッフル
-        let t = seed + 0x6D2B79F5;
-        t = Math.imul(t ^ (t >>> 15), t | 1);
-        t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-        const randomFraction = ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-    
-        // 0〜3（length-1）の間で完璧に均等に日替わり選択します
-        return Math.floor(randomFraction * length);
+   function seededIndex(seed, length) {
+        const normalized = (seed * 9301 + 49297) % 233280;
+        return Math.floor((normalized / 233280) * length);
     }
 
     function updateZodiacPreview(zodiac) {

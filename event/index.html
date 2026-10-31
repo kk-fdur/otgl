@@ -6,7 +6,7 @@
     <title>秘密のイベント館 - こきょうの占い屋</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        /* 12星座ボタンのシンプルなデザイン（スタイルシートがない場合の最低限の補正） */
+        /* 12星座ボタンとアドバイス領域の基本スタイル */
         .sign-selector {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -63,8 +63,8 @@
         <h1 id="event-title">イベントタイトル</h1>
         <p id="event-subtitle" class="subtitle">サブタイトル</p>
 
-                <section class="event-result-panel">
-            <!-- 🌟 下から上に引っ越してきた「使用カード情報」 -->
+        <section class="event-result-panel">
+            <!-- 🌟 空いていた上の空間に「使用カード情報」を配置 -->
             <div class="event-cards-box">
                 <p id="event-used-cards" class="event-used-cards-text"></p>
             </div>
@@ -90,12 +90,10 @@
                 <p id="lucky-action" class="advice-item">🎯 ラッキーアクション: </p>
                 <p id="lucky-item" class="advice-item">🔮 ラッキーアイテム: </p>
             </div>
-            
-            <!-- ✂️ 元々ここにあった「event-used-cards」のPタグは削除しました -->
         </section>
 
         <footer class="site-privacy-note">
-            <p>🔒 秘密のメッセージはあなただけの端末で安全に処理されています。</p>
+            <p>🔒 秘密のメッセージはあなただけの端末で safe に処理されています。</p>
         </footer>
     </main>
 
@@ -132,16 +130,10 @@
                 document.body.classList.add(activeEvent.themeClass);
                 document.getElementById('event-title').innerText = activeEvent.title;
                 document.getElementById('event-subtitle').innerText = activeEvent.subtitle;
-                
-                // 元コードの「cards」を表示。
-                // もし「共通データに移行してcardsを消した」場合は、data.jsに「cards: ""」と空文字を入れておけばエラーになりません。
-                document.getElementById('event-cards').innerText = activeEvent.cards || ""; 
-                
-                // 提案した構造の「commonContent」を表示（今のcontentでも動くようフォールバックさせています）
                 document.getElementById('event-content').innerText = activeEvent.commonContent || activeEvent.content;
                 document.getElementById('event-used-cards').innerText = activeEvent.usedCards;
                 
-                // 🌟 星座ボタンを生成
+                // 12星座ボタンを生成
                 generateSignButtons(activeEvent);
 
                 document.getElementById('open-screen').classList.remove('hidden');
@@ -151,37 +143,29 @@
             }
         }
 
-        // 🌟 追加：12星座ボタンを自動で並べてクリックイベントをつける関数
+        // 12星座ボタンを自動で並べてクリックイベントをつける関数
         function generateSignButtons(eventData) {
             const selectorContainer = document.getElementById('sign-selector');
             if (!selectorContainer || !eventData.horoscope) return;
 
-            // ボタンが重複しないように一度空にする
             selectorContainer.innerHTML = '';
 
-            // data.js の horoscope に入っている星座をループ処理
             for (let signKey in eventData.horoscope) {
                 const signData = eventData.horoscope[signKey];
                 
-                // ボタン要素を作る
                 const btn = document.createElement('button');
                 btn.type = 'button';
                 btn.className = 'sign-btn';
-                btn.innerText = signData.name; // 「牡羊座」など
+                btn.innerText = signData.name;
 
-                // ボタンがクリックされた時の処理
                 btn.addEventListener('click', () => {
-                    // 他のボタンの選択状態アクティブクラスを解除
                     document.querySelectorAll('.sign-btn').forEach(b => b.classList.remove('active'));
-                    // 選択されたボタンを光らせる
                     btn.classList.add('active');
 
-                    // アドバイス領域にテキストを代入して表示
                     document.getElementById('selected-sign-title').innerText = `✨ ${signData.name}のあなたへの導き`;
                     document.getElementById('lucky-action').innerText = `🎯 ラッキーアクション: ${signData.action}`;
                     document.getElementById('lucky-item').innerText = `🔮 ラッキーアイテム: ${signData.item}`;
                     
-                    // 非表示クラスを外して表に出す
                     document.getElementById('personal-advice').classList.remove('hidden');
                 });
 

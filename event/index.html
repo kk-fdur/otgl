@@ -5,6 +5,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>秘密のイベント館 - こきょうの占い屋</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* 12星座ボタンのシンプルなデザイン（スタイルシートがない場合の最低限の補正） */
+        .sign-selector {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin: 20px 0;
+        }
+        .sign-btn {
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: inherit;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .sign-btn:hover, .sign-btn.active {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: currentColor;
+            transform: translateY(-2px);
+        }
+        .personal-advice-box {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-left: 4px solid currentColor;
+            border-radius: 0 4px 4px 0;
+        }
+        .advice-item {
+            margin: 5px 0;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
     <div class="header-nav">
@@ -35,14 +69,30 @@
                 <p id="event-cards"></p>
             </div>
 
-            <!-- メッセージ本文 -->
+            <!-- メッセージ本文（共通運勢） -->
             <div class="event-text-block">
                 <h3>📜 あなたへの限定託宣</h3>
                 <p id="event-content"></p>
             </div>
 
+            <!-- 🌟 追加：12星座の選択ボタンエリア -->
+            <div class="event-text-block" style="margin-top: 30px;">
+                <h3>✨ あなたの星座の特別導き</h3>
+                <p class="subtitle" style="font-size: 0.9em; margin-bottom: 10px;">星座を選ぶと、この冬のラッキーアクションとアイテムが表示されます</p>
+                <div class="sign-selector" id="sign-selector">
+                    <!-- JavaScriptでボタンが自動生成されます -->
+                </div>
+            </div>
+
+            <!-- 🌟 追加：選んだ星座のアドバイス表示エリア -->
+            <div id="personal-advice" class="personal-advice-box hidden">
+                <h4 id="selected-sign-title">⏳座のあなたへ</h4>
+                <p id="lucky-action" class="advice-item">🎯 ラッキーアクション: </p>
+                <p id="lucky-item" class="advice-item">🔮 ラッキーアイテム: </p>
+            </div>
+
             <!-- 使用カード情報 -->
-            <p id="event-used-cards" class="event-used-cards-text"></p>
+            <p id="event-used-cards" class="event-used-cards-text" style="margin-top: 40px;"></p>
         </section>
 
         <footer class="site-privacy-note">
@@ -70,7 +120,6 @@
                 // 今日がイベント期間内かどうかをループで判定
                 for (let key in eventFortuneData) {
                     const ev = eventFortuneData[key];
-                    // 月をまたがない簡易判定（2月、10月、12月用）
                     if (currentMonth === ev.startMonth && currentDate >= ev.startDate && currentDate <= ev.endDate) {
                         activeEvent = ev;
                         break;
@@ -80,18 +129,64 @@
 
             // 画面の切り替え処理
             if (activeEvent) {
-                // 期間内：データを入れて表示
+                // 期間内：共通データを入れて表示
                 document.body.classList.add(activeEvent.themeClass);
                 document.getElementById('event-title').innerText = activeEvent.title;
                 document.getElementById('event-subtitle').innerText = activeEvent.subtitle;
-                document.getElementById('event-cards').innerText = activeEvent.cards;
-                document.getElementById('event-content').innerText = activeEvent.content;
+                
+                // 元コードの「cards」を表示。
+                // もし「共通データに移行してcardsを消した」場合は、data.jsに「cards: ""」と空文字を入れておけばエラーになりません。
+                document.getElementById('event-cards').innerText = activeEvent.cards || ""; 
+                
+                // 提案した構造の「commonContent」を表示（今のcontentでも動くようフォールバックさせています）
+                document.getElementById('event-content').innerText = activeEvent.commonContent || activeEvent.content;
                 document.getElementById('event-used-cards').innerText = activeEvent.usedCards;
                 
+                // 🌟 星座ボタンを生成
+                generateSignButtons(activeEvent);
+
                 document.getElementById('open-screen').classList.remove('hidden');
             } else {
                 // 期間外：閉じている画面を表示
                 document.getElementById('closed-screen').classList.remove('hidden');
+            }
+        }
+
+        // 🌟 追加：12星座ボタンを自動で並べてクリックイベントをつける関数
+        function generateSignButtons(eventData) {
+            const selectorContainer = document.getElementById('sign-selector');
+            if (!selectorContainer || !eventData.horoscope) return;
+
+            // ボタンが重複しないように一度空にする
+            selectorContainer.innerHTML = '';
+
+            // data.js の horoscope に入っている星座をループ処理
+            for (let signKey in eventData.horoscope) {
+                const signData = eventData.horoscope[signKey];
+                
+                // ボタン要素を作る
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'sign-btn';
+                btn.innerText = signData.name; // 「牡羊座」など
+
+                // ボタンがクリックされた時の処理
+                btn.addEventListener('click', () => {
+                    // 他のボタンの選択状態アクティブクラスを解除
+                    document.querySelectorAll('.sign-btn').forEach(b => b.classList.remove('active'));
+                    // 選択されたボタンを光らせる
+                    btn.classList.add('active');
+
+                    // アドバイス領域にテキストを代入して表示
+                    document.getElementById('selected-sign-title').innerText = `✨ ${signData.name}のあなたへの導き`;
+                    document.getElementById('lucky-action').innerText = `🎯 ラッキーアクション: ${signData.action}`;
+                    document.getElementById('lucky-item').innerText = `🔮 ラッキーアイテム: ${signData.item}`;
+                    
+                    // 非表示クラスを外して表に出す
+                    document.getElementById('personal-advice').classList.remove('hidden');
+                });
+
+                selectorContainer.appendChild(btn);
             }
         }
 

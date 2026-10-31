@@ -34,6 +34,14 @@ body.theme-valentine {
     --border: rgba(255, 182, 193, 0.45); /* ピンク */
     --accent: #ff94b4; /* スイートピンク */
 }
+/* ☀️ ミッドサマー（夏至）専用カラー */
+body.theme-midsummer {
+    --bg: #0b192c; /* 妖精が舞う深夜のディープブルー */
+    --bg-deep: #1e112a; /* わずかに赤みがかった神秘的な薄暮の紫 */
+    --panel: rgba(16, 28, 44, 0.95);
+    --border: rgba(218, 165, 32, 0.45); /* 太陽をモチーフにしたゴールド */
+    --accent: #ffb703; /* 眩しく輝くサンゴールド */
+}
 
 * { box-sizing: border-box; }
 .hidden { display: none !important; }

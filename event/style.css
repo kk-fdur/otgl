@@ -13,7 +13,7 @@ body.theme-halloween {
     --bg: #140b24; /* 妖しい深い紫 */
     --bg-deep: #241133;
     --panel: rgba(26, 12, 44, 0.95);
-    --border: rgba(24fa, 130, 44, 0.45); /* オレンジ */
+    --border: rgba(245, 130, 44, 0.45); /* オレンジ */
     --accent: #ff841c; /* カボチャオレンジ */
 }
 

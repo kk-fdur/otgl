@@ -143,8 +143,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (cardAnnounceText) {
                     const directionText = isReverse ? '（逆位置）' : '（正位置）';
-                    cardAnnounceText.textContent = `🔮 ${zodiac.name}のあなたは【 ${card.name} 】${directionText}を引きました`;
+                    // 括弧の中に文字を美しく収め、「を引きました」のタイポも修正しました
+                    cardAnnounceText.textContent = `🔮 ${zodiac.name}のあなたは【 ${card.name}${directionText} 】を引きました`;
                 }
+
                 
                 const fullText = fortuneArray[dailyIndex];
                 

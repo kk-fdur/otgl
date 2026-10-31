@@ -90,3 +90,79 @@ h1 { margin: 12px 0 10px; font-size: clamp(1.8rem, 4vw, 2.8rem); letter-spacing:
     0%, 100% { transform: scale(1); opacity: 0.6; }
     50% { transform: scale(1.05); opacity: 0.9; }
 }
+/* ==========================================
+   ✨ 12星座選択ボタン＆アドバイスエリアのデザイン
+========================================== */
+
+/* 12星座ボタンが並ぶグリッド。スマホ時は3列、iPad/PC時は4列に自動調整 */
+.sign-selector {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin: 20px 0 10px;
+}
+
+@media (min-width: 480px) {
+    .sign-selector {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+/* 通常時の星座ボタン。今のフォントやボーダーに合わせる */
+.sign-btn {
+    font-family: inherit;
+    padding: 12px 8px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: var(--muted);
+    border-radius: 12px;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+/* ホバーした時と、選択されて光っている時のデザイン（イベントごとのアクセントカラーに自動連動） */
+.sign-btn:hover {
+    color: var(--text);
+    border-color: var(--border);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.sign-btn.active {
+    color: var(--text);
+    border-color: var(--accent);
+    background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.12) 100%);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    font-weight: bold;
+    transform: translateY(-2px);
+}
+
+/* 選んだ星座のアドバイスが滑り出てくる箱 */
+.personal-advice-box {
+    margin-top: 24px;
+    padding: 24px;
+    background: rgba(0, 0, 0, 0.25);
+    border-left: 4px solid var(--accent); /* イベントごとの色になる */
+    border-radius: 0 16px 16px 0;
+    text-align: left;
+    animation: fadeIn 0.4s ease-out;
+}
+
+.personal-advice-box h4 {
+    margin: 0 0 14px 0;
+    font-size: 1.1rem;
+    color: var(--text);
+    letter-spacing: 0.08em;
+}
+
+.advice-item {
+    margin: 8px 0;
+    font-size: 0.95rem;
+    line-height: 1.8;
+}
+
+/* 箱が出る時のふわっとしたアニメーション */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}

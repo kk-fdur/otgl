@@ -74,5 +74,29 @@ const eventFortuneData = {
             aquarius:    { name: "水瓶座", action: "SNSで素敵な投稿にいいねをする", item: "ワイヤレスイヤホン" },
             pisces:      { name: "魚座",   action: "恋愛映画を観てキュンとする", item: "シルクのスカーフ" }
         }
+    },
+        midsummer: {
+        id: "midsummer",
+        title: "☀️ 聖真夏の夜のミッドサマー・リーディング",
+        subtitle: "太陽が最も長く輝く神秘の特異日、妖精たちが囁くあなたの未来",
+        startMonth: 6, startDate: 15, // 6月15日から
+        endMonth: 6, endDate: 25,     // 6月25日まで開く
+        themeClass: "theme-midsummer",
+        usedCards: "今回使用したカード：ミッドサマーオラクル、妖精タロット",
+        commonContent: "太陽のエネルギーが最高潮に達する夏至の季節。あなたの心に秘められた情熱や、これまで影に隠れていた本当の願いが、眩い光によって照らし出される時です。少し大胆な一歩が、運命を大きく動かします。",
+        horoscope: {
+            aries:       { name: "牡羊座", action: "朝一番に太陽の光を浴びる", item: "ゴールドのアクセサリー" },
+            taurus:      { name: "牡牛座", action: "ハーブティーをゆっくり淹れて飲む", item: "ミントの葉" },
+            gemini:      { name: "双子座", action: "お気に入りの音楽を聴きながら散歩する", item: "黄色いリボン" },
+            cancer:      { name: "蟹座",   action: "窓辺に季節の生花を飾る", item: "ガラスのフラワーベース" },
+            leo:         { name: "獅子座", action: "キャンドルの灯りで瞑想してみる", item: "シトリンの原石" },
+            virgo:       { name: "乙女座", action: "リネン素材の服や小物を身につける", item: "白いコットンのハンカチ" },
+            libra:       { name: "天秤座", action: "大切な人に感謝のメッセージを送る", item: "花の香りのアロマ" },
+            scorpio:     { name: "蠍座",   action: "夜、静かに鏡を見つめて自分と対話する", item: "アンティーク風の鏡" },
+            sagittarius: { name: "射手座", action: "裸足で芝生の上を少し歩いてみる", item: "サンダル" },
+            capricorn:   { name: "山羊座", action: "これからの半年間の目標をノートに書く", item: "お気に入りの万年筆" },
+            aquarius:    { name: "水瓶座", action: "夕暮れ時の空をじっと眺める", item: "琥珀色のグラス" },
+            pisces:      { name: "魚座",   action: "枕の下に好きなカードを忍ばせて眠る", item: "シルクの布" }
+        }
     }
 };

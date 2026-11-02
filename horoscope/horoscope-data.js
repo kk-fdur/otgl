@@ -230,7 +230,7 @@ const horoscopeData = [
 			}
 		},
 		{
-		name: " Virgo 乙女座",
+		name: "♍️ 乙女座",
 		dates: "8月23日～9月22日",
 		fortune: {
 			love: [
@@ -276,7 +276,7 @@ const horoscopeData = [
 		}
 		},
 {
-name: "Libra 天秤座",
+name: "♎️ 天秤座",
 dates: "9月23日～10月23日",
 fortune: {
 love: [

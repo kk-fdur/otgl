@@ -460,7 +460,7 @@ lucky: [
 }
 },
 {
-name: " Aquarius 水瓶座",
+name: "♒️ 水瓶座",
 dates: "1月20日～2月18日",
 fortune: {
 love: [

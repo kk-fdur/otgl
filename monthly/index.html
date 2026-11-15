@@ -18,22 +18,10 @@
         <!-- 星座選択パネル -->
         <section class="setup-panel">
             <h2>あなたの星座を選択してください</h2>
-            <div class="zodiac-grid">
-                <button onclick="showFortune('aries')">♈ 牡羊座</button>
-                <button onclick="showFortune('taurus')">♉ 牡牛座</button>
-                <button onclick="showFortune('gemini')">♊ 双子座</button>
-                <button onclick="showFortune('cancer')">♋ 蟹座</button>
-                <button onclick="showFortune('leo')">♌ 獅子座</button>
-                <button onclick="showFortune('virgo')">♍ 乙女座</button>
-                <button onclick="showFortune('libra')">♎ 天秤座</button>
-                <button onclick="showFortune('scorpio')">♏ 蠍座</button>
-                <button onclick="showFortune('sagittarius')">♐ 射手座</button>
-                <button onclick="showFortune('capricorn')">♑ 山羊座</button>
-                <button onclick="showFortune('aquarius')">♒ 水瓶座</button>
-                <button onclick="showFortune('pisces')">♓ 魚座</button>
-            </div>
+            <!-- 👇 JavaScriptでここにボタンを自動生成します -->
+            <div class="zodiac-grid" id="zodiac-grid"></div>
             
-            <!-- 👇 新しく追加：今回使用したカードの一覧を表示する場所 -->
+            <!-- 今回使用したカードの一覧を表示する場所 -->
             <p id="page-used-cards" style="margin: 24px 0 0; font-size: 0.88rem; color: var(--muted); border-top: 1px dashed rgba(155, 196, 255, 0.2); padding-top: 16px; font-style: italic; line-height: 1.6; letter-spacing: 0.05em;"></p>
         </section>
 
@@ -75,13 +63,49 @@
     <!-- データを読み込んで処理するスクリプト -->
     <script src="data.js"></script>
     <script>
-        // ページ読み込み時に今月のタイトルと使用カードを自動セット
+        // 12星座の基本リスト（1月＝山羊座 〜 12月＝射手座の順）
+        const zodiacList = [
+            { key: 'capricorn',   label: '♑ 山羊座' }, // 1月
+            { key: 'aquarius',    label: '♒ 水瓶座' }, // 2月
+            { key: 'pisces',      label: '♓ 魚座' },   // 3月
+            { key: 'aries',       label: '♈ 牡羊座' }, // 4月
+            { key: 'taurus',      label: '♉ 牡牛座' }, // 5月
+            { key: 'gemini',      label: '♊ 双子座' }, // 6月
+            { key: 'cancer',      label: '♋ 蟹座' },   // 7月
+            { key: 'leo',         label: '♌ 獅子座' }, // 8月
+            { key: 'virgo',       label: '♍ 乙女座' }, // 9月
+            { key: 'libra',       label: '♎ 天秤座' }, // 10月
+            { key: 'scorpio',     label: '♏ 蠍座' },   // 11月
+            { key: 'sagittarius', label: '♐ 射手座' }  // 12月
+        ];
+
+        // 対象月を取得（data.jsにmonthがあればそれを優先、なければ現在の月を使用）
+        let targetMonth = new Date().getMonth() + 1;
         if (typeof monthlyFortuneData !== 'undefined') {
             document.getElementById('page-title').innerText = monthlyFortuneData.meta.title;
             document.getElementById('page-subtitle').innerText = monthlyFortuneData.meta.subtitle;
-            // 👇 追加：使用カードを画面に表示
             document.getElementById('page-used-cards').innerText = monthlyFortuneData.meta.usedCards || "";
+            
+            if (monthlyFortuneData.meta.month) {
+                targetMonth = Number(monthlyFortuneData.meta.month);
+            }
         }
+
+        // 対象月の星座が先頭になるように配列を並べ替える
+        const startIndex = (targetMonth - 1 + 12) % 12;
+        const orderedZodiacs = [
+            ...zodiacList.slice(startIndex),
+            ...zodiacList.slice(0, startIndex)
+        ];
+
+        // ボタンを画面に生成する
+        const gridElement = document.getElementById('zodiac-grid');
+        orderedZodiacs.forEach(zodiac => {
+            const btn = document.createElement('button');
+            btn.innerText = zodiac.label;
+            btn.onclick = () => showFortune(zodiac.key);
+            gridElement.appendChild(btn);
+        });
 
         // 星座の運勢を表示する関数
         function showFortune(zodiacKey) {

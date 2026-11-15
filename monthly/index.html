@@ -18,7 +18,6 @@
         <!-- 星座選択パネル -->
         <section class="setup-panel">
             <h2>あなたの星座を選択してください</h2>
-            <!-- 👇 JavaScriptでここにボタンを自動生成します -->
             <div class="zodiac-grid" id="zodiac-grid"></div>
             
             <!-- 今回使用したカードの一覧を表示する場所 -->
@@ -79,7 +78,7 @@
             { key: 'sagittarius', label: '♐ 射手座' }  // 12月
         ];
 
-        // 対象月を取得（data.jsにmonthがあればそれを優先、なければ現在の月を使用）
+        // 対象月を取得
         let targetMonth = new Date().getMonth() + 1;
         if (typeof monthlyFortuneData !== 'undefined') {
             document.getElementById('page-title').innerText = monthlyFortuneData.meta.title;
@@ -100,14 +99,15 @@
 
         // ボタンを画面に生成する
         const gridElement = document.getElementById('zodiac-grid');
-        orderedZodiacs.forEach(zodiac => {
+        orderedZodiacs.forEach(function(zodiac, index) {
             const btn = document.createElement('button');
             btn.innerText = zodiac.label;
-            // 👇 追加：一番最初のボタン（今月の主役星座）にだけ特別な目印をつける
             if (index === 0) {
                 btn.classList.add('lead-zodiac');
             }
-            btn.onclick = () => showFortune(zodiac.key);
+            btn.onclick = function() {
+                showFortune(zodiac.key);
+            };
             gridElement.appendChild(btn);
         });
 
@@ -117,7 +117,6 @@
             const data = monthlyFortuneData[zodiacKey];
             if (!data) return;
 
-            // 各項目にテキストを流し込む
             document.getElementById('zodiac-name').innerText = data.name;
             document.getElementById('fortune-cards').innerText = data.cards || "なし";
             document.getElementById('fortune-total').innerText = data.total;
@@ -125,11 +124,8 @@
             document.getElementById('fortune-health').innerText = data.health;
             document.getElementById('fortune-lucky').innerText = data.lucky;
 
-            // 結果パネルを表示する
             const panel = document.getElementById('result-panel');
             panel.classList.remove('hidden');
-
-            // 画面を結果位置までスムーズにスクロール
             panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
     </script>

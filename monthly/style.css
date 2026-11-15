@@ -224,3 +224,17 @@ h1 {
     font-weight: bold;
     letter-spacing: 0.06em;
 }
+/* 今月の主役星座（先頭ボタン）の特別スタイル */
+.zodiac-grid button.lead-zodiac {
+    border-color: rgba(255, 215, 130, 0.65);
+    background: linear-gradient(135deg, rgba(255, 215, 130, 0.16), rgba(155, 196, 255, 0.12));
+    box-shadow: 0 0 12px rgba(255, 215, 130, 0.18);
+    color: #fff5d6;
+}
+
+/* 主役ボタンにマウスを乗せたとき */
+.zodiac-grid button.lead-zodiac:hover {
+    border-color: rgba(255, 215, 130, 0.9);
+    background: linear-gradient(135deg, rgba(255, 215, 130, 0.25), rgba(155, 196, 255, 0.2));
+    box-shadow: 0 0 16px rgba(255, 215, 130, 0.3);
+}

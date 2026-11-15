@@ -103,6 +103,10 @@
         orderedZodiacs.forEach(zodiac => {
             const btn = document.createElement('button');
             btn.innerText = zodiac.label;
+            // 👇 追加：一番最初のボタン（今月の主役星座）にだけ特別な目印をつける
+            if (index === 0) {
+                btn.classList.add('lead-zodiac');
+            }
             btn.onclick = () => showFortune(zodiac.key);
             gridElement.appendChild(btn);
         });

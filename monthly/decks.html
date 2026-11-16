@@ -79,6 +79,40 @@
             color: var(--muted);
             line-height: 1.6;
         }
+        /* 外部CSSの干渉を防ぐため、親要素と !important で強制適用 */
+.deck-card .deck-image-wrap {
+    position: relative !important;
+    overflow: hidden !important;
+}
+
+.deck-card .deck-image-wrap .watermark-overlay {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    position: absolute !important;
+    top: -50% !important;
+    left: -50% !important;
+    width: 200% !important;
+    height: 200% !important;
+    z-index: 999 !important;
+    pointer-events: none !important;
+    user-select: none !important;
+    transform: rotate(-25deg) !important;
+    background: transparent !important;
+}
+
+.deck-card .deck-image-wrap .watermark-overlay::before {
+    content: "© こきょうの占い屋   © こきょうの占い屋   © こきょうの占い屋 \A © こきょうの占い屋   © こきょうの占い屋   © こきょうの占い屋 \A © こきょうの占い屋   © こきょうの占い屋   © こきょうの占い屋 \A © こきょうの占い屋   © こきょうの占い屋   © こきょうの占い屋 \A © こきょうの占い屋   © こきょうの占い屋   © こきょうの占い屋 \A © こきょうの占い屋   © こきょうの占い屋   © こきょうの占い屋" !important;
+    display: block !important;
+    white-space: pre !important;
+    color: rgba(255, 255, 255, 0.35) !important;
+    font-size: 13px !important;
+    font-weight: bold !important;
+    line-height: 3.2 !important;
+    letter-spacing: 0.1em !important;
+    text-align: center !important;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8) !important;
+}
     </style>
 </head>
 <body>

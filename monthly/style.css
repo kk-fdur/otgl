@@ -241,19 +241,21 @@ h1 {
 /* 🔮 タロット画像の上にサイン画像を敷き詰めるバリア */
 .watermark-overlay {
     position: absolute;
-    top: 5px;
-    left: 5px;
-    right: 5px;
-    bottom: 5px;
-    border-radius: 14px;
-    background-image: url('../images/watermark.png');
-    background-repeat: repeat;
-    background-size: 80px auto;
-    opacity: 0.2;
-    pointer-events: auto;
-    z-index: 5;
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    user-select: none;
-    transition: transform 0.4s cubic-bezier(.2,.8,.2,1);
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%; /* これで自動的にタロット画像と同じ高さになります */
+    
+    /* アップロードしたサイン画像のパス（環境に合わせて調整してください） */
+    background-image: url('../images/watermark.png'); 
+    background-repeat: repeat; /* 画像を格子状に敷き詰める */
+
+    /* 💡 ここを【追加】！1640pxの画像を「横幅80px」のサイズに縮小して敷き詰めます */
+    background-size: 80px auto; 
+    
+    /* タロットが見えるように少し透けさせる（0.2〜0.4くらいでお好み調整） */
+    opacity: 0.2; 
+    
+    /* 下のタロット画像への長押し・右クリックを物理的に通さない設定 */
+    pointer-events: auto; 
 }

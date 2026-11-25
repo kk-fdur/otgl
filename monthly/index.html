@@ -12,6 +12,7 @@
     </div>
 
     <main class="page-shell">
+        <h1 id="page-title">12星座・月間リーディング</h1>
         <p id="page-subtitle" class="subtitle">星と札が紡ぐ、今月の導き</p>
 
         <!-- 星座選択パネル -->
@@ -85,10 +86,19 @@
 
         // 対象月を取得
         let targetMonth = new Date().getMonth() + 1;
-        if (typeof monthlyFortuneData !== 'undefined') {
-            document.getElementById('page-title').innerText = monthlyFortuneData.meta.title;
-            document.getElementById('page-subtitle').innerText = monthlyFortuneData.meta.subtitle;
-            document.getElementById('page-used-cards').innerText = monthlyFortuneData.meta.usedCards || "";
+        if (typeof monthlyFortuneData !== 'undefined' && monthlyFortuneData.meta) {
+            const titleEl = document.getElementById('page-title');
+            if (titleEl && monthlyFortuneData.meta.title) {
+                titleEl.innerText = monthlyFortuneData.meta.title;
+            }
+            const subtitleEl = document.getElementById('page-subtitle');
+            if (subtitleEl && monthlyFortuneData.meta.subtitle) {
+                subtitleEl.innerText = monthlyFortuneData.meta.subtitle;
+            }
+            const usedCardsEl = document.getElementById('page-used-cards');
+            if (usedCardsEl) {
+                usedCardsEl.innerText = monthlyFortuneData.meta.usedCards || "";
+            }
             
             if (monthlyFortuneData.meta.month) {
                 targetMonth = Number(monthlyFortuneData.meta.month);

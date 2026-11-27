@@ -4,59 +4,53 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>今日のお守り数秘 | こきょうの占い屋</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="css/numerology.css">
 </head>
 <body>
 
-  <div class="container">
-    <header>
-      <h1 class="main-title">🔢 今日のお守り数秘</h1>
-      <p class="subtitle">今のあなたに寄り添う小さな数字のヒント</p>
-    </header>
+  <nav class="header-nav">
+    <a href="index.html" class="back-link">← メニューに戻る</a>
+  </nav>
 
-    <main>
-      <div class="result-card" id="resultCard">
-        <div class="placeholder" id="placeholder">
-          <span class="placeholder-icon">✨</span>
-          <p>下のボタンを押して、<br>今日のささやかな彩りを受け取ってください。</p>
-        </div>
+  <h1>🔢 今日のお守り数秘</h1>
 
-        <div class="result-area" id="resultArea">
-          <div class="special-badge" id="specialBadge" style="display: none;">✨ 特別なゾロ目の日 ✨</div>
-          <div class="number-circle" id="numberCircle">1</div>
-          <p class="message" id="messageText"></p>
-
-          <div class="lucky-items">
-            <div class="lucky-row">
-              <span class="lucky-label">お守りカラー</span>
-              <span class="lucky-value">
-                <span class="color-chip" id="colorChip"></span>
-                <span id="colorName"></span>
-              </span>
-            </div>
-            <div class="lucky-row">
-              <span class="lucky-label">ラッキーモチーフ</span>
-              <span class="lucky-value" id="motifText"></span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <button class="draw-btn" id="drawBtn" onclick="drawNumber()">今日のお守り数字を引く</button>
-
-      <div class="back-wrap">
-        <a href="../index.html" class="back-link">← こきょうの占い屋 トップへ戻る</a>
-      </div>
-    </main>
-
-    <footer class="site-privacy-note">
-      <div class="copyright-note">
-        <p>© 2026 こきょうの占い屋. All Rights Reserved.</p>
-      </div>
-      <p>※利用者の選択したデータや個人情報が外部サーバーへ転送・保管されることは一切ありません。</p>
-    </footer>
+  <!-- 数字のメダリオン表示 -->
+  <div class="number-display" id="numberDisplay">
+    <span class="number-value" id="numberValue">？</span>
+    <span class="master-tag hidden" id="masterTag">ゾロ目の日</span>
   </div>
 
-  <script src="data.js"></script>
+  <!-- 結果のテキストボックス -->
+  <div id="result-text">
+    <p id="initial-guide">ボタンを押して、今日のあなたに寄り添う小さな数字のヒントを受け取ってください。</p>
+
+    <div id="result-content" class="hidden">
+      <div class="result-card-title" id="resultTitle"></div>
+      <span class="result-card-detail" id="resultDetail"></span>
+
+      <div class="lucky-accent-box">
+        <span class="lucky-item">
+          お守りカラー：
+          <span class="color-chip" id="colorChip"></span>
+          <strong id="colorName"></strong>
+        </span>
+        <span class="lucky-item">
+          モチーフ：<strong id="motifText"></strong>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 占うボタン -->
+  <div class="button-row">
+    <button class="btn" id="drawBtn" onclick="drawNumber()">数字を引く</button>
+  </div>
+
+  <!-- プライバシーノート -->
+  <div>
+    <p id="result-privacy-note">※すべての処理はご使用の端末内でのみ完結し、外部へデータが送信されることはありません。</p>
+  </div>
+
+  <script src="js/numerology.js"></script>
 </body>
 </html>

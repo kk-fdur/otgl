@@ -38,4 +38,15 @@ function drawNumber() {
   document.getElementById("colorName").textContent = selected.colorName;
   document.getElementById("motifText").textContent = selected.motif;
   document.getElementById("drawBtn").textContent = "もう一度引く";
+  
+    // resultCard の枠線と数字サークルの光彩（box-shadow）をカラーに連動させる
+  const resultCard = document.getElementById("resultCard");
+  resultCard.style.borderColor = selected.colorCode;
+  resultCard.style.boxShadow = `0 8px 28px rgba(7, 17, 29, 0.5), 0 0 20px ${selected.colorCode}40`;
+
+  const numberCircle = document.getElementById("numberCircle");
+  numberCircle.textContent = selected.num;
+  numberCircle.style.background = selected.bgStyle;
+  numberCircle.style.boxShadow = `0 0 22px ${selected.colorCode}80`;
+
 }

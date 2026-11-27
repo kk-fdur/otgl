@@ -4,18 +4,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>今日のお守り数秘 | こきょうの占い屋</title>
-  <link rel="stylesheet" href="css/numerology.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
   <div class="container">
     <header>
-      <h1>🔢 今日のお守り数秘</h1>
+      <h1 class="main-title">🔢 今日のお守り数秘</h1>
       <p class="subtitle">今のあなたに寄り添う小さな数字のヒント</p>
     </header>
 
     <main>
-      <div class="card" id="resultCard">
+      <div class="result-card" id="resultCard">
         <div class="placeholder" id="placeholder">
           <span class="placeholder-icon">✨</span>
           <p>下のボタンを押して、<br>今日のささやかな彩りを受け取ってください。</p>
@@ -44,16 +44,19 @@
 
       <button class="draw-btn" id="drawBtn" onclick="drawNumber()">今日のお守り数字を引く</button>
 
-      <div>
+      <div class="back-wrap">
         <a href="index.html" class="back-link">← こきょうの占い屋 トップへ戻る</a>
       </div>
     </main>
 
-    <footer>
-      <p>© 2026 こきょうの占い屋. All Rights Reserved.</p>
+    <footer class="site-privacy-note">
+      <div class="copyright-note">
+        <p>© 2026 こきょうの占い屋. All Rights Reserved.</p>
+      </div>
+      <p>※当サイトは GitHub Pages を利用して公開されています。利用者の選択したデータや個人情報が外部サーバーへ転送・保管されることは一切ありません。すべての処理はご使用の端末（ブラウザ）内でのみ安全に完結します。</p>
     </footer>
   </div>
 
-  <script src="js/numerology.js"></script>
+  <script src="data.js"></script>
 </body>
 </html>

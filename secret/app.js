@@ -67,6 +67,8 @@ function calculateAll() {
   tbody.innerHTML = "";
   const hitPlanets = [];
   const signGroups = {};
+  const houseGroups = {};
+  const dignityHits = [];
 
   planets.forEach(p => {
     const sIdx = Math.floor(p.lon / 30);
@@ -74,6 +76,15 @@ function calculateAll() {
     signGroups[sIdx].push(p.name);
 
     const hNum = ((sIdx - baseSign + 12) % 12) + 1;
+    if (!houseGroups[hNum]) houseGroups[hNum] = [];
+    houseGroups[hNum].push(p.name);
+
+    // 品位（ドミサイル・イグザルテーション）チェック
+    const dig = DIGNITY_RULES.find(r => r.id === p.id && r.sign === sIdx);
+    if (dig) {
+      dignityHits.push(`<div class="sync-item"><strong>👑 ${p.name} in ${SIGNS.at(sIdx)}【${dig.type}】</strong><br>${dig.desc}</div>`);
+    }
+
     let cls = "", badge = "";
     if (hNum === lifeH) { cls = "row-highlight-life"; badge += `<span class="sync-badge life">★現在数</span>`; hitPlanets.push(p); }
     if (hNum === pastH) { if (!cls) cls = "row-highlight-sub"; badge += `<span class="sync-badge sub">過去数</span>`; }
@@ -85,24 +96,27 @@ function calculateAll() {
     tbody.appendChild(tr);
   });
 
-  // 複数天体が同じ星座にある場合の抽出（天体数が多い順）
-  const multiSigns = Object.keys(signGroups)
-    .map(k => ({ idx: Number(k), list: signGroups[k] }))
-    .filter(item => item.list.length >= 2)
-    .sort((a, b) => b.list.length - a.list.length);
+  // 1. 星座ステリウム（オーバーロード）
+  const multiSigns = Object.keys(signGroups).map(k => ({ idx: Number(k), list: signGroups[k] })).filter(x => x.list.length >= 2).sort((a, b) => b.list.length - a.list.length);
+  document.getElementById("signFocusArea").innerHTML = multiSigns.length > 0
+    ? multiSigns.map(item => `<div class="sync-item"><strong>${SIGNS.at(item.idx)} に ${item.list.length}天体集中【${item.list.length >= 3 ? "🌟ステリウム" : "✨強調サイン"}】</strong><br><span style="font-size:0.8rem;color:#c2b5f5;">滞在：${item.list.join("・")}</span><br>${SIGN_FOCUS_READINGS[item.idx]}</div>`).join("")
+    : `<p style="margin:0;">10天体が各星座にバランスよく分散しており、柔軟で多角的な視点を持っています。</p>`;
 
-  const focusArea = document.getElementById("signFocusArea");
-  if (multiSigns.length > 0) {
-    focusArea.innerHTML = multiSigns.map(item => {
-      const tag = item.list.length >= 3 ? "🌟ステリウム（3天体以上集中）" : "✨強調サイン（2天体集中）";
-      return `<div class="sync-item"><strong>${SIGNS.at(item.idx)} に ${item.list.length}天体集中【${tag}】</strong><br>` +
-        `<span style="font-size:0.8rem;color:#c2b5f5;">滞在天体：${item.list.join("・")}</span><br>` +
-        `${SIGN_FOCUS_READINGS[item.idx]}</div>`;
-    }).join("");
-  } else {
-    focusArea.innerHTML = `<p style="margin:0;">10天体がそれぞれ異なる星座にバランスよく分散しています。特定の偏りに縛られず、多角的な視点と柔軟性を持って様々な状況に対応できるタイプです。</p>`;
+  // 2. ハウスステリウム
+  const multiHouses = Object.keys(houseGroups).map(k => ({ num: Number(k), list: houseGroups[k] })).filter(x => x.list.length >= 2).sort((a, b) => b.list.length - a.list.length);
+  document.getElementById("houseFocusArea").innerHTML = multiHouses.length > 0
+    ? multiHouses.map(item => `<div class="sync-item"><strong>第${item.num}ハウス に ${item.list.length}天体集中【${item.list.length >= 3 ? "🏛️ハウスステリウム" : "✨強調ハウス"}】</strong><br><span style="font-size:0.8rem;color:#c2b5f5;">滞在：${item.list.join("・")}</span><br>${HOUSE_FOCUS_READINGS[item.num]}</div>`).join("")
+    : `<p style="margin:0;">特定のハウスに偏らず、人生の様々な場面でバランスよく経験を重ねる配置です。</p>`;
+
+  // 3. 品位＆ナチュラルハウス共鳴
+  if (baseSign === 0) {
+    dignityHits.unshift(`<div class="sync-item"><strong>✨ ナチュラルハウス完全一致（牡羊座＝第1H起点）</strong><br>12星座と12ハウスの本来の支配関係がすべて一致しており、星と場所のエネルギーがストレートに噛み合う明快な配置です。</div>`);
   }
+  document.getElementById("dignityArea").innerHTML = dignityHits.length > 0
+    ? dignityHits.join("")
+    : `<p style="margin:0;">突出した品位の偏りはなく、各天体がそれぞれの星座の個性を穏やかにブレンドしながら働く配置です。</p>`;
 
+  // 4. 数秘 × ハウス連動
   const lifeSign = SIGNS.at((baseSign + lifeH - 1) % 12);
   let planetBoostText = `現在このハウスに天体はありませんが、<strong>${lifeSign}</strong>のフィルターを通してテーマが自然と発揮されます。`;
   if (hitPlanets.length > 0) {

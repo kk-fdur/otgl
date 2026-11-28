@@ -37,12 +37,12 @@ function calcPlanets(jd) {
   const D = norm360(Nm + wm + Mm - lonSun);
   const lonMoon = norm360(Math.atan2(yhm, xhm) * deg - 1.274 * Math.sin((Mm - 2 * D) * rad) + 0.658 * Math.sin(2 * D * rad) - 0.186 * Math.sin(mS * rad));
 
-  function body(id, name, sym, N, i, w, a, e, M) {
+  function body(id, name, role, sym, N, i, w, a, e, M) {
     const E = solveKepler(norm360(M), e), xv = a * (Math.cos(E * rad) - e), yv = a * Math.sqrt(1 - e * e) * Math.sin(E * rad);
     const v = Math.atan2(yv, xv) * deg, r = Math.sqrt(xv * xv + yv * yv), Nr = norm360(N) * rad, wr = (v + norm360(w)) * rad, ir = i * rad;
     const xh = r * (Math.cos(Nr) * Math.cos(wr) - Math.sin(Nr) * Math.sin(wr) * Math.cos(ir));
     const yh = r * (Math.sin(Nr) * Math.cos(wr) + Math.cos(Nr) * Math.sin(wr) * Math.cos(ir));
-    return { id, name, sym, lon: norm360(Math.atan2(yh + ys, xh + xs) * deg) };
+    return { id, name, role, sym, lon: norm360(Math.atan2(yh + ys, xh + xs) * deg) };
   }
 
   const P = 238.95 + 0.003968789 * d;
@@ -51,50 +51,67 @@ function calcPlanets(jd) {
   const lonPluto = norm360(Math.atan2(rP * Math.sin(lonPh * rad) + ys, rP * Math.cos(lonPh * rad) + xs) * deg);
 
   return [
-    { id: "sun", name: "太陽 ☉", sym: "☉", lon: lonSun },
-    { id: "moon", name: "月 ☽", sym: "☽", lon: lonMoon },
-    body("mercury", "水星 ☿", "☿", 48.3313 + 3.24587e-5 * d, 7.0047, 29.1241 + 1.01444e-5 * d, 0.387098, 0.205635, 168.6562 + 4.0923344368 * d),
-    body("venus", "金星 ♀", "♀", 76.6799 + 2.46590e-5 * d, 3.3946, 54.8910 + 1.38374e-5 * d, 0.723330, 0.006773, 48.0052 + 1.6021302244 * d),
-    body("mars", "火星 ♂", "♂", 49.5574 + 2.11081e-5 * d, 1.8497, 286.5016 + 2.92961e-5 * d, 1.523688, 0.093405, 18.6021 + 0.5240207766 * d),
-    body("jupiter", "木星 ♃", "♃", 100.4542 + 2.76854e-5 * d, 1.3030, 273.8777 + 1.64505e-5 * d, 5.20256, 0.048498, 19.8950 + 0.0830853001 * d),
-    body("saturn", "土星 ♄", "♄", 113.6634 + 2.38980e-5 * d, 2.4886, 339.3939 + 2.97661e-5 * d, 9.55475, 0.055546, 316.9670 + 0.0334442282 * d),
-    body("uranus", "天王星 ♅", "♅", 74.0005 + 1.3978e-5 * d, 0.7733, 96.6612 + 3.0565e-5 * d, 19.18171, 0.047318, 142.5905 + 0.011725806 * d),
-    body("neptune", "海王星 ♆", "♆", 131.7806 + 3.0173e-5 * d, 1.7700, 272.8461 - 6.027e-6 * d, 30.05826, 0.008606, 260.2471 + 0.005995147 * d),
-    { id: "pluto", name: "冥王星 ♇", sym: "♇", lon: lonPluto }
+    { id: "sun", name: "太陽 ☉", role: "人生の目的・本質", sym: "☉", lon: lonSun },
+    { id: "moon", name: "月 ☽", role: "感情・安心感・素顔", sym: "☽", lon: lonMoon },
+    body("mercury", "水星 ☿", "知性・言葉・学び", "☿", 48.3313 + 3.24587e-5 * d, 7.0047, 29.1241 + 1.01444e-5 * d, 0.387098, 0.205635, 168.6562 + 4.0923344368 * d),
+    body("venus", "金星 ♀", "愛・美意識・喜び", "♀", 76.6799 + 2.46590e-5 * d, 3.3946, 54.8910 + 1.38374e-5 * d, 0.723330, 0.006773, 48.0052 + 1.6021302244 * d),
+    body("mars", "火星 ♂", "情熱・行動・突破力", "♂", 49.5574 + 2.11081e-5 * d, 1.8497, 286.5016 + 2.92961e-5 * d, 1.523688, 0.093405, 18.6021 + 0.5240207766 * d),
+    body("jupiter", "木星 ♃", "拡大・幸運・発展", "♃", 100.4542 + 2.76854e-5 * d, 1.3030, 273.8777 + 1.64505e-5 * d, 5.20256, 0.048498, 19.8950 + 0.0830853001 * d),
+    body("saturn", "土星 ♄", "試練・責任・成熟", "♄", 113.6634 + 2.38980e-5 * d, 2.4886, 339.3939 + 2.97661e-5 * d, 9.55475, 0.055546, 316.9670 + 0.0334442282 * d),
+    body("uranus", "天王星 ♅", "改革・個性・ひらめき", "♅", 74.0005 + 1.3978e-5 * d, 0.7733, 96.6612 + 3.0565e-5 * d, 19.18171, 0.047318, 142.5905 + 0.011725806 * d),
+    body("neptune", "海王星 ♆", "夢・直感・イマジネーション", "♆", 131.7806 + 3.0173e-5 * d, 1.7700, 272.8461 - 6.027e-6 * d, 30.05826, 0.008606, 260.2471 + 0.005995147 * d),
+    { id: "pluto", name: "冥王星 ♇", role: "変容・再生・極限の力", sym: "♇", lon: lonPluto }
   ];
 }
 
-function calcAscendant(jd) {
+function calcAscendant(jd, lat, lng) {
   const rad = Math.PI / 180, deg = 180 / Math.PI, T = (jd - 2451545.0) / 36525.0;
-  const LST = norm360(280.46061837 + 360.98564736629 * (jd - 2451545.0) + 0.000387933 * T * T + 139.7);
+  const LST = norm360(280.46061837 + 360.98564736629 * (jd - 2451545.0) + 0.000387933 * T * T + lng);
   const eps = 23.439291 - 0.0130042 * T;
-  return norm360(Math.atan2(-Math.cos(LST * rad), Math.sin(LST * rad) * Math.cos(eps * rad) + Math.tan(35.7 * rad) * Math.sin(eps * rad)) * deg);
+  return norm360(Math.atan2(-Math.cos(LST * rad), Math.sin(LST * rad) * Math.cos(eps * rad) + Math.tan(lat * rad) * Math.sin(eps * rad)) * deg);
 }
 
 function renderHoroscopeChart(planets, baseSignIdx, lifeH, pastH, futureH) {
   const svg = document.getElementById("horoscopeChart");
-  const cx = 210, cy = 210, rOut = 195, rSign = 160, rPl = 122, rHs = 82, rIn = 48;
+  const cx = 210, cy = 210, rOut = 195, rSign = 160, rPl = 124, rAsp = 86, rIn = 64;
   let html = `<circle cx="${cx}" cy="${cy}" r="${rOut}" fill="#14151e" stroke="#3b3f54" stroke-width="2"/>`;
 
   for (let i = 0; i < 12; i++) {
     const hNum = i + 1, sIdx = (baseSignIdx + i) % 12;
     const a1 = (180 - i * 30) * Math.PI / 180, a2 = (180 - (i + 1) * 30) * Math.PI / 180, am = (165 - i * 30) * Math.PI / 180;
-    const fill = (hNum === lifeH) ? "rgba(212,175,55,0.28)" : ((hNum === pastH || hNum === futureH) ? "rgba(138,117,214,0.22)" : "none");
+    const fill = (hNum === lifeH) ? "rgba(212,175,55,0.26)" : ((hNum === pastH || hNum === futureH) ? "rgba(138,117,214,0.20)" : "none");
     if (fill !== "none") {
-      html += `<path d="M ${cx + rSign * Math.cos(a1)} ${cy + rSign * Math.sin(a1)} A ${rSign} ${rSign} 0 0 0 ${cx + rSign * Math.cos(a2)} ${cy + rSign * Math.sin(a2)} L ${cx + rIn * Math.cos(a2)} ${cy + rIn * Math.sin(a2)} A ${rIn} ${rIn} 0 0 1 ${cx + rIn * Math.cos(a1)} ${cy + rIn * Math.sin(a1)} Z" fill="${fill}"/>`;
+      html += `<path d="M ${cx + rSign * Math.cos(a1)} ${cy + rSign * Math.sin(a1)} A ${rSign} ${rSign} 0 0 0 ${cx + rSign * Math.cos(a2)} ${cy + rSign * Math.sin(a2)} L ${cx + rAsp * Math.cos(a2)} ${cy + rAsp * Math.sin(a2)} A ${rAsp} ${rAsp} 0 0 1 ${cx + rAsp * Math.cos(a1)} ${cy + rAsp * Math.sin(a1)} Z" fill="${fill}"/>`;
     }
     const isAx = (i % 3 === 0);
-    html += `<line x1="${cx + rIn * Math.cos(a1)}" y1="${cy + rIn * Math.sin(a1)}" x2="${cx + rOut * Math.cos(a1)}" y2="${cy + rOut * Math.sin(a1)}" stroke="${isAx ? '#d4af37' : '#2f3244'}" stroke-width="${isAx ? 1.5 : 1}"/>`;
+    html += `<line x1="${cx + rAsp * Math.cos(a1)}" y1="${cy + rAsp * Math.sin(a1)}" x2="${cx + rOut * Math.cos(a1)}" y2="${cy + rOut * Math.sin(a1)}" stroke="${isAx ? '#d4af37' : '#2f3244'}" stroke-width="${isAx ? 1.5 : 1}"/>`;
     html += `<text x="${cx + 177 * Math.cos(am)}" y="${cy + 177 * Math.sin(am)}" fill="#d4af37" font-size="15" text-anchor="middle" dominant-baseline="central">${SIGN_SYM.at(sIdx)}</text>`;
-    html += `<text x="${cx + 65 * Math.cos(am)}" y="${cy + 65 * Math.sin(am)}" fill="${hNum === lifeH ? '#d4af37' : '#9da0b0'}" font-size="11" font-weight="bold" text-anchor="middle" dominant-baseline="central">${hNum}</text>`;
+    html += `<text x="${cx + 75 * Math.cos(am)}" y="${cy + 75 * Math.sin(am)}" fill="${hNum === lifeH ? '#d4af37' : '#9da0b0'}" font-size="10" font-weight="bold" text-anchor="middle" dominant-baseline="central">${hNum}</text>`;
   }
 
   html += `<circle cx="${cx}" cy="${cy}" r="${rSign}" fill="none" stroke="#3b3f54" stroke-width="1.2"/>`;
-  html += `<circle cx="${cx}" cy="${cy}" r="${rHs}" fill="none" stroke="#2f3244" stroke-dasharray="3,3"/>`;
-  html += `<circle cx="${cx}" cy="${cy}" r="${rIn}" fill="#12131a" stroke="#d4af37" stroke-width="1.2"/>`;
-  html += `<text x="${cx}" y="${cy}" fill="#d4af37" font-size="13" font-weight="bold" text-anchor="middle" dominant-baseline="central">${lifeH}H連動</text>`;
+  html += `<circle cx="${cx}" cy="${cy}" r="${rAsp}" fill="#11121a" stroke="#3b3f54" stroke-width="1"/>`;
+  html += `<circle cx="${cx}" cy="${cy}" r="${rIn}" fill="none" stroke="#262938" stroke-dasharray="2,2"/>`;
 
-  const placed = planets.map(p => ({ ...p, rel: norm360(p.lon - baseSignIdx * 30), draw: norm360(p.lon - baseSignIdx * 30) })).sort((a, b) => a.rel - b.rel);
+  // アスペクト線（中心のrIn円内に描画）
+  const baseLon = baseSignIdx * 30;
+  for (let i = 0; i < planets.length; i++) {
+    for (let j = i + 1; j < planets.length; j++) {
+      const p1 = planets.at(i), p2 = planets.at(j);
+      let diff = Math.abs(p1.lon - p2.lon);
+      if (diff > 180) diff = 360 - diff;
+      let color = "";
+      if (diff <= 6 || Math.abs(diff - 90) <= 5 || Math.abs(diff - 180) <= 6) color = "rgba(255, 110, 110, 0.55)";
+      else if (Math.abs(diff - 60) <= 4 || Math.abs(diff - 120) <= 6) color = "rgba(100, 181, 246, 0.55)";
+      if (color) {
+        const ang1 = (180 - norm360(p1.lon - baseLon)) * Math.PI / 180;
+        const ang2 = (180 - norm360(p2.lon - baseLon)) * Math.PI / 180;
+        html += `<line x1="${cx + rIn * Math.cos(ang1)}" y1="${cy + rIn * Math.sin(ang1)}" x2="${cx + rIn * Math.cos(ang2)}" y2="${cy + rIn * Math.sin(ang2)}" stroke="${color}" stroke-width="1.1"/>`;
+      }
+    }
+  }
+
+  const placed = planets.map(p => ({ ...p, rel: norm360(p.lon - baseLon), draw: norm360(p.lon - baseLon) })).sort((a, b) => a.rel - b.rel);
   for (let k = 0; k < 3; k++) {
     for (let i = 0; i < placed.length; i++) {
       const c = placed.at(i), n = placed.at((i + 1) % placed.length);

@@ -209,6 +209,7 @@ function calcAscendant(jd) {
 
 function renderHoroscopeChart(planets, baseSignIndex, lifeHouse, pastHouse, futureHouse) {
   const svg = document.getElementById('horoscopeChart');
+  if (!svg) return;
   const cx = 210, cy = 210;
   const rOuter = 195, rSign = 160, rPlanet = 122, rHouse = 82, rCenter = 48;
 
@@ -300,6 +301,7 @@ html += '' + p.sym + '';
 svg.innerHTML = html;
 }
 function calculateAll() {
+try {
 const y = parseInt(document.getElementById('year').value, 10);
 const m = parseInt(document.getElementById('month').value, 10);
 const d = parseInt(document.getElementById('day').value, 10);
@@ -399,7 +401,13 @@ document.getElementById('syncMeaningArea').innerHTML =
 ' +
 'これから意識して伸ばしていく課題や目標は、' + HOUSE_THEMES[futureHouse] + 'の領域を広げることで達成されます。' +
 '';
-document.getElementById('resultsArea').classList.add('is-visible');
+// CSSに頼らずJSから直接結果エリアを表示させる
+const resultsArea = document.getElementById('resultsArea');
+resultsArea.style.display = 'grid';
+resultsArea.classList.add('is-visible');
+} catch (err) {
+alert("計算エラー: " + err.message);
+}
 }
 document.addEventListener('DOMContentLoaded', function() {
 const btn = document.getElementById('calcBtn');

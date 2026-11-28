@@ -119,6 +119,7 @@ const rightPanel = makePanel("🌌 シナストリー二重円（内：あなた
 const wrap = document.createElement("div");
 wrap.className = "chart-wrapper";
 const svg = document.createElementNS("w3.org", "svg");
+svg.id = "synastryChart";
 svg.setAttribute("viewBox", "0 0 420 420");
 wrap.appendChild(svg);
 const legend = document.createElement("div");

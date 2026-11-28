@@ -1,3 +1,9 @@
+const bp1 = document.getElementById("birthPlace");
+const bp2 = document.getElementById("birthPlace2");
+if (bp1 && bp2) {
+bp2.innerHTML = bp1.innerHTML;
+bp2.selectedIndex = bp1.selectedIndex;
+}
 function renderSynastryChart(p1List, p2List, baseSign1) {
 const svg = document.getElementById("synastryChart");
 if (!svg) return;

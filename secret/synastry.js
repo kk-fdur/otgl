@@ -1,12 +1,27 @@
-function getNumCompatibility(n1, n2) {
+const SYN_HOUSE_EFFECTS = {
+  1: "第1ハウス（あなた自身）：お相手はあなたの個性や魅力をストレートに引き出し、一緒にいると自分らしく輝けます。",
+  2: "第2ハウス（才能・豊かさ）：お相手はあなたの隠れた才能やセンスに気づかせ、現実的な豊かさを育むきっかけをくれます。",
+  3: "第3ハウス（言葉・学び）：会話や情報交換が尽きない楽しい関係。言葉を通じて新しい視点や好奇心がどんどん広がります。",
+  4: "第4ハウス（心の拠り所）：家族のようにホッと安心できる居場所を感じられる関係。素の自分を安心して見せられます。",
+  5: "第5ハウス（創造・喜び）：一緒にいるとワクワクして創造力や遊び心が刺激される、ドラマチックで楽しいご縁です。",
+  6: "第6ハウス（日常・役割）：日々の生活や仕事面で自然とサポートし合える関係。実用的な面でとても頼りになる存在です。",
+  7: "第7ハウス（パートナー）：一対一の対等なパートナーシップを象徴する配置。お互いを映す鏡として深く向き合える重要な相手です。",
+  8: "第8ハウス（深い絆・変容）：表面的な付き合いを超え、心の奥底で強く結びつく宿命的なご縁。価値観が大きく深まります。",
+  9: "第9ハウス（精神性・冒険）：精神的な視野を広げ、未知の世界や高い理想へと一緒に成長していける師や同志のような関係です。",
+  10: "第10ハウス（社会的使命）：仕事や目標達成において強い刺激と応援を与え合い、公の場での飛躍を後押ししてくれる相手です。",
+  11: "第11ハウス（未来・仲間）：年齢や立場を超えた親友のようにフラットで自由な関係。未来の夢や理想を語り合えます。",
+  12: "第12ハウス（癒やし・潜在意識）：言葉を超えた直感や優しさで繋がる不思議なご縁。一緒にいると心が浄化され癒やされます。"
+};
+
+function getNumCompatibility(n1, n2, label) {
   const a = (n1 > 9) ? (n1 % 9 || 9) : n1;
   const b = (n2 > 9) ? (n2 % 9 || 9) : n2;
   const diff = Math.abs(a - b);
-  if (n1 === n2) return "【同じ魂の波長（ソウルメイト相性）】価値観や感覚が驚くほど似ていて、言葉にしなくても通じ合える安心感があります。";
-  if ((a + b) === 10 || diff === 5) return "【補い合う鏡の相性】自分にない魅力を相手が持っているため、一緒にいることで世界が大きく広がる刺激的なパートナーです。";
-  if (diff === 1 || diff === 8) return "【隣り合う成長の相性】お互いの違いが良いスパイスになり、自然体で支え合いながらステップアップできる関係です。";
-  if ((a % 2) === (b % 2)) return "【心地よいリズムの相性】行動のテンポや物事の捉え方が近く、無理なく自然体で長い時間を過ごせる穏やかな関係です。";
-  return "【化学反応の相性】異なる視点を持つからこそ新鮮な発見があり、二人で力を合わせると予想以上のクリエイティブな力を発揮します。";
+  if (n1 === n2) return "【" + label + "：同じ魂の波長】価値観や感覚が驚くほど似ていて、言葉にしなくても自然に理解し合える安心感があります。";
+  if ((a + b) === 10 || diff === 5) return "【" + label + "：補い合う鏡の関係】自分にない魅力を相手が持っているため、一緒にいることで世界が大きく広がる刺激的な組み合わせです。";
+  if (diff === 1 || diff === 8) return "【" + label + "：隣り合う成長の関係】お互いの違いが良いスパイスになり、自然体で支え合いながらステップアップできます。";
+  if ((a % 2) === (b % 2)) return "【" + label + "：心地よいリズム】行動のテンポや物事の捉え方が近く、無理なく自然体で長い時間を過ごせる穏やかな相性です。";
+  return "【" + label + "：新鮮な化学反応】異なる視点を持つからこそ新しい発見があり、二人で力を合わせると予想以上のアイデアや力が生まれます。";
 }
 
 function ensureSynastryDOM() {
@@ -15,15 +30,19 @@ function ensureSynastryDOM() {
     synArea = document.createElement("div");
     synArea.id = "synResultsArea";
     synArea.className = "results-grid";
-    synArea.innerHTML =
-      '<div class="panel"><h2>💞 数秘 ＆ 星の相性リーディング</h2>' +
-      '<div class="sync-detail" id="synNumArea" style="margin-bottom:16px;"></div>' +
-      '<div class="sync-detail" id="synAstroArea"></div></div>' +
-      '<div class="panel"><h2>🌌 シナストリー二重円（内：あなた／外：お相手）</h2>' +
-      '<div class="chart-wrapper"><svg id="synastryChart" xmlns="http://w3.org" viewBox="0 0 420 420"></svg>' +
-      '<div class="chart-legend"><span style="color:#ffe082;">● 内円：あなた</span><span style="color:#e1bee7;">● 外円：お相手</span></div></div></div>';
     document.querySelector(".container").appendChild(synArea);
   }
+  synArea.innerHTML =
+    '<div class="panel"><h2>💞 数秘 ＆ 星の相性リーディング</h2>' +
+    '<div class="sync-detail" id="synNumArea" style="margin-bottom:16px;"></div>' +
+    '<h3 class="sub-heading">🏠 お相手の星が照らすあなたのハウス</h3>' +
+    '<div class="sync-detail" id="synHouseArea" style="margin-bottom:16px;"></div>' +
+    '<h3 class="sub-heading">✨ 2人の天体アスペクト（星のご縁）</h3>' +
+    '<div class="sync-detail" id="synAstroArea"></div></div>' +
+    '<div class="panel"><h2>🌌 シナストリー二重円（内：あなた／外：お相手）</h2>' +
+    '<div class="chart-wrapper"><svg id="synastryChart" xmlns="http://w3.org" viewBox="0 0 420 420"></svg>' +
+    '<div class="chart-legend"><span style="color:#ffe082;">● 内円：あなた</span><span style="color:#e1bee7;">● 外円：お相手</span><span style="color:#64b5f6;">― 調和</span><span style="color:#ff8a80;">― 強調/刺激</span></div></div>' +
+    '<table><thead><tr><th>天体</th><th>あなた</th><th>お相手</th></tr></thead><tbody id="synTableBody"></tbody></table></div>';
   return synArea;
 }
 
@@ -54,12 +73,12 @@ function renderSynastryChart(p1List, p2List, baseSign1) {
       let diff = Math.abs(p1.lon - p2.lon);
       if (diff > 180) diff = 360 - diff;
       let color = "";
-      if (diff <= 5 || Math.abs(diff - 180) <= 5) color = "rgba(255, 138, 128, 0.65)";
-      else if (Math.abs(diff - 60) <= 4 || Math.abs(diff - 120) <= 5) color = "rgba(100, 181, 246, 0.65)";
+      if (diff <= 6 || Math.abs(diff - 90) <= 4 || Math.abs(diff - 180) <= 6) color = "rgba(255, 138, 128, 0.55)";
+      else if (Math.abs(diff - 60) <= 4 || Math.abs(diff - 120) <= 6) color = "rgba(100, 181, 246, 0.55)";
       if (color) {
         const ang1 = (180 - norm360(p1.lon - baseLon)) * Math.PI / 180;
         const ang2 = (180 - norm360(p2.lon - baseLon)) * Math.PI / 180;
-        html += '<line x1="' + (cx + rAsp * Math.cos(ang1)) + '" y1="' + (cy + rAsp * Math.sin(ang1)) + '" x2="' + (cx + rAsp * Math.cos(ang2)) + '" y2="' + (cy + rAsp * Math.sin(ang2)) + '" stroke="' + color + '" stroke-width="1.2"/>';
+        html += '<line x1="' + (cx + rAsp * Math.cos(ang1)) + '" y1="' + (cy + rAsp * Math.sin(ang1)) + '" x2="' + (cx + rAsp * Math.cos(ang2)) + '" y2="' + (cy + rAsp * Math.sin(ang2)) + '" stroke="' + color + '" stroke-width="1.1"/>';
       }
     });
   });
@@ -104,11 +123,7 @@ function calculateSynastry() {
   const m2El = document.getElementById("month2");
   const d2El = document.getElementById("day2");
 
-  if (!y2El || !m2El || !d2El) {
-    alert("お相手の入力欄が見つかりません。index.htmlを確認してください。");
-    return;
-  }
-
+  if (!y2El || !m2El || !d2El) return;
   const y2 = parseInt(y2El.value, 10);
   const m2 = parseInt(m2El.value, 10);
   const d2 = parseInt(d2El.value, 10);
@@ -120,11 +135,15 @@ function calculateSynastry() {
 
   const synArea = ensureSynastryDOM();
 
+  const past1 = calcNum(d1), past2 = calcNum(d2);
   const life1 = calcNum(String(y1).concat(String(m1), String(d1)).split("").reduce(function(a, b) { return a + Number(b); }, 0));
   const life2 = calcNum(String(y2).concat(String(m2), String(d2)).split("").reduce(function(a, b) { return a + Number(b); }, 0));
+  const fut1 = calcNum(m1 + d1), fut2 = calcNum(m2 + d2);
 
   document.getElementById("synNumArea").innerHTML =
-    '<div class="sync-item"><strong>🔢 数秘相性：あなた「' + life1 + '」 × お相手「' + life2 + '」</strong><br>' + getNumCompatibility(life1, life2) + '</div>';
+    '<div class="sync-item"><strong>🌟 本質の相性：現在数「' + life1 + '」 × 「' + life2 + '」</strong><br>' + getNumCompatibility(life1, life2, "魂の軸") + '</div>' +
+    '<div class="sync-item"><strong>🌱 自然体の相性：過去数「' + past1 + '」 × 「' + past2 + '」</strong><br>' + getNumCompatibility(past1, past2, "素の空気感") + '</div>' +
+    '<div class="sync-item"><strong>🚀 未来の相性：未来数「' + fut1 + '」 × 「' + fut2 + '」</strong><br>' + getNumCompatibility(fut1, fut2, "目指す方向") + '</div>';
 
   const h1Val = document.getElementById("hour").value.trim();
   const min1Val = document.getElementById("minute").value.trim();
@@ -146,27 +165,57 @@ function calculateSynastry() {
 
   renderSynastryChart(p1List, p2List, baseSign1);
 
-  const hits = new Array();
-  const personalIds = "sun,moon,mercury,venus,mars";
-  p1List.forEach(function(p1) {
-    if (personalIds.indexOf(p1.id) === -1) return;
-    p2List.forEach(function(p2) {
-      if (personalIds.indexOf(p2.id) === -1) return;
-      let diff = Math.abs(p1.lon - p2.lon);
-      if (diff > 180) diff = 360 - diff;
-      if (diff <= 5) hits.push('<strong>🌟 コンジャンクション（0°合）：</strong>あなたの' + p1.name + ' と お相手の' + p2.name + ' が重なり、強い縁と一体感を生み出します。');
-      else if (Math.abs(diff - 120) <= 4) hits.push('<strong>💙 トライン（120°調和）：</strong>あなたの' + p1.name + ' と お相手の' + p2.name + ' が自然に響き合い、心地よいサポート関係になります。');
-      else if (Math.abs(diff - 180) <= 5) hits.push('<strong>🔥 オポジション（180°対向）：</strong>あなたの' + p1.name + ' と お相手の' + p2.name + ' が正面から引き合い、強い魅力と刺激を与え合います。');
-    });
+  // 1. お相手の主要5天体があなたの何ハウスに入るか
+  const houseHtml = new Array();
+  const targetIds = new Array("sun", "moon", "mercury", "venus", "mars");
+  targetIds.forEach(function(tid) {
+    const p2 = p2List.find(function(x) { return x.id === tid; });
+    const sIdx2 = Math.floor(p2.lon / 30);
+    const hNum = ((sIdx2 - baseSign1 + 12) % 12) + 1;
+    houseHtml.push('<div class="sync-item"><strong>お相手の' + p2.name + '（' + SIGNS.at(sIdx2) + '）→ あなたの第' + hNum + 'ハウス</strong><br>' + SYN_HOUSE_EFFECTS[hNum] + '</div>');
   });
+  document.getElementById("synHouseArea").innerHTML = houseHtml.join("");
 
-  const sun2House = ((Math.floor(p2List.find(function(p) { return p.id === "sun"; }).lon / 30) - baseSign1 + 12) % 12) + 1;
-  const venus2House = ((Math.floor(p2List.find(function(p) { return p.id === "venus"; }).lon / 30) - baseSign1 + 12) % 12) + 1;
-  hits.unshift('<strong>🏠 ハウス重ね：</strong>お相手の太陽はあなたの<strong>第' + sun2House + 'ハウス</strong>、金星は<strong>第' + venus2House + 'ハウス</strong>に入り、その領域に光と喜びをもたらします。');
-
-  document.getElementById("synAstroArea").innerHTML = hits.slice(0, 6).map(function(t) { return '<div class="sync-item">' + t + '</div>'; }).join("");
-
-  document.getElementById("resultsArea").style.display = "none";
-  synArea.style.display = "grid";
-  synArea.classList.add("is-visible");
-}
+  // 2. 2人の天体アスペクト（0, 60, 90, 120, 180度）
+  const hits = new Array();
+  const aspectIds = "sun,moon,mercury,venus,mars,jupiter,saturn";
+  p1List.forEach(function(p1) {
+    if (aspectIds.indexOf(p1.id) === -1) return;
+    p2List.forEach(function(p2) {
+    if (aspectIds.indexOf(p2.id) === -1) return;
+    let diff = Math.abs(p1.lon - p2.lon);
+    if (diff > 180) diff = 360 - diff;
+    if (diff <= 5) hits.push('🌟 コンジャンクション（0°合）：あなたの' + p1.name + ' × お相手の' + p2.name + '
+    二つのエネルギーがひとつに溶け合い、理屈を超えた強い縁と一体感を生み出します。');
+    else if (Math.abs(diff - 120) <= 5) hits.push('💙 トライン（120°調和）：あなたの' + p1.name + ' × お相手の' + p2.name + '
+    努力しなくても自然に波長が合い、お互いの長所を伸びやかに引き出し合える幸運の配置です。');
+    else if (Math.abs(diff - 60) <= 4) hits.push('💚 セクスタイル（60°協力）：あなたの' + p1.name + ' × お相手の' + p2.name + '
+    会話や共同作業を通じて楽しいアイデアが生まれ、軽やかに協力し合える関係です。');
+    else if (Math.abs(diff - 180) <= 5) hits.push('🔥 オポジション（180°対向）：あなたの' + p1.name + ' × お相手の' + p2.name + '
+    正反対の性質ゆえに強く惹かれ合い、自分にない視点や情熱を与えてくれるドラマチックな配置です。');
+    else if (Math.abs(diff - 90) <= 4) hits.push('⚡ スクエア（90°刺激）：あなたの' + p1.name + ' × お相手の' + p2.name + '
+    価値観の違いが心地よい刺激となり、お互いの枠を打ち破って成長させてくれる学びの配置です。');
+    });
+    });
+    document.getElementById("synAstroArea").innerHTML = hits.length > 0
+    ? hits.slice(0, 10).map(function(t) { return '' + t + ''; }).join("")
+    : '強い角度の衝突が少なく、お互いのペースを尊重しながら穏やかに付き合える静かなご縁です。';
+    // 3. 2人の10天体対照テーブル
+    const tbody = document.getElementById("synTableBody");
+    tbody.innerHTML = "";
+    for (let i = 0; i < p1List.length; i++) {
+    const p1 = p1List.at(i);
+    const p2 = p2List.at(i);
+    const s1 = Math.floor(p1.lon / 30);
+    const s2 = Math.floor(p2.lon / 30);
+    const tr = document.createElement("tr");
+    tr.innerHTML =
+    '' + p1.name + '' +
+    '' + SIGNS.at(s1) + ' ' + (p1.lon % 30).toFixed(1) + '°' +
+    '' + SIGNS.at(s2) + ' ' + (p2.lon % 30).toFixed(1) + '°';
+    tbody.appendChild(tr);
+    }
+    document.getElementById("resultsArea").style.display = "none";
+    synArea.style.display = "grid";
+    synArea.classList.add("is-visible");
+    }

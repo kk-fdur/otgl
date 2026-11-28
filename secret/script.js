@@ -398,3 +398,4 @@ const btn = document.getElementById("calcBtn");
 if (btn) {
 btn.addEventListener("click", calculateAll);
 }
+});

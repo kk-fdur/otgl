@@ -1,4 +1,3 @@
-// 数秘のキーワードデータ（自分用に自由に書き換え可能）
 const NUM_KEYWORDS = {
   1: "【1：開拓・自立】始まり、リーダーシップ、直感と行動力、独自性",
   2: "【2：協調・受容】サポート、繊細さ、バランス、共感とつながり",
@@ -14,7 +13,6 @@ const NUM_KEYWORDS = {
   33: "【33：無償の愛・奉仕】常識を超えたスケールで周囲を癒やし導く"
 };
 
-// ハウスのテーマデータ（数秘との連動リーディング用）
 const HOUSE_THEMES = {
   1: "第1ハウス（自己・アイデンティティ・第一印象・始まりの場）",
   2: "第2ハウス（才能・所有・金銭感覚・五感と自己価値の場）",
@@ -30,16 +28,22 @@ const HOUSE_THEMES = {
   12: "第12ハウス（潜在意識・スピリチュアル・癒やしと浄化の場）"
 };
 
-// 12星座リスト
-const SIGNS = [
+const SIGNS = new Array(
   "牡羊座 ♈", "牡牛座 ♉", "双子座 ♊", "蟹座 ♋",
   "獅子座 ♌", "乙女座 ♍", "天秤座 ♎", "蠍座 ♏",
   "射手座 ♐", "山羊座 ♑", "水瓶座 ♒", "魚座 ♓"
-];
+);
 
-const SIGN_SYMBOLS = ["♈", "♉", "♊", "♋", "♌", "♍", "♎", "♏", "♐", "♑", "♒", "♓"];
+const SIGN_SYMBOLS = new Array("♈", "♉", "♊", "♋", "♌", "♍", "♎", "♏", "♐", "♑", "♒", "♓");
 
-// 数秘計算（マスターナンバー11, 22, 33を保持）
+function getSignName(idx) {
+  return SIGNS.at(idx % 12);
+}
+
+function getSignSymbol(idx) {
+  return SIGN_SYMBOLS.at(idx % 12);
+}
+
 function calcNumerologyNumber(num) {
   let n = num;
   while (n > 9 && n !== 11 && n !== 22 && n !== 33) {
@@ -48,7 +52,6 @@ function calcNumerologyNumber(num) {
   return n;
 }
 
-// 数秘を1〜12のハウス番号へマッピング（11は11ハウス、22は4ハウス、33は6ハウス）
 function mapNumToHouse(num) {
   if (num >= 1 && num <= 12) return num;
   if (num === 22) return 4;
@@ -56,13 +59,11 @@ function mapNumToHouse(num) {
   return ((num - 1) % 12) + 1;
 }
 
-// 角度を0〜360度に正規化
 function norm360(deg) {
   let d = deg % 360;
   return d < 0 ? d + 360 : d;
 }
 
-// ユリウス日(JD)計算 (JST -> UTC変換込み)
 function getJulianDay(y, m, d, h, min) {
   const utcHour = h - 9 + (min / 60);
   const date = new Date(Date.UTC(y, m - 1, d, 0, 0, 0));
@@ -70,7 +71,6 @@ function getJulianDay(y, m, d, h, min) {
   return (date.getTime() / 86400000) + 2440587.5;
 }
 
-// 簡易天文計算による10天体の黄経算出
 function calcPlanets(jd) {
   const d = jd - 2451543.5;
   const rad = Math.PI / 180;
@@ -84,7 +84,6 @@ function calcPlanets(jd) {
     return E;
   }
 
-  // 太陽
   const w_sun = norm360(282.9404 + 4.70935E-5 * d);
   const e_sun = 0.016709 - 1.151E-9 * d;
   const M_sun = norm360(356.0470 + 0.9856002585 * d);
@@ -97,7 +96,6 @@ function calcPlanets(jd) {
   const xs = r_sun * Math.cos(lon_sun * rad);
   const ys = r_sun * Math.sin(lon_sun * rad);
 
-  // 月
   const N_m = norm360(125.1228 - 0.0529538083 * d);
   const i_m = 5.1454;
   const w_m = norm360(318.0634 + 0.1643573223 * d);
@@ -130,8 +128,7 @@ function calcPlanets(jd) {
     - 0.015 * Math.sin((2 * F - 2 * D) * rad)
   );
 
-  // 水星〜海王星
-  const elements = [
+  const elements = new Array(
     { id: "mercury", name: "水星 ☿", sym: "☿", N: 48.3313 + 3.24587E-5 * d, i: 7.0047 + 5.00E-8 * d, w: 29.1241 + 1.01444E-5 * d, a: 0.387098, e: 0.205635 + 5.59E-10 * d, M: 168.6562 + 4.0923344368 * d },
     { id: "venus", name: "金星 ♀", sym: "♀", N: 76.6799 + 2.46590E-5 * d, i: 3.3946 + 2.75E-8 * d, w: 54.8910 + 1.38374E-5 * d, a: 0.723330, e: 0.006773 - 1.302E-9 * d, M: 48.0052 + 1.6021302244 * d },
     { id: "mars", name: "火星 ♂", sym: "♂", N: 49.5574 + 2.11081E-5 * d, i: 1.8497 - 1.78E-8 * d, w: 286.5016 + 2.92961E-5 * d, a: 1.523688, e: 0.093405 + 2.516E-9 * d, M: 18.6021 + 0.5240207766 * d },
@@ -139,12 +136,12 @@ function calcPlanets(jd) {
     { id: "saturn", name: "土星 ♄", sym: "♄", N: 113.6634 + 2.38980E-5 * d, i: 2.4886 - 1.081E-7 * d, w: 339.3939 + 2.97661E-5 * d, a: 9.55475, e: 0.055546 - 9.499E-9 * d, M: 316.9670 + 0.0334442282 * d },
     { id: "uranus", name: "天王星 ♅", sym: "♅", N: 74.0005 + 1.3978E-5 * d, i: 0.7733 + 1.9E-8 * d, w: 96.6612 + 3.0565E-5 * d, a: 19.18171 - 1.55E-8 * d, e: 0.047318 + 7.45E-9 * d, M: 142.5905 + 0.011725806 * d },
     { id: "neptune", name: "海王星 ♆", sym: "♆", N: 131.7806 + 3.0173E-5 * d, i: 1.7700 - 2.55E-7 * d, w: 272.8461 - 6.027E-6 * d, a: 30.05826 + 3.313E-8 * d, e: 0.008606 + 2.15E-9 * d, M: 260.2471 + 0.005995147 * d }
-  ];
+  );
 
-  const results = [
+  const results = new Array(
     { id: "sun", name: "太陽 ☉", sym: "☉", lon: lon_sun },
     { id: "moon", name: "月 ☽", sym: "☽", lon: lon_moon }
-  ];
+  );
 
   elements.forEach(el => {
     const M = norm360(el.M);
@@ -162,7 +159,6 @@ function calcPlanets(jd) {
     results.push({ id: el.id, name: el.name, sym: el.sym, lon: norm360(Math.atan2(yg, xg) * deg) });
   });
 
-  // 冥王星
   const P = 238.95 + 0.003968789 * d;
   const lon_pluto_h = 238.9508 + 0.00400703 * d
     - 19.799 * Math.sin(P * rad) + 19.848 * Math.cos(P * rad)
@@ -181,7 +177,6 @@ function calcPlanets(jd) {
   return results;
 }
 
-// アセンダント（ASC）の黄経を計算（東京: 東経139.7度, 北緯35.7度）
 function calcAscendant(jd) {
   const rad = Math.PI / 180;
   const deg = 180 / Math.PI;
@@ -194,15 +189,10 @@ function calcAscendant(jd) {
   return norm360(Math.atan2(y, x) * deg);
 }
 
-// 円形ホロスコープ盤のSVG描画
 function renderHoroscopeChart(planets, baseSignIndex, lifeHouse, pastHouse, futureHouse) {
   const svg = document.getElementById('horoscopeChart');
   const cx = 210, cy = 210;
-  const rOuter = 195;   // 外周
-  const rSign = 160;    // 星座リング内周
-  const rPlanet = 122;  // 天体配置リング
-  const rHouse = 82;    // ハウス番号リング
-  const rCenter = 48;   // 中心円
+  const rOuter = 195, rSign = 160, rPlanet = 122, rHouse = 82, rCenter = 48;
 
   let html = `<defs>
     <radialGradient id="bgGrad" cx="50%" cy="50%" r="50%">
@@ -211,10 +201,8 @@ function renderHoroscopeChart(planets, baseSignIndex, lifeHouse, pastHouse, futu
     </radialGradient>
   </defs>`;
 
-  // 背景円
   html += `<circle cx="${cx}" cy="${cy}" r="${rOuter}" fill="url(#bgGrad)" stroke="#3b3f54" stroke-width="2"/>`;
 
-  // 12ハウス＆サインの扇形を描画（左端180度を1ハウスの始まりとして反時計回り）
   for (let i = 0; i < 12; i++) {
     const houseNum = i + 1;
     const signIdx = (baseSignIndex + i) % 12;
@@ -227,12 +215,11 @@ function renderHoroscopeChart(planets, baseSignIndex, lifeHouse, pastHouse, futu
     const rad2 = endDeg * Math.PI / 180;
     const radMid = midDeg * Math.PI / 180;
 
-    // 数秘連動ハウスのハイライト色判定
     let sectorFill = "none";
     if (houseNum === lifeHouse) {
-      sectorFill = "rgba(212, 175, 55, 0.25)"; // 現在数連動（ゴールド）
+      sectorFill = "rgba(212, 175, 55, 0.25)";
     } else if (houseNum === pastHouse || houseNum === futureHouse) {
-      sectorFill = "rgba(138, 117, 214, 0.20)"; // 過去・未来数連動（パープル）
+      sectorFill = "rgba(138, 117, 214, 0.20)";
     }
 
     if (sectorFill !== "none") {
@@ -244,163 +231,150 @@ function renderHoroscopeChart(planets, baseSignIndex, lifeHouse, pastHouse, futu
       const y3 = cy + rCenter * Math.sin(rad2);
       const x4 = cx + rCenter * Math.cos(rad1);
       const y4 = cy + rCenter * Math.sin(rad1);
-    html += <path d="M ${x1} ${y1} A ${rSign} ${rSign} 0 0 0 ${x2} ${y2} L ${x3} ${y3} A ${rCenter} ${rCenter} 0 0 1 ${x4} ${y4} Z" fill="${sectorFill}"/>;
-}
-    // 境界線
+      html += `<path d="M ${x1} ${y1} A ${rSign} ${rSign} 0 0 0 ${x2} ${y2} L ${x3} ${y3} A ${rCenter} ${rCenter} 0 0 1 ${x4} ${y4} Z" fill="${sectorFill}"/>`;
+    }
     const lx1 = cx + rCenter * Math.cos(rad1);
-    const ly1 = cy + rCenter * Math.sin(rad1);
-    const lx2 = cx + rOuter * Math.cos(rad1);
-    const ly2 = cy + rOuter * Math.sin(rad1);
-    const isAxis = (i === 0 || i === 3 || i === 6 || i === 9);
-    html += <line x1="${lx1}" y1="${ly1}" x2="${lx2}" y2="${ly2}" stroke="${isAxis ? '#d4af37' : '#2f3244'}" stroke-width="${isAxis ? '1.5' : '1'}"/>;
-    // 星座シンボル配置
-    const sx = cx + ((rOuter + rSign) / 2) * Math.cos(radMid);
-    const sy = cy + ((rOuter + rSign) / 2) * Math.sin(radMid);
-    html += <text x="${sx}" y="${sy}" fill="#d4af37" font-size="15" text-anchor="middle" dominant-baseline="central">${SIGN_SYMBOLS[signIdx]}</text>;
-    // ハウス番号配置
-    const hx = cx + ((rHouse + rCenter) / 2) * Math.cos(radMid);
-    const hy = cy + ((rHouse + rCenter) / 2) * Math.sin(radMid);
-    const hColor = (houseNum === lifeHouse) ? "#d4af37" : ((houseNum === pastHouse || houseNum === futureHouse) ? "#c2b5f5" : "#8b8fa3");
-    const hWeight = (houseNum === lifeHouse || houseNum === pastHouse || houseNum === futureHouse) ? "bold" : "normal";
-    html += <text x="${hx}" y="${hy}" fill="${hColor}" font-size="11" font-weight="${hWeight}" text-anchor="middle" dominant-baseline="central">${houseNum}</text>;
-    }
-    // 同心円リング
-    html += <circle cx="${cx}" cy="${cy}" r="${rSign}" fill="none" stroke="#3b3f54" stroke-width="1.2"/>;
-    html += <circle cx="${cx}" cy="${cy}" r="${rHouse}" fill="none" stroke="#2f3244" stroke-width="1" stroke-dasharray="3,3"/>;
-    html += <circle cx="${cx}" cy="${cy}" r="${rCenter}" fill="#12131a" stroke="#d4af37" stroke-width="1.2"/>;
-    // 中心ラベル
-    html += <text x="${cx}" y="${cy - 6}" fill="#9da0b0" font-size="9" text-anchor="middle">現在数</text>;
-    html += <text x="${cx}" y="${cy + 10}" fill="#d4af37" font-size="14" font-weight="bold" text-anchor="middle">${lifeHouse}H連動</text>;
-    // 天体の角度計算と重なり防止調整
-    const baseLon = baseSignIndex * 30;
-    const placedPlanets = planets.map(p => {
-    const relDeg = norm360(p.lon - baseLon);
-    return { ...p, relDeg, drawDeg: relDeg };
-    }).sort((a, b) => a.relDeg - b.relDeg);
-    for (let pass = 0; pass < 3; pass++) {
-    for (let i = 0; i < placedPlanets.length; i++) {
-    const nextIdx = (i + 1) % placedPlanets.length;
-    let diff = placedPlanets[nextIdx].drawDeg - placedPlanets[i].drawDeg;
-    if (diff < 0) diff += 360;
-    if (diff < 11) {
-    const push = (11 - diff) / 2;
-    placedPlanets[i].drawDeg = norm360(placedPlanets[i].drawDeg - push);
-    placedPlanets[nextIdx].drawDeg = norm360(placedPlanets[nextIdx].drawDeg + push);
-    }
-    }
-    }
-    // 天体シンボル描画
-    placedPlanets.forEach(p => {
-    const svgAngle = (180 - p.drawDeg) * Math.PI / 180;
-    const trueAngle = (180 - p.relDeg) * Math.PI / 180;
-    const dotX = cx + (rSign - 4) * Math.cos(trueAngle);
-    const dotY = cy + (rSign - 4) * Math.sin(trueAngle);
-    html += <circle cx="${dotX}" cy="${dotY}" r="2" fill="#8a75d6"/>;
-    const px = cx + rPlanet * Math.cos(svgAngle);
-    const py = cy + rPlanet * Math.sin(svgAngle);
-    html += <circle cx="${px}" cy="${py}" r="11" fill="#1c1e29" stroke="#454963" stroke-width="1"/>;
-    html += <text x="${px}" y="${py}" fill="#ffffff" font-size="13" text-anchor="middle" dominant-baseline="central">${p.sym}</text>;
-    });
-    svg.innerHTML = html;
-    }
-    // メイン実行処理
-    function calculateAll() {
-    const y = parseInt(document.getElementById('year').value, 10);
-    const m = parseInt(document.getElementById('month').value, 10);
-    const d = parseInt(document.getElementById('day').value, 10);
-    const hVal = document.getElementById('hour').value.trim();
-    const minVal = document.getElementById('minute').value.trim();
-    if (isNaN(y) || isNaN(m) || isNaN(d)) {
-    alert("生年月日（年・月・日）を入力してください。");
-    return;
-    }
-    // 1. 数秘術の計算
-    const pastNum = calcNumerologyNumber(d);
-    const allDigitsSum = String(y).split('').concat(String(m).split(''), String(d).split(''))
-    .reduce((acc, digit) => acc + Number(digit), 0);
-    const lifeNum = calcNumerologyNumber(allDigitsSum);
-    const futureNum = calcNumerologyNumber(m + d);
-    // 数秘に対応するハウス番号を算出
-    const pastHouse = mapNumToHouse(pastNum);
-    const lifeHouse = mapNumToHouse(lifeNum);
-    const futureHouse = mapNumToHouse(futureNum);
-    document.getElementById('numPast').textContent = pastNum;
-    document.getElementById('numLife').textContent = lifeNum;
-    document.getElementById('numFuture').textContent = futureNum;
-    document.getElementById('numPastHouse').textContent = 第${pastHouse}ハウス連動;
-    document.getElementById('numLifeHouse').textContent = 第${lifeHouse}ハウス連動;
-    document.getElementById('numFutureHouse').textContent = 第${futureHouse}ハウス連動;
-    document.getElementById('numMeaningArea').innerHTML = `
-    過去数 \({pastNum}：</strong>\){NUM_KEYWORDS[pastNum]}
-    現在数 \({lifeNum}：</strong>\){NUM_KEYWORDS[lifeNum]}
-    未来数 \({futureNum}：</strong>\){NUM_KEYWORDS[futureNum]}
-    `;
-    // 2. ホロスコープの計算
-    const hasTime = (hVal !== "");
-    const h = hasTime ? parseInt(hVal, 10) : 12;
-    const min = (hasTime && minVal !== "") ? parseInt(minVal, 10) : 0;
-    const jd = getJulianDay(y, m, d, h, min);
-    const planets = calcPlanets(jd);
-    let baseSignIndex = 0;
-    let badgeText = "";
-    if (hasTime) {
-    const ascLon = calcAscendant(jd);
-    baseSignIndex = Math.floor(ascLon / 30);
-    const ascDeg = (ascLon % 30).toFixed(1);
-    badgeText = 出生時間あり（${h}時${min}分）｜ASC：${SIGNS[baseSignIndex]} ${ascDeg}°（ホールサインハウス）;
-    } else {
-    const sunObj = planets.find(p => p.id === "sun");
-    const sunLon = sunObj ? sunObj.lon : 0;
-    baseSignIndex = Math.floor(sunLon / 30);
-    badgeText = 出生時間不明（12:00計算）｜太陽星座（${SIGNS[baseSignIndex]}）を1ハウスとするソーラーサインハウス;
-    }
-    document.getElementById('houseModeBadge').textContent = badgeText;
-    // 3. ホロスコープ盤の描画
-    renderHoroscopeChart(planets, baseSignIndex, lifeHouse, pastHouse, futureHouse);
-    // 4. テーブル描画 & 連動天体の収集
-    const tbody = document.getElementById('planetTableBody');
-    tbody.innerHTML = "";
-    const planetsInLifeHouse = [];
-    planets.forEach(p => {
-    const signIndex = Math.floor(p.lon / 30);
-    const degInSign = (p.lon % 30).toFixed(1);
-    const houseNum = ((signIndex - baseSignIndex + 12) % 12) + 1;
-    let rowClass = "";
-    let syncBadges = "";
-    if (houseNum === lifeHouse) {
-    rowClass = "row-highlight-life";
-    syncBadges += <span class="sync-badge life">★現在数</span>;
-    planetsInLifeHouse.push(${p.name}（${SIGNS[signIndex]}）);
-    }
-    if (houseNum === pastHouse) {
-    if (!rowClass) rowClass = "row-highlight-sub";
-    syncBadges += <span class="sync-badge sub">過去数</span>;
-    }
-    if (houseNum === futureHouse) {
-    if (!rowClass) rowClass = "row-highlight-sub";
-    syncBadges += <span class="sync-badge sub">未来数</span>;
-    }
-    const tr = document.createElement('tr');
-    if (rowClass) tr.className = rowClass;
-    tr.innerHTML = `
-    ${p.name}
-    ${SIGNS[signIndex]}
-    ${degInSign}°
-    第\({houseNum}ハウス</span>\){syncBadges}
-    `;
-    tbody.appendChild(tr);
-    });
-    // 5. 数秘 × ハウス連動リーディングの生成
-    const lifeSignIdx = (baseSignIndex + lifeHouse - 1) % 12;
-    const lifePlanetsText = planetsInLifeHouse.length > 0
-    ? このハウスには <strong>${planetsInLifeHouse.join("・")}</strong> が滞在しており、数秘のテーマが強く強調されます。
-    : 現在このハウスに天体はありませんが、<strong>${SIGNS[lifeSignIdx]}</strong>の性質を通してテーマが発揮されます。;
-    const pastSignIdx = (baseSignIndex + pastHouse - 1) % 12;
-    const futureSignIdx = (baseSignIndex + futureHouse - 1) % 12;
-    document.getElementById('syncMeaningArea').innerHTML = <div class="sync-item"> <strong>🌟 本質の共鳴：現在数「${lifeNum}」 × ${HOUSE_THEMES[lifeHouse]}</strong><br> あなたの軸となる「${lifeNum}」のエネルギーは、ホロスコープ上の<strong>第${lifeHouse}ハウス（${SIGNS[lifeSignIdx]}）</strong>の領域で最も輝きます。${lifePlanetsText} </div> <div class="sync-item"> <strong>🌱 才能の土台：過去数「${pastNum}」 × 第${pastHouse}ハウス（${SIGNS[pastSignIdx]}）</strong><br> 無意識に発揮できる得意分野は、${HOUSE_THEMES[pastHouse]}のテーマとリンクしています。 </div> <div class="sync-item"> <strong>🚀 目指す方向：未来数「${futureNum}」 × 第${futureHouse}ハウス（${SIGNS[futureSignIdx]}）</strong><br> これから意識して伸ばしていく課題や目標は、${HOUSE_THEMES[futureHouse]}の領域を広げることで達成されます。 </div>;
-    document.getElementById('resultsArea').classList.add('is-visible');
-    }
-    // ボタンのクリックイベント登録
-    document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('calcBtn').addEventListener('click', calculateAll);
-    });
+const ly1 = cy + rCenter * Math.sin(rad1);
+const lx2 = cx + rOuter * Math.cos(rad1);
+const ly2 = cy + rOuter * Math.sin(rad1);
+const isAxis = (i === 0 || i === 3 || i === 6 || i === 9);
+html += <line x1="${lx1}" y1="${ly1}" x2="${lx2}" y2="${ly2}" stroke="${isAxis ? '#d4af37' : '#2f3244'}" stroke-width="${isAxis ? '1.5' : '1'}"/>;
+const sx = cx + ((rOuter + rSign) / 2) * Math.cos(radMid);
+const sy = cy + ((rOuter + rSign) / 2) * Math.sin(radMid);
+html += <text x="${sx}" y="${sy}" fill="#d4af37" font-size="15" text-anchor="middle" dominant-baseline="central">${getSignSymbol(signIdx)}</text>;
+const hx = cx + ((rHouse + rCenter) / 2) * Math.cos(radMid);
+const hy = cy + ((rHouse + rCenter) / 2) * Math.sin(radMid);
+const hColor = (houseNum === lifeHouse) ? "#d4af37" : ((houseNum === pastHouse || houseNum === futureHouse) ? "#c2b5f5" : "#8b8fa3");
+const hWeight = (houseNum === lifeHouse || houseNum === pastHouse || houseNum === futureHouse) ? "bold" : "normal";
+html += <text x="${hx}" y="${hy}" fill="${hColor}" font-size="11" font-weight="${hWeight}" text-anchor="middle" dominant-baseline="central">${houseNum}</text>;
+}
+html += <circle cx="${cx}" cy="${cy}" r="${rSign}" fill="none" stroke="#3b3f54" stroke-width="1.2"/>;
+html += <circle cx="${cx}" cy="${cy}" r="${rHouse}" fill="none" stroke="#2f3244" stroke-width="1" stroke-dasharray="3,3"/>;
+html += <circle cx="${cx}" cy="${cy}" r="${rCenter}" fill="#12131a" stroke="#d4af37" stroke-width="1.2"/>;
+html += <text x="${cx}" y="${cy - 6}" fill="#9da0b0" font-size="9" text-anchor="middle">現在数</text>;
+html += <text x="${cx}" y="${cy + 10}" fill="#d4af37" font-size="14" font-weight="bold" text-anchor="middle">${lifeHouse}H連動</text>;
+const baseLon = baseSignIndex * 30;
+const placedPlanets = planets.map(p => {
+const relDeg = norm360(p.lon - baseLon);
+return { id: p.id, name: p.name, sym: p.sym, lon: p.lon, relDeg: relDeg, drawDeg: relDeg };
+}).sort((a, b) => a.relDeg - b.relDeg);
+for (let pass = 0; pass < 3; pass++) {
+for (let i = 0; i < placedPlanets.length; i++) {
+const nextIdx = (i + 1) % placedPlanets.length;
+const currP = placedPlanets.at(i);
+const nextP = placedPlanets.at(nextIdx);
+let diff = nextP.drawDeg - currP.drawDeg;
+if (diff < 0) diff += 360;
+if (diff < 11) {
+const push = (11 - diff) / 2;
+currP.drawDeg = norm360(currP.drawDeg - push);
+nextP.drawDeg = norm360(nextP.drawDeg + push);
+}
+}
+}
+placedPlanets.forEach(p => {
+const svgAngle = (180 - p.drawDeg) * Math.PI / 180;
+const trueAngle = (180 - p.relDeg) * Math.PI / 180;
+const dotX = cx + (rSign - 4) * Math.cos(trueAngle);
+const dotY = cy + (rSign - 4) * Math.sin(trueAngle);
+html += <circle cx="${dotX}" cy="${dotY}" r="2" fill="#8a75d6"/>;
+const px = cx + rPlanet * Math.cos(svgAngle);
+const py = cy + rPlanet * Math.sin(svgAngle);
+html += <circle cx="${px}" cy="${py}" r="11" fill="#1c1e29" stroke="#454963" stroke-width="1"/>;
+html += <text x="${px}" y="${py}" fill="#ffffff" font-size="13" text-anchor="middle" dominant-baseline="central">${p.sym}</text>;
+});
+svg.innerHTML = html;
+}
+function calculateAll() {
+const y = parseInt(document.getElementById('year').value, 10);
+const m = parseInt(document.getElementById('month').value, 10);
+const d = parseInt(document.getElementById('day').value, 10);
+const hVal = document.getElementById('hour').value.trim();
+const minVal = document.getElementById('minute').value.trim();
+if (isNaN(y) || isNaN(m) || isNaN(d)) {
+alert("生年月日（年・月・日）を入力してください。");
+return;
+}
+const pastNum = calcNumerologyNumber(d);
+const allDigitsSum = String(y).split('').concat(String(m).split(''), String(d).split(''))
+.reduce((acc, digit) => acc + Number(digit), 0);
+const lifeNum = calcNumerologyNumber(allDigitsSum);
+const futureNum = calcNumerologyNumber(m + d);
+const pastHouse = mapNumToHouse(pastNum);
+const lifeHouse = mapNumToHouse(lifeNum);
+const futureHouse = mapNumToHouse(futureNum);
+document.getElementById('numPast').textContent = pastNum;
+document.getElementById('numLife').textContent = lifeNum;
+document.getElementById('numFuture').textContent = futureNum;
+document.getElementById('numPastHouse').textContent = 第${pastHouse}ハウス連動;
+document.getElementById('numLifeHouse').textContent = 第${lifeHouse}ハウス連動;
+document.getElementById('numFutureHouse').textContent = 第${futureHouse}ハウス連動;
+document.getElementById('numMeaningArea').innerHTML = `
+過去数 \({pastNum}：</strong>\){NUM_KEYWORDS[pastNum]}
+現在数 \({lifeNum}：</strong>\){NUM_KEYWORDS[lifeNum]}
+未来数 \({futureNum}：</strong>\){NUM_KEYWORDS[futureNum]}
+`;
+const hasTime = (hVal !== "");
+const h = hasTime ? parseInt(hVal, 10) : 12;
+const min = (hasTime && minVal !== "") ? parseInt(minVal, 10) : 0;
+const jd = getJulianDay(y, m, d, h, min);
+const planets = calcPlanets(jd);
+let baseSignIndex = 0;
+let badgeText = "";
+if (hasTime) {
+const ascLon = calcAscendant(jd);
+baseSignIndex = Math.floor(ascLon / 30);
+const ascDeg = (ascLon % 30).toFixed(1);
+badgeText = 出生時間あり（${h}時${min}分）｜ASC：${getSignName(baseSignIndex)} ${ascDeg}°（ホールサインハウス）;
+} else {
+const sunObj = planets.find(p => p.id === "sun");
+const sunLon = sunObj ? sunObj.lon : 0;
+baseSignIndex = Math.floor(sunLon / 30);
+badgeText = 出生時間不明（12:00計算）｜太陽星座（${getSignName(baseSignIndex)}）を1ハウスとするソーラーサインハウス;
+}
+document.getElementById('houseModeBadge').textContent = badgeText;
+renderHoroscopeChart(planets, baseSignIndex, lifeHouse, pastHouse, futureHouse);
+const tbody = document.getElementById('planetTableBody');
+tbody.innerHTML = "";
+const planetsInLifeHouse = [];
+planets.forEach(p => {
+const signIndex = Math.floor(p.lon / 30);
+const degInSign = (p.lon % 30).toFixed(1);
+const houseNum = ((signIndex - baseSignIndex + 12) % 12) + 1;
+let rowClass = "";
+let syncBadges = "";
+if (houseNum === lifeHouse) {
+rowClass = "row-highlight-life";
+syncBadges += <span class="sync-badge life">★現在数</span>;
+planetsInLifeHouse.push(${p.name}（${getSignName(signIndex)}）);
+}
+if (houseNum === pastHouse) {
+if (!rowClass) rowClass = "row-highlight-sub";
+syncBadges += <span class="sync-badge sub">過去数</span>;
+}
+if (houseNum === futureHouse) {
+if (!rowClass) rowClass = "row-highlight-sub";
+syncBadges += <span class="sync-badge sub">未来数</span>;
+}
+const tr = document.createElement('tr');
+if (rowClass) tr.className = rowClass;
+tr.innerHTML = `
+${p.name}
+${getSignName(signIndex)}
+${degInSign}°
+第\({houseNum}ハウス</span>\){syncBadges}
+`;
+tbody.appendChild(tr);
+});
+const lifeSignIdx = (baseSignIndex + lifeHouse - 1) % 12;
+const lifePlanetsText = planetsInLifeHouse.length > 0
+? このハウスには <strong>${planetsInLifeHouse.join("・")}</strong> が滞在しており、数秘のテーマが強く強調されます。
+: 現在このハウスに天体はありませんが、<strong>${getSignName(lifeSignIdx)}</strong>の性質を通してテーマが発揮されます。;
+const pastSignIdx = (baseSignIndex + pastHouse - 1) % 12;
+const futureSignIdx = (baseSignIndex + futureHouse - 1) % 12;
+document.getElementById('syncMeaningArea').innerHTML = <div class="sync-item"> <strong>🌟 本質の共鳴：現在数「${lifeNum}」 × ${HOUSE_THEMES[lifeHouse]}</strong><br> あなたの軸となる「${lifeNum}」のエネルギーは、ホロスコープ上の<strong>第${lifeHouse}ハウス（${getSignName(lifeSignIdx)}）</strong>の領域で最も輝きます。${lifePlanetsText} </div> <div class="sync-item"> <strong>🌱 才能の土台：過去数「${pastNum}」 × 第${pastHouse}ハウス（${getSignName(pastSignIdx)}）</strong><br> 無意識に発揮できる得意分野は、${HOUSE_THEMES[pastHouse]}のテーマとリンクしています。 </div> <div class="sync-item"> <strong>🚀 目指す方向：未来数「${futureNum}」 × 第${futureHouse}ハウス（${getSignName(futureSignIdx)}）</strong><br> これから意識して伸ばしていく課題や目標は、${HOUSE_THEMES[futureHouse]}の領域を広げることで達成されます。 </div>;
+document.getElementById('resultsArea').classList.add('is-visible');
+}
+document.addEventListener('DOMContentLoaded', () => {
+document.getElementById('calcBtn').addEventListener('click', calculateAll);
+});

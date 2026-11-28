@@ -243,7 +243,7 @@ function renderHoroscopeChart(planets, baseSignIndex, lifeHouse, pastHouse, futu
       const y2 = cy + rSign * Math.sin(rad2);
       const x3 = cx + rCenter * Math.cos(rad2);
       const y3 = cy + rCenter * Math.sin(rad2);
-const x4 = cx + rCenter * Math.cos(rad1);
+      const x4 = cx + rCenter * Math.cos(rad1);
 const y4 = cy + rCenter * Math.sin(rad1);
 html += <path d="M ${x1} ${y1} A ${rSign} ${rSign} 0 0 0 ${x2} ${y2} L ${x3} ${y3} A ${rCenter} ${rCenter} 0 0 1 ${x4} ${y4} Z" fill="${sectorFill}"/>;
 }

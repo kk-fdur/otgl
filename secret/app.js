@@ -41,6 +41,11 @@ function calculateAll() {
     `<p style="margin:0 0 10px"><strong>🌟 現在数（本質・運命）：</strong>${NUM_READINGS[life]}</p>` +
     `<p style="margin:0"><strong>🚀 未来数（目標・課題）：</strong>${NUM_READINGS[future]}</p>`;
 
+  const bdayEl = document.getElementById("birthdayGiftArea");
+  if (bdayEl && typeof BIRTHDAY_GIFTS !== "undefined" && BIRTHDAY_GIFTS[d]) {
+    bdayEl.innerHTML = `<p style="margin:0;">${BIRTHDAY_GIFTS[d]}</p>`;
+  }
+
   const hasTime = (hVal !== "");
   const h = hasTime ? parseInt(hVal, 10) : 12;
   const min = (hasTime && minVal !== "") ? parseInt(minVal, 10) : 0;
@@ -79,7 +84,6 @@ function calculateAll() {
     if (!houseGroups[hNum]) houseGroups[hNum] = [];
     houseGroups[hNum].push(p.name);
 
-    // 品位（ドミサイル・イグザルテーション）チェック
     const dig = DIGNITY_RULES.find(r => r.id === p.id && r.sign === sIdx);
     if (dig) {
       dignityHits.push(`<div class="sync-item"><strong>👑 ${p.name} in ${SIGNS.at(sIdx)}【${dig.type}】</strong><br>${dig.desc}</div>`);
@@ -96,19 +100,16 @@ function calculateAll() {
     tbody.appendChild(tr);
   });
 
-  // 1. 星座ステリウム（オーバーロード）
   const multiSigns = Object.keys(signGroups).map(k => ({ idx: Number(k), list: signGroups[k] })).filter(x => x.list.length >= 2).sort((a, b) => b.list.length - a.list.length);
   document.getElementById("signFocusArea").innerHTML = multiSigns.length > 0
     ? multiSigns.map(item => `<div class="sync-item"><strong>${SIGNS.at(item.idx)} に ${item.list.length}天体集中【${item.list.length >= 3 ? "🌟ステリウム" : "✨強調サイン"}】</strong><br><span style="font-size:0.8rem;color:#c2b5f5;">滞在：${item.list.join("・")}</span><br>${SIGN_FOCUS_READINGS[item.idx]}</div>`).join("")
     : `<p style="margin:0;">10天体が各星座にバランスよく分散しており、柔軟で多角的な視点を持っています。</p>`;
 
-  // 2. ハウスステリウム
   const multiHouses = Object.keys(houseGroups).map(k => ({ num: Number(k), list: houseGroups[k] })).filter(x => x.list.length >= 2).sort((a, b) => b.list.length - a.list.length);
   document.getElementById("houseFocusArea").innerHTML = multiHouses.length > 0
     ? multiHouses.map(item => `<div class="sync-item"><strong>第${item.num}ハウス に ${item.list.length}天体集中【${item.list.length >= 3 ? "🏛️ハウスステリウム" : "✨強調ハウス"}】</strong><br><span style="font-size:0.8rem;color:#c2b5f5;">滞在：${item.list.join("・")}</span><br>${HOUSE_FOCUS_READINGS[item.num]}</div>`).join("")
     : `<p style="margin:0;">特定のハウスに偏らず、人生の様々な場面でバランスよく経験を重ねる配置です。</p>`;
 
-  // 3. 品位＆ナチュラルハウス共鳴
   if (baseSign === 0) {
     dignityHits.unshift(`<div class="sync-item"><strong>✨ ナチュラルハウス完全一致（牡羊座＝第1H起点）</strong><br>12星座と12ハウスの本来の支配関係がすべて一致しており、星と場所のエネルギーがストレートに噛み合う明快な配置です。</div>`);
   }
@@ -116,7 +117,6 @@ function calculateAll() {
     ? dignityHits.join("")
     : `<p style="margin:0;">突出した品位の偏りはなく、各天体がそれぞれの星座の個性を穏やかにブレンドしながら働く配置です。</p>`;
 
-  // 4. 数秘 × ハウス連動
   const lifeSign = SIGNS.at((baseSign + lifeH - 1) % 12);
   let planetBoostText = `現在このハウスに天体はありませんが、<strong>${lifeSign}</strong>のフィルターを通してテーマが自然と発揮されます。`;
   if (hitPlanets.length > 0) {

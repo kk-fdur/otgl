@@ -1,18 +1,18 @@
-const SYN_HOUSE_EFFECTS = {
-1: "第1ハウス（あなた自身）：お相手はあなたの個性や魅力をストレートに引き出し、一緒にいると自分らしく輝けます。",
-2: "第2ハウス（才能・豊かさ）：お相手はあなたの隠れた才能やセンスに気づかせ、現実的な豊かさを育むきっかけをくれます。",
-3: "第3ハウス（言葉・学び）：会話や情報交換が尽きない楽しい関係。言葉を通じて新しい視点や好奇心がどんどん広がります。",
-4: "第4ハウス（心の拠り所）：家族のようにホッと安心できる居場所を感じられる関係。素の自分を安心して見せられます。",
-5: "第5ハウス（創造・喜び）：一緒にいるとワクワクして創造力や遊び心が刺激される、ドラマチックで楽しいご縁です。",
-6: "第6ハウス（日常・役割）：日々の生活や仕事面で自然とサポートし合える関係。実用的な面でとても頼りになる存在です。",
-7: "第7ハウス（パートナー）：一対一の対等なパートナーシップを象徴する配置。お互いを映す鏡として深く向き合える重要な相手です。",
-8: "第8ハウス（深い絆・変容）：表面的な付き合いを超え、心の奥底で強く結びつく宿命的なご縁。価値観が大きく深まります。",
-9: "第9ハウス（精神性・冒険）：精神的な視野を広げ、未知の世界や高い理想へと一緒に成長していける師や同志のような関係です。",
-10: "第10ハウス（社会的使命）：仕事や目標達成において強い刺激と応援を与え合い、公の場での飛躍を後押ししてくれる相手です。",
-11: "第11ハウス（未来・仲間）：年齢や立場を超えた親友のようにフラットで自由な関係。未来の夢や理想を語り合えます。",
-12: "第12ハウス（癒やし・潜在意識）：言葉を超えた直感や優しさで繋がる不思議なご縁。一緒にいると心が浄化され癒やされます。"
-};
-function getNumCompatibility(n1, n2, label) {
+function getSynHouseText(h) {
+if (h === 1) return "第1ハウス（あなた自身）：お相手はあなたの個性や魅力をストレートに引き出し、一緒にいると自分らしく輝けます。";
+if (h === 2) return "第2ハウス（才能・豊かさ）：お相手はあなたの隠れた才能やセンスに気づかせ、現実的な豊かさを育むきっかけをくれます。";
+if (h === 3) return "第3ハウス（言葉・学び）：会話や情報交換が尽きない楽しい関係。言葉を通じて新しい視点や好奇心がどんどん広がります。";
+if (h === 4) return "第4ハウス（心の拠り所）：家族のようにホッと安心できる居場所を感じられる関係。素の自分を安心して見せられます。";
+if (h === 5) return "第5ハウス（創造・喜び）：一緒にいるとワクワクして創造力や遊び心が刺激される、ドラマチックで楽しいご縁です。";
+if (h === 6) return "第6ハウス（日常・役割）：日々の生活や仕事面で自然とサポートし合える関係。実用的な面でとても頼りになる存在です。";
+if (h === 7) return "第7ハウス（パートナー）：一対一の対等なパートナーシップを象徴する配置。お互いを映す鏡として深く向き合える重要な相手です。";
+if (h === 8) return "第8ハウス（深い絆・変容）：表面的な付き合いを超え、心の奥底で強く結びつく宿命的なご縁。価値観が大きく深まります。";
+if (h === 9) return "第9ハウス（精神性・冒険）：精神的な視野を広げ、未知の世界や高い理想へと一緒に成長していける師や同志のような関係です。";
+if (h === 10) return "第10ハウス（社会的使命）：仕事や目標達成において強い刺激と応援を与え合い、公の場での飛躍を後押ししてくれる相手です。";
+if (h === 11) return "第11ハウス（未来・仲間）：年齢や立場を超えた親友のようにフラットで自由な関係。未来の夢や理想を語り合えます。";
+return "第12ハウス（癒やし・潜在意識）：言葉を超えた直感や優しさで繋がる不思議なご縁。一緒にいると心が浄化され癒やされます。";
+}
+function getNumComp(n1, n2, label) {
 const a = (n1 > 9) ? (n1 % 9 || 9) : n1;
 const b = (n2 > 9) ? (n2 % 9 || 9) : n2;
 const diff = Math.abs(a - b);
@@ -22,31 +22,18 @@ if (diff === 1 || diff === 8) return "【" + label + "：隣り合う成長の�
 if ((a % 2) === (b % 2)) return "【" + label + "：心地よいリズム】行動のテンポや物事の捉え方が近く、無理なく自然体で長い時間を過ごせる穏やかな相性です。";
 return "【" + label + "：新鮮な化学反応】異なる視点を持つからこそ新鮮な発見があり、二人で力を合わせると予想以上のアイデアや力が生まれます。";
 }
-function ensureSynastryDOM() {
-let synArea = document.getElementById("synResultsArea");
-if (!synArea) {
-synArea = document.createElement("div");
-synArea.id = "synResultsArea";
-synArea.className = "results-grid";
-document.querySelector(".container").appendChild(synArea);
-}
-synArea.innerHTML = '💞 数秘 ＆ 星の相性リーディング🏠 お相手の星が照らすあなたのハウス✨ 2人の天体アスペクト（星のご縁）🌌 シナストリー二重円（内：あなた／外：お相手）● 内円：あなた● 外円：お相手― 調和― 強調/刺激天体あなたお相手';
-return synArea;
-}
 function renderSynastryChart(p1List, p2List, baseSign1) {
 const svg = document.getElementById("synastryChart");
 if (!svg) return;
 const cx = 210, cy = 210, rOut = 195, rSign = 165, rP2 = 142, rP1 = 108, rAsp = 82;
 let html = '';
 for (let i = 0; i < 12; i++) {
-const hNum = i + 1;
-const sIdx = (baseSign1 + i) % 12;
 const a1 = (180 - i * 30) * Math.PI / 180;
 const am = (165 - i * 30) * Math.PI / 180;
 const isAx = (i % 3 === 0);
 html += '<line x1="' + (cx + rAsp * Math.cos(a1)) + '" y1="' + (cy + rAsp * Math.sin(a1)) + '" x2="' + (cx + rOut * Math.cos(a1)) + '" y2="' + (cy + rOut * Math.sin(a1)) + '" stroke="' + (isAx ? "#d4af37" : "#2f3244") + '" stroke-width="' + (isAx ? 1.5 : 1) + '"/>';
-html += '' + SIGN_SYM.at(sIdx) + '';
-html += '' + hNum + '';
+html += '' + SIGN_SYM.at((baseSign1 + i) % 12) + '';
+html += '' + (i + 1) + '';
 }
 html += '';
 html += '';
@@ -73,20 +60,13 @@ return { sym: p.sym, rel: rel, draw: rel };
 }).sort(function(a, b) { return a.rel - b.rel; });
 for (let k = 0; k < 3; k++) {
 for (let i = 0; i < placed.length; i++) {
-const c = placed.at(i);
-const n = placed.at((i + 1) % placed.length);
-let diff = n.draw - c.draw;
-if (diff < 0) diff += 360;
-if (diff < 11) {
-c.draw = norm360(c.draw - (11 - diff) / 2);
-n.draw = norm360(n.draw + (11 - diff) / 2);
-}
+const c = placed.at(i), n = placed.at((i + 1) % placed.length);
+let diff = n.draw - c.draw; if (diff < 0) diff += 360;
+if (diff < 11) { c.draw = norm360(c.draw - (11 - diff) / 2); n.draw = norm360(n.draw + (11 - diff) / 2); }
 }
 }
 placed.forEach(function(p) {
 const ang = (180 - p.draw) * Math.PI / 180;
-const px = cx + radius * Math.cos(ang);
-const py = cy + radius * Math.sin(ang);
 html += '';
 html += '' + p.sym + '';
 });
@@ -99,34 +79,33 @@ function calculateSynastry() {
 const y1 = parseInt(document.getElementById("year").value, 10);
 const m1 = parseInt(document.getElementById("month").value, 10);
 const d1 = parseInt(document.getElementById("day").value, 10);
-const y2El = document.getElementById("year2");
-const m2El = document.getElementById("month2");
-const d2El = document.getElementById("day2");
-if (!y2El || !m2El || !d2El) return;
-const y2 = parseInt(y2El.value, 10);
-const m2 = parseInt(m2El.value, 10);
-const d2 = parseInt(d2El.value, 10);
+const y2 = parseInt(document.getElementById("year2").value, 10);
+const m2 = parseInt(document.getElementById("month2").value, 10);
+const d2 = parseInt(document.getElementById("day2").value, 10);
 if (isNaN(y1) || isNaN(m1) || isNaN(d1) || isNaN(y2) || isNaN(m2) || isNaN(d2)) {
 alert("あなたとお相手、両方の生年月日を入力してください。");
 return;
 }
-const synArea = ensureSynastryDOM();
-const past1 = calcNum(d1);
-const past2 = calcNum(d2);
+let synArea = document.getElementById("synResultsArea");
+if (!synArea) {
+synArea = document.createElement("div");
+synArea.id = "synResultsArea";
+synArea.className = "results-grid";
+document.querySelector(".container").appendChild(synArea);
+}
+synArea.innerHTML = '💞 数秘 ＆ 星の相性リーディング🏠 お相手の星が照らすあなたのハウス✨ 2人の天体アスペクト（星のご縁）🌌 シナストリー二重円（内：あなた／外：お相手）● 内円：あなた● 外円：お相手― 調和― 強調/刺激天体あなたお相手';
+const past1 = calcNum(d1), past2 = calcNum(d2);
 const life1 = calcNum(String(y1).concat(String(m1), String(d1)).split("").reduce(function(a, b) { return a + Number(b); }, 0));
 const life2 = calcNum(String(y2).concat(String(m2), String(d2)).split("").reduce(function(a, b) { return a + Number(b); }, 0));
-const fut1 = calcNum(m1 + d1);
-const fut2 = calcNum(m2 + d2);
+const fut1 = calcNum(m1 + d1), fut2 = calcNum(m2 + d2);
 document.getElementById("synNumArea").innerHTML = '🌟 本質の相性：現在数「' + life1 + '」 × 「' + life2 + '」
-' + getNumCompatibility(life1, life2, "魂の軸") + '🌱 自然体の相性：過去数「' + past1 + '」 × 「' + past2 + '」
-' + getNumCompatibility(past1, past2, "素の空気感") + '🚀 未来の相性：未来数「' + fut1 + '」 × 「' + fut2 + '」
-' + getNumCompatibility(fut1, fut2, "目指す方向") + '';
-const h1Val = document.getElementById("hour").value.trim();
-const min1Val = document.getElementById("minute").value.trim();
+' + getNumComp(life1, life2, "魂の軸") + '🌱 自然体の相性：過去数「' + past1 + '」 × 「' + past2 + '」
+' + getNumComp(past1, past2, "素の空気感") + '🚀 未来の相性：未来数「' + fut1 + '」 × 「' + fut2 + '」
+' + getNumComp(fut1, fut2, "目指す方向") + '';
+const h1Val = document.getElementById("hour").value.trim(), min1Val = document.getElementById("minute").value.trim();
 const jd1 = getJulianDay(y1, m1, d1, h1Val !== "" ? parseInt(h1Val, 10) : 12, (h1Val !== "" && min1Val !== "") ? parseInt(min1Val, 10) : 0);
 const p1List = calcPlanets(jd1);
-const h2Val = document.getElementById("hour2") ? document.getElementById("hour2").value.trim() : "";
-const min2Val = document.getElementById("minute2") ? document.getElementById("minute2").value.trim() : "";
+const h2Val = document.getElementById("hour2").value.trim(), min2Val = document.getElementById("minute2").value.trim();
 const jd2 = getJulianDay(y2, m2, d2, h2Val !== "" ? parseInt(h2Val, 10) : 12, (h2Val !== "" && min2Val !== "") ? parseInt(min2Val, 10) : 0);
 const p2List = calcPlanets(jd2);
 let baseSign1 = 0;
@@ -138,13 +117,12 @@ baseSign1 = Math.floor(p1List.find(function(p) { return p.id === "sun"; }).lon /
 }
 renderSynastryChart(p1List, p2List, baseSign1);
 const houseHtml = new Array();
-const targetIds = new Array("sun", "moon", "mercury", "venus", "mars");
-targetIds.forEach(function(tid) {
+new Array("sun", "moon", "mercury", "venus", "mars").forEach(function(tid) {
 const p2 = p2List.find(function(x) { return x.id === tid; });
 const sIdx2 = Math.floor(p2.lon / 30);
 const hNum = ((sIdx2 - baseSign1 + 12) % 12) + 1;
 houseHtml.push('お相手の' + p2.name + '（' + SIGNS.at(sIdx2) + '）→ あなたの第' + hNum + 'ハウス
-' + SYN_HOUSE_EFFECTS[hNum] + '');
+' + getSynHouseText(hNum) + '');
 });
 document.getElementById("synHouseArea").innerHTML = houseHtml.join("");
 const hits = new Array();
@@ -171,12 +149,9 @@ document.getElementById("synAstroArea").innerHTML = hits.length > 0 ? hits.slice
 const tbody = document.getElementById("synTableBody");
 tbody.innerHTML = "";
 for (let i = 0; i < p1List.length; i++) {
-const p1 = p1List.at(i);
-const p2 = p2List.at(i);
-const s1 = Math.floor(p1.lon / 30);
-const s2 = Math.floor(p2.lon / 30);
+const p1 = p1List.at(i), p2 = p2List.at(i);
 const tr = document.createElement("tr");
-tr.innerHTML = '' + p1.name + '' + SIGNS.at(s1) + ' ' + (p1.lon % 30).toFixed(1) + '°' + SIGNS.at(s2) + ' ' + (p2.lon % 30).toFixed(1) + '°';
+tr.innerHTML = '' + p1.name + '' + SIGNS.at(Math.floor(p1.lon / 30)) + ' ' + (p1.lon % 30).toFixed(1) + '°' + SIGNS.at(Math.floor(p2.lon / 30)) + ' ' + (p2.lon % 30).toFixed(1) + '°';
 tbody.appendChild(tr);
 }
 document.getElementById("resultsArea").style.display = "none";

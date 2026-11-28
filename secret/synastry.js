@@ -11,6 +11,7 @@ function getNumCompatibility(n1, n2) {
 
 function renderSynastryChart(p1List, p2List, baseSign1) {
   const svg = document.getElementById("synastryChart");
+  if (!svg) return;
   const cx = 210, cy = 210, rOut = 195, rSign = 165, rP2 = 142, rP1 = 108, rAsp = 82;
   let html = `<circle cx="${cx}" cy="${cy}" r="${rOut}" fill="#14151e" stroke="#3b3f54" stroke-width="2"/>`;
 
@@ -24,11 +25,10 @@ function renderSynastryChart(p1List, p2List, baseSign1) {
   }
 
   html += `<circle cx="${cx}" cy="${cy}" r="${rSign}" fill="none" stroke="#3b3f54" stroke-width="1.2"/>`;
-  html += `<circle cx="${cx}" cy="${cy}" r="${125}" fill="none" stroke="#2a2d3d" stroke-dasharray="3,3"/>`;
+  html += `<circle cx="${cx}" cy="${cy}" r="125" fill="none" stroke="#2a2d3d" stroke-dasharray="3,3"/>`;
   html += `<circle cx="${cx}" cy="${cy}" r="${rAsp}" fill="#11121a" stroke="#3b3f54" stroke-width="1"/>`;
 
   const baseLon = baseSign1 * 30;
-  // 2人のアスペクト線
   p1List.forEach(p1 => {
     p2List.forEach(p2 => {
       let diff = Math.abs(p1.lon - p2.lon);
@@ -60,67 +60,74 @@ function renderSynastryChart(p1List, p2List, baseSign1) {
     });
   }
 
-  drawRing(p1List, rP1, "#1c1e29", "#d4af37", "#ffe082"); // 内円：あなた（ゴールド枠）
-  drawRing(p2List, rP2, "#251f38", "#8a75d6", "#e1bee7"); // 外円：お相手（パープル枠）
+  drawRing(p1List, rP1, "#1c1e29", "#d4af37", "#ffe082");
+  drawRing(p2List, rP2, "#251f38", "#8a75d6", "#e1bee7");
   svg.innerHTML = html;
 }
 
 function calculateSynastry() {
-  const y1 = parseInt(document.getElementById("year").value, 10);
-  const m1 = parseInt(document.getElementById("month").value, 10);
-  const d1 = parseInt(document.getElementById("day").value, 10);
-  const y2 = parseInt(document.getElementById("year2").value, 10);
-  const m2 = parseInt(document.getElementById("month2").value, 10);
-  const d2 = parseInt(document.getElementById("day2").value, 10);
+  try {
+    const y1 = parseInt(document.getElementById("year").value, 10);
+    const m1 = parseInt(document.getElementById("month").value, 10);
+    const d1 = parseInt(document.getElementById("day").value, 10);
+    const y2 = parseInt(document.getElementById("year2").value, 10);
+    const m2 = parseInt(document.getElementById("month2").value, 10);
+    const d2 = parseInt(document.getElementById("day2").value, 10);
 
-  if (isNaN(y1) || isNaN(m1) || isNaN(d1) || isNaN(y2) || isNaN(m2) || isNaN(d2)) {
-    alert("あなたとお相手、両方の生年月日を入力してください。");
-    return;
-  }
+    if (isNaN(y1) || isNaN(m1) || isNaN(d1) || isNaN(y2) || isNaN(m2) || isNaN(d2)) {
+      alert("あなたとお相手、両方の生年月日を入力してください。");
+      return;
+    }
 
-  const life1 = calcNum(String(y1).concat(String(m1), String(d1)).split("").reduce((a, b) => a + Number(b), 0));
-  const life2 = calcNum(String(y2).concat(String(m2), String(d2)).split("").reduce((a, b) => a + Number(b), 0));
+    const life1 = calcNum(String(y1).concat(String(m1), String(d1)).split("").reduce((a, b) => a + Number(b), 0));
+    const life2 = calcNum(String(y2).concat(String(m2), String(d2)).split("").reduce((a, b) => a + Number(b), 0));
 
-  document.getElementById("synNumArea").innerHTML =
-    `<div class="sync-item"><strong>🔢 数秘相性：あなた「${life1}」 × お相手「${life2}」</strong><br>${getNumCompatibility(life1, life2)}</div>`;
+    document.getElementById("synNumArea").innerHTML =
+      `<div class="sync-item"><strong>🔢 数秘相性：あなた「${life1}」 × お相手「${life2}」</strong><br>${getNumCompatibility(life1, life2)}</div>`;
 
-  const h1Val = document.getElementById("hour").value.trim();
-  const min1Val = document.getElementById("minute").value.trim();
-  const jd1 = getJulianDay(y1, m1, d1, h1Val !== "" ? parseInt(h1Val, 10) : 12, (h1Val !== "" && min1Val !== "") ? parseInt(min1Val, 10) : 0);
-  const p1List = calcPlanets(jd1);
+    const h1Val = document.getElementById("hour").value.trim();
+    const min1Val = document.getElementById("minute").value.trim();
+    const jd1 = getJulianDay(y1, m1, d1, h1Val !== "" ? parseInt(h1Val, 10) : 12, (h1Val !== "" && min1Val !== "") ? parseInt(min1Val, 10) : 0);
+    const p1List = calcPlanets(jd1);
 
-  const h2Val = document.getElementById("hour2").value.trim();
-  const min2Val = document.getElementById("minute2").value.trim();
-  const jd2 = getJulianDay(y2, m2, d2, h2Val !== "" ? parseInt(h2Val, 10) : 12, (h2Val !== "" && min2Val !== "") ? parseInt(min2Val, 10) : 0);
-  const p2List = calcPlanets(jd2);
+    const h2Val = document.getElementById("hour2").value.trim();
+    const min2Val = document.getElementById("minute2").value.trim();
+    const jd2 = getJulianDay(y2, m2, d2, h2Val !== "" ? parseInt(h2Val, 10) : 12, (h2Val !== "" && min2Val !== "") ? parseInt(min2Val, 10) : 0);
+    const p2List = calcPlanets(jd2);
 
-  let baseSign1 = 0;
-  if (h1Val !== "") {
-    const coords = document.getElementById("birthPlace").value.split(",");
-    baseSign1 = Math.floor(calcAscendant(jd1, parseFloat(coords.at(0)), parseFloat(coords.at(1))) / 30);
-  } else {
-    baseSign1 = Math.floor(p1List.find(p => p.id === "sun").lon / 30);
-  }
+    let baseSign1 = 0;
+    if (h1Val !== "") {
+      const coords = document.getElementById("birthPlace").value.split(",");
+      baseSign1 = Math.floor(calcAscendant(jd1, parseFloat(coords.at(0)), parseFloat(coords.at(1))) / 30);
+    } else {
+      baseSign1 = Math.floor(p1List.find(p => p.id === "sun").lon / 30);
+    }
 
-  renderSynastryChart(p1List, p2List, baseSign1);
+    renderSynastryChart(p1List, p2List, baseSign1);
 
-  // 特別アスペクト＆ハウス重ねの抽出
-  const hits = [];
-  const personalIds = ["sun", "moon", "mercury", "venus", "mars"];
-  p1List.filter(p => personalIds.includes(p.id)).forEach(p1 => {
-    p2List.filter(p => personalIds.includes(p.id)).forEach(p2 => {
-      let diff = Math.abs(p1.lon - p2.lon);
-      if (diff > 180) diff = 360 - diff;
-      if (diff <= 5) hits.push(`<strong>🌟 コンジャンクション（0°合）：</strong>あなたの${p1.name} と お相手の${p2.name} が重なり、強い縁と一体感を生み出します。`);
-      else if (Math.abs(diff - 120) <= 4) hits.push(`<strong>💙 トライン（120°調和）：</strong>あなたの${p1.name} と お相手の${p2.name} が自然に響き合い、心地よいサポート関係になります。`);
-      else if (Math.abs(diff - 180) <= 5) hits.push(`<strong>🔥 オポジション（180°対向）：</strong>あなたの${p1.name} と お相手の${p2.name} が正面から引き合い、強い魅力と刺激を与え合います。`);
+    const hits = [];
+    const personalIds = ["sun", "moon", "mercury", "venus", "mars"];
+    p1List.filter(p => personalIds.includes(p.id)).forEach(p1 => {
+      p2List.filter(p => personalIds.includes(p.id)).forEach(p2 => {
+        let diff = Math.abs(p1.lon - p2.lon);
+        if (diff > 180) diff = 360 - diff;
+        if (diff <= 5) hits.push(`<strong>🌟 コンジャンクション（0°合）：</strong>あなたの${p1.name} と お相手の${p2.name} が重なり、強い縁と一体感を生み出します。`);
+        else if (Math.abs(diff - 120) <= 4) hits.push(`<strong>💙 トライン（120°調和）：</strong>あなたの${p1.name} と お相手の${p2.name} が自然に響き合い、心地よいサポート関係になります。`);
+        else if (Math.abs(diff - 180) <= 5) hits.push(`<strong>🔥 オポジション（180°対向）：</strong>あなたの${p1.name} と お相手の${p2.name} が正面から引き合い、強い魅力と刺激を与え合います。`);
+      });
     });
-  });
 
-  const sun2House = ((Math.floor(p2List.find(p => p.id === "sun").lon / 30) - baseSign1 + 12) % 12) + 1;
-  const venus2House = ((Math.floor(p2List.find(p => p.id === "venus").lon / 30) - baseSign1 + 12) % 12) + 1;
-  hits.unshift(`<strong>🏠 ハウス重ね：</strong>お相手の太陽はあなたの<strong>第${sun2House}ハウス</strong>、金星は<strong>第${venus2House}ハウス</strong>に入り、その領域に光と喜びをもたらします。`);
+    const sun2House = ((Math.floor(p2List.find(p => p.id === "sun").lon / 30) - baseSign1 + 12) % 12) + 1;
+    const venus2House = ((Math.floor(p2List.find(p => p.id === "venus").lon / 30) - baseSign1 + 12) % 12) + 1;
+    hits.unshift(`<strong>🏠 ハウス重ね：</strong>お相手の太陽はあなたの<strong>第${sun2House}ハウス</strong>、金星は<strong>第${venus2House}ハウス</strong>に入り、その領域に光と喜びをもたらします。`);
 
-  document.getElementById("synAstroArea").innerHTML = hits.slice(0, 6).map(t => `<div class="sync-item">${t}</div>`).join("");
-  document.getElementById("synResultsArea").style.display = "grid";
+    document.getElementById("synAstroArea").innerHTML = hits.slice(0, 6).map(t => `<div class="sync-item">${t}</div>`).join("");
+
+    document.getElementById("resultsArea").style.display = "none";
+    const synArea = document.getElementById("synResultsArea");
+    synArea.style.display = "grid";
+    synArea.classList.add("is-visible");
+  } catch (e) {
+    alert("相性計算エラー: " + e.message);
+  }
 }

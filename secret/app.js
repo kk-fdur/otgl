@@ -137,4 +137,28 @@ function calculateAll() {
   res.classList.add("is-visible");
 }
 
-document.getElementById("calcBtn").addEventListener("click", calculateAll);
+let currentMode = "solo";
+
+document.getElementById("tabSolo").addEventListener("click", function() {
+  currentMode = "solo";
+  this.classList.add("active");
+  document.getElementById("tabPair").classList.remove("active");
+  document.getElementById("partnerInputBox").classList.remove("is-open");
+  document.getElementById("synResultsArea").style.display = "none";
+});
+
+document.getElementById("tabPair").addEventListener("click", function() {
+  currentMode = "pair";
+  this.classList.add("active");
+  document.getElementById("tabSolo").classList.remove("active");
+  document.getElementById("partnerInputBox").classList.add("is-open");
+  document.getElementById("resultsArea").style.display = "none";
+});
+
+document.getElementById("calcBtn").addEventListener("click", function() {
+  if (currentMode === "solo") {
+    calculateAll();
+  } else {
+    calculateSynastry();
+  }
+});

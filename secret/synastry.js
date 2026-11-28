@@ -95,15 +95,15 @@ function calculateSynastry() {
     const p1 = p1List.at(i), p2 = p2List.at(i), s1 = Math.floor(p1.lon / 30), s2 = Math.floor(p2.lon / 30);
     const d1Hit = DIGNITY_RULES.find(r => r.id === p1.id && r.sign === s1);
     const d2Hit = DIGNITY_RULES.find(r => r.id === p2.id && r.sign === s2);
-    if (d1Hit) d1List.push(`・<strong>${p1.name} in ${SIGNS.at(s1)}（${d1Hit.type}）</strong>：${d1Hit.desc}`);
-    if (d2Hit) d2List.push(`・<strong>${p2.name} in ${SIGNS.at(s2)}（${d2Hit.type}）</strong>：${d2Hit.desc}`);
+    if (d1Hit) d1List.push(`<div style="margin-top:6px;padding:6px 8px;background:#1c1e29;border-radius:6px;"><strong>${p1.name} in ${SIGNS.at(s1)}【${d1Hit.type}】</strong><br>${d1Hit.desc}</div>`);
+    if (d2Hit) d2List.push(`<div style="margin-top:6px;padding:6px 8px;background:#1c1e29;border-radius:6px;"><strong>${p2.name} in ${SIGNS.at(s2)}【${d2Hit.type}】</strong><br>${d2Hit.desc}</div>`);
     const tr = document.createElement("tr");
     tr.innerHTML = `<td class="planet-name">${p1.name}<span class="planet-role">${p1.role}</span></td><td>${SIGNS.at(s1)} ${(p1.lon % 30).toFixed(1)}°</td><td>${SIGNS.at(s2)} ${(p2.lon % 30).toFixed(1)}°</td>`;
     tbody.appendChild(tr);
   }
 
-  const d1Text = d1List.length > 0 ? d1List.join("<br>") : "突出した品位の偏りはなく、各天体がそれぞれの星座の個性をバランスよく穏やかに発揮する柔軟な配置です。";
-  const d2Text = d2List.length > 0 ? d2List.join("<br>") : "突出した品位の偏りはなく、各天体がそれぞれの星座の個性をバランスよく穏やかに発揮する柔軟な配置です。";
+  const d1Text = d1List.length > 0 ? `<span style="font-size:0.78rem;color:#d4af37;">✨ ${d1List.length}個の星が本来の力・高揚を発揮しています</span>` + d1List.join("") : `<p style="margin:4px 0 0;">突出した品位の偏りはなく、各天体がそれぞれの星座の個性をバランスよく穏やかに発揮する柔軟な配置です。</p>`;
+  const d2Text = d2List.length > 0 ? `<span style="font-size:0.78rem;color:#c2b5f5;">✨ ${d2List.length}個の星が本来の力・高揚を発揮しています</span>` + d2List.join("") : `<p style="margin:4px 0 0;">突出した品位の偏りはなく、各天体がそれぞれの星座の個性をバランスよく穏やかに発揮する柔軟な配置です。</p>`;
   document.getElementById("synDignityArea").innerHTML =
     `<div class="sync-item"><strong style="color:#ffe082;">👑【あなた】の星の品位</strong><br>${d1Text}</div>` +
     `<div class="sync-item"><strong style="color:#e1bee7;">👑【お相手】の星の品位</strong><br>${d2Text}</div>`;

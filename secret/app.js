@@ -66,9 +66,13 @@ function calculateAll() {
   const tbody = document.getElementById("planetTableBody");
   tbody.innerHTML = "";
   const hitPlanets = [];
+  const signGroups = {};
 
   planets.forEach(p => {
     const sIdx = Math.floor(p.lon / 30);
+    if (!signGroups[sIdx]) signGroups[sIdx] = [];
+    signGroups[sIdx].push(p.name);
+
     const hNum = ((sIdx - baseSign + 12) % 12) + 1;
     let cls = "", badge = "";
     if (hNum === lifeH) { cls = "row-highlight-life"; badge += `<span class="sync-badge life">★現在数</span>`; hitPlanets.push(p); }
@@ -80,6 +84,24 @@ function calculateAll() {
     tr.innerHTML = `<td class="planet-name">${p.name}<span class="planet-role">${p.role}</span></td><td>${SIGNS.at(sIdx)}</td><td>${(p.lon % 30).toFixed(1)}°</td><td><span class="house-tag">第${hNum}H</span>${badge}</td>`;
     tbody.appendChild(tr);
   });
+
+  // 複数天体が同じ星座にある場合の抽出（天体数が多い順）
+  const multiSigns = Object.keys(signGroups)
+    .map(k => ({ idx: Number(k), list: signGroups[k] }))
+    .filter(item => item.list.length >= 2)
+    .sort((a, b) => b.list.length - a.list.length);
+
+  const focusArea = document.getElementById("signFocusArea");
+  if (multiSigns.length > 0) {
+    focusArea.innerHTML = multiSigns.map(item => {
+      const tag = item.list.length >= 3 ? "🌟ステリウム（3天体以上集中）" : "✨強調サイン（2天体集中）";
+      return `<div class="sync-item"><strong>${SIGNS.at(item.idx)} に ${item.list.length}天体集中【${tag}】</strong><br>` +
+        `<span style="font-size:0.8rem;color:#c2b5f5;">滞在天体：${item.list.join("・")}</span><br>` +
+        `${SIGN_FOCUS_READINGS[item.idx]}</div>`;
+    }).join("");
+  } else {
+    focusArea.innerHTML = `<p style="margin:0;">10天体がそれぞれ異なる星座にバランスよく分散しています。特定の偏りに縛られず、多角的な視点と柔軟性を持って様々な状況に対応できるタイプです。</p>`;
+  }
 
   const lifeSign = SIGNS.at((baseSign + lifeH - 1) % 12);
   let planetBoostText = `現在このハウスに天体はありませんが、<strong>${lifeSign}</strong>のフィルターを通してテーマが自然と発揮されます。`;

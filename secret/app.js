@@ -132,6 +132,8 @@ function calculateAll() {
     `<div class="sync-item"><strong>🚀 目指す方向：未来数「${future}」 × ${HOUSE_READINGS[futureH].title}（${SIGNS.at((baseSign + futureH - 1) % 12)}）</strong><br>` +
     `これから開拓していくテーマ「${future}」は、${HOUSE_READINGS[futureH].desc}</div>`;
 
+  const synRes = document.getElementById("synResultsArea");
+  if (synRes) synRes.style.display = "none";
   const res = document.getElementById("resultsArea");
   res.style.display = "grid";
   res.classList.add("is-visible");
@@ -144,7 +146,8 @@ document.getElementById("tabSolo").addEventListener("click", function() {
   this.classList.add("active");
   document.getElementById("tabPair").classList.remove("active");
   document.getElementById("partnerInputBox").classList.remove("is-open");
-  document.getElementById("synResultsArea").style.display = "none";
+  const synRes = document.getElementById("synResultsArea");
+  if (synRes) synRes.style.display = "none";
 });
 
 document.getElementById("tabPair").addEventListener("click", function() {

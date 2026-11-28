@@ -1,8 +1,7 @@
 const bp1 = document.getElementById("birthPlace");
 const bp2 = document.getElementById("birthPlace2");
 if (bp1 && bp2) {
-bp2.innerHTML = bp1.innerHTML;
-bp2.selectedIndex = bp1.selectedIndex;
+  bp2.innerHTML = '<option value="35.68,139.77" selected>不明（標準）</option>' + bp1.innerHTML;
 }
 function addBox(parent, htmlStr, isLast) {
 const div = document.createElement("div");

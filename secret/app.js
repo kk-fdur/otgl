@@ -1,33 +1,3 @@
-const NUM_KEYWORDS = {
-  1: "【1：開拓・自立】始まり、リーダーシップ、直感と行動力",
-  2: "【2：協調・受容】サポート、繊細さ、バランス、共感",
-  3: "【3：創造・表現】楽しさ、無邪気さ、クリエイティブ",
-  4: "【4：安定・構築】誠実、ルール、基盤づくり、コツコツ形にする",
-  5: "【5：自由・変化】冒険、好奇心、スピード、枠を超えた挑戦",
-  6: "【6：愛・調和】美意識、思いやり、育てる力、奉仕",
-  7: "【7：探究・哲学】分析、一人の時間、専門性、真理の追求",
-  8: "【8：達成・豊かさ】情熱、エネルギー、現実的な成功、循環",
-  9: "【9：完成・包容】理想、癒やし、全体を見渡す視点、統合",
-  11: "【11：直感・メッセンジャー】高い霊感、インスピレーション",
-  22: "【22：カリスマ・具現化】大きなビジョンを現実に落とし込む",
-  33: "【33：無償の愛・奉仕】常識を超えたスケールで周囲を癒やす"
-};
-
-const HOUSE_THEMES = {
-  1: "第1ハウス（自己・アイデンティティ・始まりの場）",
-  2: "第2ハウス（才能・所有・金銭感覚・自己価値の場）",
-  3: "第3ハウス（言葉・学び・発信・身近な交流の場）",
-  4: "第4ハウス（心の拠り所・家庭・ルーツ・安心できる居場所）",
-  5: "第5ハウス（創造・表現・恋愛・遊び心と自己実現の場）",
-  6: "第6ハウス（仕事・役割・健康・日々の習慣と奉仕の場）",
-  7: "第7ハウス（パートナーシップ・対人関係・他者との鏡）",
-  8: "第8ハウス（深い絆・継承・変容・心理的探究の場）",
-  9: "第9ハウス（精神性・哲学・未知への冒険・専門知識の場）",
-  10: "第10ハウス（天職・社会的肩書き・目標達成の舞台）",
-  11: "第11ハウス（未来のビジョン・仲間・ネットワークの場）",
-  12: "第12ハウス（潜在意識・スピリチュアル・癒やしと浄化の場）"
-};
-
 function calcNum(n) {
   while (n > 9 && n !== 11 && n !== 22 && n !== 33) {
     n = String(n).split("").reduce((a, b) => a + Number(b), 0);
@@ -67,9 +37,9 @@ function calculateAll() {
   document.getElementById("numFutureHouse").textContent = `第${futureH}H連動`;
 
   document.getElementById("numMeaningArea").innerHTML =
-    `<p style="margin:0 0 6px"><strong>過去数 ${past}：</strong>${NUM_KEYWORDS[past]}</p>` +
-    `<p style="margin:0 0 6px"><strong>現在数 ${life}：</strong>${NUM_KEYWORDS[life]}</p>` +
-    `<p style="margin:0"><strong>未来数 ${future}：</strong>${NUM_KEYWORDS[future]}</p>`;
+    `<p style="margin:0 0 10px"><strong>🌱 過去数（得意・才能）：</strong>${NUM_READINGS[past]}</p>` +
+    `<p style="margin:0 0 10px"><strong>🌟 現在数（本質・運命）：</strong>${NUM_READINGS[life]}</p>` +
+    `<p style="margin:0"><strong>🚀 未来数（目標・課題）：</strong>${NUM_READINGS[future]}</p>`;
 
   const hasTime = (hVal !== "");
   const h = hasTime ? parseInt(hVal, 10) : 12;
@@ -101,7 +71,7 @@ function calculateAll() {
     if (hNum === lifeH) {
       cls = "row-highlight-life";
       badge += `<span class="sync-badge life">★現在数</span>`;
-      hitPlanets.push(`${p.name}（${SIGNS.at(sIdx)}）`);
+      hitPlanets.push(p);
     }
     if (hNum === pastH) { if (!cls) cls = "row-highlight-sub"; badge += `<span class="sync-badge sub">過去数</span>`; }
     if (hNum === futureH) { if (!cls) cls = "row-highlight-sub"; badge += `<span class="sync-badge sub">未来数</span>`; }
@@ -113,12 +83,19 @@ function calculateAll() {
   });
 
   const lifeSign = SIGNS.at((baseSign + lifeH - 1) % 12);
-  const hitText = hitPlanets.length > 0 ? `このハウスには <strong>${hitPlanets.join("・")}</strong> が滞在し、テーマが強く強調されます。` : `現在天体はありませんが、<strong>${lifeSign}</strong>の性質を通して発揮されます。`;
+  let planetBoostText = `現在このハウスに天体はありませんが、<strong>${lifeSign}</strong>のフィルターを通してテーマが自然と発揮されます。`;
+  if (hitPlanets.length > 0) {
+    const boostList = hitPlanets.map(hp => `・<strong>${hp.name}</strong>：${PLANET_BOOST[hp.id]}`).join("<br>");
+    planetBoostText = `さらにこのハウスには以下の天体が滞在しており、あなたの現在数の力を強く後押ししています。<br>${boostList}`;
+  }
 
   document.getElementById("syncMeaningArea").innerHTML =
-    `<div class="sync-item"><strong>🌟 現在数「${life}」 × ${HOUSE_THEMES[lifeH]}</strong><br>本質の「${life}」は<strong>第${lifeH}ハウス（${lifeSign}）</strong>で最も輝きます。${hitText}</div>` +
-    `<div class="sync-item"><strong>🌱 過去数「${past}」 × 第${pastH}ハウス（${SIGNS.at((baseSign + pastH - 1) % 12)}）</strong><br>得意分野は${HOUSE_THEMES[pastH]}とリンクしています。</div>` +
-    `<div class="sync-item"><strong>🚀 未来数「${future}」 × 第${futureH}ハウス（${SIGNS.at((baseSign + futureH - 1) % 12)}）</strong><br>今後の課題は${HOUSE_THEMES[futureH]}を広げることで達成されます。</div>`;
+    `<div class="sync-item"><strong>🌟 本質の共鳴：現在数「${life}」 × ${HOUSE_READINGS[lifeH].title}</strong><br>` +
+    `あなたの魂の軸である「${life}」の力は、ホロスコープ上の<strong>第${lifeH}ハウス（${lifeSign}）</strong>の舞台で最も輝きます。${HOUSE_READINGS[lifeH].desc}<br><div style="margin-top:6px;color:#e6dfb8;">${planetBoostText}</div></div>` +
+    `<div class="sync-item"><strong>🌱 才能の土台：過去数「${past}」 × ${HOUSE_READINGS[pastH].title}（${SIGNS.at((baseSign + pastH - 1) % 12)}）</strong><br>` +
+    `生まれ持った得意分野である「${past}」の資質は、${HOUSE_READINGS[pastH].desc}</div>` +
+    `<div class="sync-item"><strong>🚀 目指す方向：未来数「${future}」 × ${HOUSE_READINGS[futureH].title}（${SIGNS.at((baseSign + futureH - 1) % 12)}）</strong><br>` +
+    `これから開拓していくテーマ「${future}」は、${HOUSE_READINGS[futureH].desc}</div>`;
 
   const res = document.getElementById("resultsArea");
   res.style.display = "grid";

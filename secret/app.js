@@ -49,9 +49,12 @@ function calculateAll() {
 
   let baseSign = 0;
   if (hasTime) {
-    const asc = calcAscendant(jd);
+    const placeEl = document.getElementById("birthPlace");
+    const coords = placeEl.value.split(",");
+    const placeName = placeEl.options.item(placeEl.selectedIndex).text;
+    const asc = calcAscendant(jd, parseFloat(coords.at(0)), parseFloat(coords.at(1)));
     baseSign = Math.floor(asc / 30);
-    document.getElementById("houseModeBadge").textContent = `出生時間あり（${h}時${min}分）｜ASC：${SIGNS.at(baseSign)} ${(asc % 30).toFixed(1)}°`;
+    document.getElementById("houseModeBadge").textContent = `${placeName}（${h}時${min}分）｜ASC：${SIGNS.at(baseSign)} ${(asc % 30).toFixed(1)}°`;
   } else {
     const sun = planets.find(p => p.id === "sun");
     baseSign = Math.floor(sun.lon / 30);
@@ -68,17 +71,13 @@ function calculateAll() {
     const sIdx = Math.floor(p.lon / 30);
     const hNum = ((sIdx - baseSign + 12) % 12) + 1;
     let cls = "", badge = "";
-    if (hNum === lifeH) {
-      cls = "row-highlight-life";
-      badge += `<span class="sync-badge life">★現在数</span>`;
-      hitPlanets.push(p);
-    }
+    if (hNum === lifeH) { cls = "row-highlight-life"; badge += `<span class="sync-badge life">★現在数</span>`; hitPlanets.push(p); }
     if (hNum === pastH) { if (!cls) cls = "row-highlight-sub"; badge += `<span class="sync-badge sub">過去数</span>`; }
     if (hNum === futureH) { if (!cls) cls = "row-highlight-sub"; badge += `<span class="sync-badge sub">未来数</span>`; }
 
     const tr = document.createElement("tr");
     if (cls) tr.className = cls;
-    tr.innerHTML = `<td class="planet-name">${p.name}</td><td>${SIGNS.at(sIdx)}</td><td>${(p.lon % 30).toFixed(1)}°</td><td><span class="house-tag">第${hNum}ハウス</span>${badge}</td>`;
+    tr.innerHTML = `<td class="planet-name">${p.name}<span class="planet-role">${p.role}</span></td><td>${SIGNS.at(sIdx)}</td><td>${(p.lon % 30).toFixed(1)}°</td><td><span class="house-tag">第${hNum}H</span>${badge}</td>`;
     tbody.appendChild(tr);
   });
 

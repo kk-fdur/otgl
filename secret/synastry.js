@@ -50,7 +50,7 @@ function calculateSynastry() {
   if (isNaN(y1) || isNaN(m1) || isNaN(d1) || isNaN(y2) || isNaN(m2) || isNaN(d2)) { alert("あなたとお相手、両方の生年月日を入力してください。"); return; }
 
   const synArea = document.getElementById("synResultsArea");
-  synArea.innerHTML = `<div class="panel"><h2>💞 数秘 ＆ 星の相性リーディング</h2><div class="sync-detail" id="synNumArea" style="margin-bottom:16px;"></div><h3 class="sub-heading">🏠 お相手の星が照らすあなたのハウス</h3><div class="sync-detail" id="synHouseArea" style="margin-bottom:16px;"></div><h3 class="sub-heading">✨ 2人の天体アスペクト（星のご縁）</h3><div class="sync-detail" id="synAstroArea"></div></div><div class="panel"><h2>🌌 シナストリー二重円（内：あなた／外：お相手）</h2><div class="chart-wrapper"><svg id="synastryChart" xmlns="http://w3.org" viewBox="0 0 420 420"></svg><div class="chart-legend"><span style="color:#ffe082;">● 内円：あなた</span><span style="color:#e1bee7;">● 外円：お相手</span><span style="color:#64b5f6;">― 調和</span><span style="color:#ff8a80;">― 強調/刺激</span></div></div><table><thead><tr><th>天体</th><th>あなた</th><th>お相手</th></tr></thead><tbody id="synTableBody"></tbody></table></div>`;
+  synArea.innerHTML = `<div class="panel"><h2>💞 数秘 ＆ 星の相性リーディング</h2><div class="sync-detail" id="synNumArea" style="margin-bottom:16px;"></div><h3 class="sub-heading">🏠 お相手の星が照らすあなたのハウス</h3><div class="sync-detail" id="synHouseArea" style="margin-bottom:16px;"></div><h3 class="sub-heading">✨ 2人の天体アスペクト（星のご縁）</h3><div class="sync-detail" id="synAstroArea"></div></div><div class="panel"><h2>🌌 シナストリー二重円（内：あなた／外：お相手）</h2><div class="chart-wrapper"><svg id="synastryChart" xmlns="http://w3.org" viewBox="0 0 420 420"></svg><div class="chart-legend"><span style="color:#ffe082;">● 内円：あなた</span><span style="color:#e1bee7;">● 外円：お相手</span><span style="color:#64b5f6;">― 調和</span><span style="color:#ff8a80;">― 強調/刺激</span></div></div><table><thead><tr><th>天体・役割</th><th>あなた</th><th>お相手</th></tr></thead><tbody id="synTableBody"></tbody></table><h3 class="sub-heading">👑 2人の天体の品位（高揚・本来の座）</h3><div class="sync-detail" id="synDignityArea"></div></div>`;
 
   const past1 = calcNum(d1), past2 = calcNum(d2);
   const life1 = calcNum(String(y1).concat(String(m1), String(d1)).split("").reduce((a, b) => a + Number(b), 0));
@@ -89,13 +89,19 @@ function calculateSynastry() {
   });
   document.getElementById("synAstroArea").innerHTML = hits.length > 0 ? hits.slice(0, 10).map(t => `<div class="sync-item">${t}</div>`).join("") : `<p style="margin:0;">強い衝突が少なく、お互いのペースを尊重しながら穏やかに付き合える静かなご縁です。</p>`;
 
-  const tbody = document.getElementById("synTableBody");
+  const tbody = document.getElementById("synTableBody"), digList = [];
   tbody.innerHTML = "";
   for (let i = 0; i < p1List.length; i++) {
-    const p1 = p1List.at(i), p2 = p2List.at(i), tr = document.createElement("tr");
-    tr.innerHTML = `<td class="planet-name">${p1.name}</td><td>${SIGNS.at(Math.floor(p1.lon / 30))} ${(p1.lon % 30).toFixed(1)}°</td><td>${SIGNS.at(Math.floor(p2.lon / 30))} ${(p2.lon % 30).toFixed(1)}°</td>`;
+    const p1 = p1List.at(i), p2 = p2List.at(i), s1 = Math.floor(p1.lon / 30), s2 = Math.floor(p2.lon / 30);
+    const d1Hit = DIGNITY_RULES.find(r => r.id === p1.id && r.sign === s1);
+    const d2Hit = DIGNITY_RULES.find(r => r.id === p2.id && r.sign === s2);
+    if (d1Hit) digList.push(`<div class="sync-item"><strong>👑【あなた】${p1.name} in ${SIGNS.at(s1)}（${d1Hit.type}）</strong><br>${d1Hit.desc}</div>`);
+    if (d2Hit) digList.push(`<div class="sync-item"><strong>👑【お相手】${p2.name} in ${SIGNS.at(s2)}（${d2Hit.type}）</strong><br>${d2Hit.desc}</div>`);
+    const tr = document.createElement("tr");
+    tr.innerHTML = `<td class="planet-name">${p1.name}<span class="planet-role">${p1.role}</span></td><td>${SIGNS.at(s1)} ${(p1.lon % 30).toFixed(1)}°</td><td>${SIGNS.at(s2)} ${(p2.lon % 30).toFixed(1)}°</td>`;
     tbody.appendChild(tr);
   }
+  document.getElementById("synDignityArea").innerHTML = digList.length > 0 ? digList.join("") : `<p style="margin:0;">お二人とも突出した品位の偏りがなく、穏やかに調和しやすい配置です。</p>`;
 
   document.getElementById("resultsArea").style.display = "none";
   synArea.style.display = "grid";

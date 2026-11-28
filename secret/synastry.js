@@ -89,19 +89,24 @@ function calculateSynastry() {
   });
   document.getElementById("synAstroArea").innerHTML = hits.length > 0 ? hits.slice(0, 10).map(t => `<div class="sync-item">${t}</div>`).join("") : `<p style="margin:0;">強い衝突が少なく、お互いのペースを尊重しながら穏やかに付き合える静かなご縁です。</p>`;
 
-  const tbody = document.getElementById("synTableBody"), digList = [];
+  const tbody = document.getElementById("synTableBody"), d1List = [], d2List = [];
   tbody.innerHTML = "";
   for (let i = 0; i < p1List.length; i++) {
     const p1 = p1List.at(i), p2 = p2List.at(i), s1 = Math.floor(p1.lon / 30), s2 = Math.floor(p2.lon / 30);
     const d1Hit = DIGNITY_RULES.find(r => r.id === p1.id && r.sign === s1);
     const d2Hit = DIGNITY_RULES.find(r => r.id === p2.id && r.sign === s2);
-    if (d1Hit) digList.push(`<div class="sync-item"><strong>👑【あなた】${p1.name} in ${SIGNS.at(s1)}（${d1Hit.type}）</strong><br>${d1Hit.desc}</div>`);
-    if (d2Hit) digList.push(`<div class="sync-item"><strong>👑【お相手】${p2.name} in ${SIGNS.at(s2)}（${d2Hit.type}）</strong><br>${d2Hit.desc}</div>`);
+    if (d1Hit) d1List.push(`・<strong>${p1.name} in ${SIGNS.at(s1)}（${d1Hit.type}）</strong>：${d1Hit.desc}`);
+    if (d2Hit) d2List.push(`・<strong>${p2.name} in ${SIGNS.at(s2)}（${d2Hit.type}）</strong>：${d2Hit.desc}`);
     const tr = document.createElement("tr");
     tr.innerHTML = `<td class="planet-name">${p1.name}<span class="planet-role">${p1.role}</span></td><td>${SIGNS.at(s1)} ${(p1.lon % 30).toFixed(1)}°</td><td>${SIGNS.at(s2)} ${(p2.lon % 30).toFixed(1)}°</td>`;
     tbody.appendChild(tr);
   }
-  document.getElementById("synDignityArea").innerHTML = digList.length > 0 ? digList.join("") : `<p style="margin:0;">お二人とも突出した品位の偏りがなく、穏やかに調和しやすい配置です。</p>`;
+
+  const d1Text = d1List.length > 0 ? d1List.join("<br>") : "突出した品位の偏りはなく、各天体がそれぞれの星座の個性をバランスよく穏やかに発揮する柔軟な配置です。";
+  const d2Text = d2List.length > 0 ? d2List.join("<br>") : "突出した品位の偏りはなく、各天体がそれぞれの星座の個性をバランスよく穏やかに発揮する柔軟な配置です。";
+  document.getElementById("synDignityArea").innerHTML =
+    `<div class="sync-item"><strong style="color:#ffe082;">👑【あなた】の星の品位</strong><br>${d1Text}</div>` +
+    `<div class="sync-item"><strong style="color:#e1bee7;">👑【お相手】の星の品位</strong><br>${d2Text}</div>`;
 
   document.getElementById("resultsArea").style.display = "none";
   synArea.style.display = "grid";
